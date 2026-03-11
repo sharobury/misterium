@@ -100,14 +100,14 @@ button:disabled {
 }
 
 .skill-tag {
-  display: inline-block;
+  display: block;
   background: #1e1e1e;
   border: 1px solid #3a3a3a;
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 11px;
   color: #666;
-  margin: 2px 2px 0 0;
+  margin: 2px 0 0 0;
   line-height: 1.4;
 }
 
@@ -811,7 +811,7 @@ function renderSkills() {
         </div>` : "";
 
       html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;">
-        <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;display:flex;align-items:center;gap:5px;">${g.icon ? `<span style="font-size:16px;line-height:1;">${g.icon}</span>` : ""}<span>${key}</span></div>
+        <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;">${g.icon ? `<span style="font-size:16px;line-height:1;flex-shrink:0;">${g.icon}</span>` : ""}<span style="overflow:hidden;text-overflow:ellipsis;">${key}</span></div>
         <div style="font-size:11px;color:#666;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
         ${customInputHtml}
         <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px;">
