@@ -113,11 +113,31 @@ h2 {
 </head>
 <body>
 <div class="card">
-  <h2>Karta Postaci</h2>
-  <p style="color:#888; font-size:14px; margin-top:-10px; margin-bottom:20px;">Misterium Skarbów i Cieni</p>
+  <h2>Misterium Skarbów i Cieni</h2>
+  <p style="color:#aaa; font-size:14px; margin-top:-10px; margin-bottom:6px; line-height:1.7;">
+    Zamiast urodzin — posiedzenie złodziei.<br>
+    <span style="color:#777;">14 marca, 11:00–18:00, gdzieś w naturce.</span>
+  </p>
+  <p style="color:#888; font-size:13px; margin-top:0; margin-bottom:20px; line-height:1.7;">
+    Proszę nie przynosić prezentów dla Mistrza Kluczy — ale jeżeli chciałbyś wziąć udział w posiedzeniu na świeżym powietrzu i zagrać w one-shot RPG, wyślij zgłoszenie! :} Jeżeli wolisz posiedzieć na powietrzu bez RPG, zaznacz odpowiednią opcję poniżej i też wyślij. Może być tak, że część osób zagra w RPG, inna pochilluje z planszówkami albo zupełnie bez — im więcej tym lepiej.
+  </p>
 
-  <label>Kto zgłasza postać?</label>
+  <label>Kto zgłasza się?</label>
   <input id="realname" placeholder="Np. Michał Kowalski, bym wiedział kto kryje się pod maską!">
+
+  <label style="margin-top:16px; display:block;">Planuję:</label>
+  <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:16px; color:#ddd;">
+      <input type="radio" name="attendance" value="rpg" onchange="handleAttendance()" style="width:auto; margin:0; accent-color:#ffd700;">
+      🎲 Będę i chcę zagrać w RPG
+    </label>
+    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:16px; color:#ddd;">
+      <input type="radio" name="attendance" value="chill" onchange="handleAttendance()" style="width:auto; margin:0; accent-color:#ffd700;">
+      ☀️ Będę pochillować
+    </label>
+  </div>
+
+  <div id="rpg-section" style="display:none; margin-top:10px;">
 
   <label style="margin-top:16px;display:block">Imię postaci:</label>
   <input id="name" placeholder="Imię jakie zna tylko matka i strażnicy...">
@@ -214,11 +234,15 @@ h2 {
   </button>
   <div id="prompt-msg" style="display:none; font-size:13px; color:#7ec87e; margin-top:6px;">✓ Prompt skopiowany — wklej do ChatGPT lub innego agenta.</div>
 
+  </div><!-- /#rpg-section -->
+
   <hr>
 
-  <button onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
-    ✉ Wyślij Kartę Postaci do Mistrza Kluczy
-  </button>
+  <div id="submit-section" style="display:none;">
+    <button onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
+      ✉ Wyślij zgłoszenie do Mistrza Kluczy
+    </button>
+  </div>
 </div>
   <script>
 const COOLDOWN_MS = 5 * 60 * 1000;
@@ -817,6 +841,22 @@ const raceDescriptions = {
   "custom": "",
 };
 
+function handleAttendance() {
+  const val = document.querySelector('input[name="attendance"]:checked')?.value;
+  const rpg = document.getElementById("rpg-section");
+  const submit = document.getElementById("submit-section");
+  if (val === "rpg") {
+    rpg.style.display = "block";
+    submit.style.display = "block";
+  } else if (val === "chill") {
+    rpg.style.display = "none";
+    submit.style.display = "block";
+  } else {
+    rpg.style.display = "none";
+    submit.style.display = "none";
+  }
+}
+
 function handleRaceChange() {
   const val = document.getElementById("race").value;
   document.getElementById("race-half-wrapper").style.display = val === "half" ? "block" : "none";
@@ -1088,6 +1128,7 @@ function submitCard() {
     .filter(Boolean).join(", ") || "brak";
 
   const params = new URLSearchParams({
+    attendance:    document.querySelector('input[name="attendance"]:checked')?.value === "rpg" ? "RPG" : "Chill",
     realname:      document.getElementById("realname").value.trim() || "—",
     name:          document.getElementById("name").value.trim() || "—",
     nickname:      document.getElementById("nickname").value.trim() || "—",
