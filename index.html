@@ -5,13 +5,706 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Misterium Skarbów i Cieni</title>
   <style>
-    /* TUTAJ WKLEJ CAŁY SWÓJ CSS */
+body {
+  background: #111;
+  color: white;
+  font-family: serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+.card {
+  background: #222;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  margin-top: 16px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  font-size: 16px;
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 6px;
+  margin-top: 4px;
+  font-family: serif;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: #555;
+  color: white;
+  font-family: serif;
+}
+
+button:hover:not(:disabled) {
+  background: #777;
+}
+
+button:disabled {
+  background: #2a2a2a;
+  color: #444;
+  cursor: not-allowed;
+}
+
+#stats {
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #333;
+  padding: 4px 0;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.stat-val {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.gear-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.gear-bullet {
+  color: #ffd700;
+  flex-shrink: 0;
+}
+
+hr {
+  border-color: #444;
+  margin: 20px 0;
+}
+
+h2 {
+  margin-top: 0;
+}
   </style>
 </head>
 <body>
-  <!-- TUTAJ WKLEJ CAŁY SWÓJ HTML -->
+<div class="card">
+  <h2>Karta Postaci</h2>
+  <p style="color:#888; font-size:14px; margin-top:-10px; margin-bottom:20px;">Misterium Skarbów i Cieni</p>
+
+  <label>Kto zgłasza postać?</label>
+  <input id="realname" placeholder="Np. Michał Kowalski, bym wiedział kto kryje się pod maską!">
+
+  <label style="margin-top:16px;display:block">Imię postaci:</label>
+  <input id="name" placeholder="Imię jakie zna tylko matka i strażnicy...">
+
+  <button onclick="generateName()">🎲 Wylosuj pseudonim</button>
+  <div id="nickname-wrapper" style="display:none; margin-top:10px;">
+    <input id="nickname" style="font-size:18px; width:100%; background:#333; color:#ffd700; border:1px solid #555; padding:8px; border-radius:6px; box-sizing:border-box;" placeholder="Jak wołają Cię w Gildii...">
+  </div>
+
+  <hr>
+
+  <button onclick="rollLuck()">🎲 Wylosuj szczęście i reputację</button>
+  <div id="luck" style="display:none; margin-top:10px;"></div>
+
+  <hr>
+
+  <button id="rollBtn" onclick="rollStats()">🎲 Wylosuj staty</button>
+  <button id="debugBtn" onclick="resetCooldown()" style="margin-left:8px; background:#333; color:#888; font-size:12px; padding:6px 10px;">DEBUG: Reset</button>
+  <div id="cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
+  <div id="stats"></div>
+
+  <hr>
+
+  <button onclick="rollFlaw()">🎲 Wylosuj wadę</button>
+  <div id="flaw" style="display:none; margin-top:10px;">
+    <label style="margin-top:0">Wada charakteru</label>
+    <input id="flaw-input" style="font-size:16px; width:100%; background:#333; color:#e07070; border:1px solid #555; padding:8px; border-radius:6px; box-sizing:border-box; margin-top:4px;">
+  </div>
+
+  <hr>
+
+  <div id="skills-section">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <span style="font-size:18px;">Umiejętności</span>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button onclick="randomizeSkills()" style="font-size:13px; padding:6px 10px; margin-top:0;">🎲 Losuj</button>
+        <button onclick="resetSkills()" style="font-size:13px; padding:6px 10px; margin-top:0; background:#333; color:#888;">✕ Reset</button>
+        <span style="font-size:14px; color:#aaa;">Punkty: <span id="pts-remaining">10</span> / 10</span>
+      </div>
+    </div>
+    <div id="skills-container"></div>
+  </div>
+
+  <hr>
+
+  <button onclick="rollGear()">🎲 Wylosuj ekwipunek</button>
+  <div id="gear" style="display:none; margin-top:10px;"></div>
+
+  <hr>
+
+  <button onclick="rollWeapon()">🎲 Wylosuj broń</button>
+  <div id="weapon" style="display:none; margin-top:10px;"></div>
+
+  <hr>
+
+  <button onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
+    ✉ Wyślij Kartę Postaci do Mistrza Kluczy
+  </button>
+</div>
   <script>
-    // TUTAJ WKLEJ CAŁY SWÓJ JS
+const COOLDOWN_MS = 5 * 60 * 1000;
+let rollTimestamp = null;
+let cooldownInterval = null;
+
+const second = [
+  // rodzaj męski (on)
+  { word: "Kruk",       gender: "m" },
+  { word: "Lis",        gender: "m" },
+  { word: "Szczur",     gender: "m" },
+  { word: "Wąż",        gender: "m" },
+  { word: "Palec",      gender: "m" },
+  { word: "Klucz",      gender: "m" },
+  { word: "Sztylet",    gender: "m" },
+  { word: "Kaptur",     gender: "m" },
+  { word: "Dach",       gender: "m" },
+  { word: "Problem",    gender: "m" },
+  { word: "Incydent",   gender: "m" },
+  { word: "Przypadek",  gender: "m" },
+  { word: "Konsultant", gender: "m" },
+  { word: "Ekspert",    gender: "m" },
+  { word: "Kolekcjoner",gender: "m" },
+  { word: "Pośrednik",  gender: "m" },
+  { word: "Doradca",    gender: "m" },
+  { word: "Realizator", gender: "m" },
+  // rodzaj żeński (ona)
+  { word: "Ćma",        gender: "f" },
+  { word: "Kieszeń",    gender: "f" },
+  { word: "Rynna",      gender: "f" },
+  { word: "Legenda",    gender: "f" },
+  { word: "Historia",   gender: "f" },
+  { word: "Okazja",     gender: "f" },
+  { word: "Sytuacja",   gender: "f" },
+  // nieodmienne / zawodowe (zostawiamy bez przymiotnika przed)
+  { word: "Nocny Inspektor Okien",                    gender: "phrase" },
+  { word: "Niezależny Doradca Finansowy",             gender: "phrase" },
+  { word: "Zarządca Cudzych Aktywów",                 gender: "phrase" },
+  { word: "Konsultant ds. Przeniesień Majątkowych",   gender: "phrase" },
+  { word: "Specjalista od Nieplanowanych Transferów", gender: "phrase" },
+  { word: "Numer Dwa",          gender: "phrase" },
+  { word: "Następny w Kolejce", gender: "phrase" },
+  { word: "Tymczasowy Następca",gender: "phrase" },
+];
+const firstByGender = {
+  m: [
+    "Cichy", "Szybki", "Niewidzialny", "Nieuchwytny", "Szczwany", "Sprytny",
+    "Kulawy", "Jednooki", "Bezzębny", "Łysy", "Gruby", "Chudy",
+    "Zdumiewająco Uczciwy", "Podejrzanie Uprzejmy", "Niespodziewanie Miły",
+    "Zaskakująco Punktualny", "Zadziwiająco Trzeźwy", "Niezwykle Spokojny",
+    "Zupełnie Niewinny", "Absolutnie Legalny", "Niemal Godny Zaufania",
+    "Wyjątkowo Skromny", "Rzekomo Nieobecny", "Podobno Martwy",
+    "Tymczasowy", "Honorowy", "Samozwańczy", "Licencjonowany",
+    "Certyfikowany", "Oficjalny", "Niezarejestrowany", "Zawieszony",
+    "Były", "Domniemany", "Niepotwierdzony",
+    "Umiarkowanie Groźny", "Nieznacznie Niebezpieczny", "Potencjalnie Szkodliwy",
+    "Warunkowo Wolny", "Teoretycznie Rehabilitowany",
+    "Ledwo Legalny", "Prawie Niewinny",
+    "Wiecznie Spóźniony", "Chronicznie Spłukany", "Notoryczny",
+    "Wielce Szanowany", "Lokalnie Sławny", "Znany Strażnikom",
+  ],
+  f: [
+    "Cicha", "Szybka", "Niewidzialna", "Nieuchwytna", "Szczwana", "Sprytna",
+    "Kulawa", "Jednookia", "Bezzębna", "Łysa", "Gruba", "Chuda",
+    "Zdumiewająco Uczciwa", "Podejrzanie Uprzejma", "Niespodziewanie Miła",
+    "Zaskakująco Punktualna", "Zadziwiająco Trzeźwa", "Niezwykle Spokojna",
+    "Zupełnie Niewinna", "Absolutnie Legalna", "Niemal Godna Zaufania",
+    "Wyjątkowo Skromna", "Rzekomo Nieobecna", "Podobno Martwa",
+    "Tymczasowa", "Honorowa", "Samozwańcza", "Licencjonowana",
+    "Certyfikowana", "Oficjalna", "Niezarejestrowana", "Zawieszona",
+    "Była", "Domniemana", "Niepotwierdzona",
+    "Umiarkowanie Groźna", "Nieznacznie Niebezpieczna", "Potencjalnie Szkodliwa",
+    "Warunkowo Wolna", "Teoretycznie Zrehabilitowana",
+    "Ledwo Legalna", "Prawie Niewinna",
+    "Wiecznie Spóźniona", "Chronicznie Spłukana", "Notoryczna",
+    "Wielce Szanowana", "Lokalnie Sławna", "Znana Strażnikom",
+  ],
+};
+
+const statNames = ["Ciało", "Zdolność", "Psycha", "Rozum", "Zmysł"];
+
+const flaws = [
+  "Kulawy (lewa noga, nie pyta się dlaczego)",
+  "Jednooki (prawe oko, nie rozmawia o tym)",
+  "Głuchota wybiórcza (słyszy wszystko, czego nie powinien; nie słyszy nic, o co się prosi)",
+  "Nadmiernie widoczna blizna w kształcie, który trudno wytłumaczyć",
+  "Trzęsące się ręce — wyłącznie podczas przesłuchań i grania w karty",
+  "Kichanie w momentach najgłębszej ciszy i konspiracji",
+  "Chód, który sprawia że drzwi same się zatrzaskują",
+  "Twarz, którą strażnicy pamiętają, nawet jeśli nigdy jej nie widzieli",
+  "Niepohamowana potrzeba tłumaczenia swoich alibi z wyprzedzeniem",
+  "Nawykowe kłamstwo w sprawach, które nie wymagają kłamstwa",
+  "Kompulsywne poprawianie cudzych błędów gramatycznych podczas ucieczki",
+  "Nie potrafi opuścić pomieszczenia bez zabrania czegoś na pamiątkę",
+  "Nieodparta chęć podpisywania skradzionych rzeczy własnym imieniem",
+  "Moralne rozterki w najgorszym możliwym momencie",
+  "Wyrzuty sumienia wyłącznie wobec psów i staruszek",
+  "Zbyt szczery gdy jest pijany, zbyt pijany gdy powinien być szczery",
+  "Kolekcjonuje klucze których zamków już nie pamięta",
+  "Zawsze tłumaczy zbyt wiele, gdy nic nie musi tłumaczyć",
+  "Alergiczny na zamki konkretnego producenta (niestety najpopularniejszego)",
+  "Omdlewa na widok krwi — własnej i cudzej, bez wyjątków",
+  "Nieznośnie skrupulatny w kwestii honoru złodziejskiego tam, gdzie się nie powinno",
+  "Panicznie boi się gołębi (historia długa i hańbiąca)",
+  "Znany z imienia wszystkim portierom w mieście",
+  "Instynktownie ufa ludziom, którzy mówią że można mu ufać",
+  "Perfekcjonizm: nie opuści miejsca zbrodni dopóki wszystko nie wygląda porządnie",
+  "Uczuciowo przywiązuje się do skradzionych przedmiotów i nie potrafi ich sprzedać",
+  "Opisany w co najmniej dwóch balladach ludowych (żadna nie jest pochlebna)",
+  "Twarz na posterze — niestety bardzo trafny portret",
+  "Jedyny świadek własnego alibi jest jego kotem",
+  "Oficjalnie uznany za martwego przez trzy różne urzędy",
+  "Dług honorowy wobec Gildii, którego szczegółów woli nie pamiętać",
+];
+
+const gearPool = [
+  "Wytrych z wyrytą dedykacją od poprzedniego właściciela",
+  "Lina o długości dokładnie o trzy stopy za krótkiej",
+  "Latarnia z wyczerpującym się olejem (zawsze w połowie drogi)",
+  "Mapa, która była aktualna zanim wyburzono tamtą ścianę",
+  "Zestaw kluczy mistrzowskich, z których dwa pasują do nieznanych zamków",
+  "Flaszka trunku o smaku wskazującym na złożoną przeszłość",
+  "Kapelusz niewidoczności (niewidoczny dla właściciela; niestety nie dla innych)",
+  "Peleryna w kolorze 'prawie ciemnym'",
+  "But z wydrążonym obcasem, aktualnie zawierający coś, co lepiej nie wiedzieć",
+  "Gwizdek alarmowy (skradziony z posterunku — sentyment)",
+  "Dokument tożsamości na nazwisko, które trudno wymówić bez treningu",
+  "Licencja Gildii (wygasła, ale wygląda przekonująco z daleka)",
+  "List polecający od osoby, która wolałaby o tym nie wiedzieć",
+  "Mandat za włamanie z własnoręcznym podpisem strażnika i adnotacją 'ponownie'",
+  "Mapa skarbca, który według wszelkich wskazań już nie istnieje",
+  "Portret kogoś bliskiego (nieznajomego — portret był przy okazji)",
+  "Medalion na szczęście, który statystycznie jeszcze nie zawiódł",
+  "Notes z zaszyfrowanymi notatkami (szyfr niestety zapomniany)",
+  "Kostka do gry, która zawsze wypada na sześć (wzbudza podejrzenia w innych sytuacjach)",
+  "Listy miłosne zaadresowane do kogoś innego (przydatne jako alibi)",
+  "Trofeum skradzione z domu, który okazał się należeć do strażnika",
+  "Sznurek o nieznanym przeznaczeniu, który wydaje się ważny",
+  "Kamień 'przynoszący szczęście' (poprzedni właściciel nie żyje, co komplikuje ocenę)",
+  "Mały dzwonek, który brzęczy w najcichszych momentach",
+  "Rękawiczki z jednym palcem — lewa rękawiczka, brak wskazującego",
+];
+
+const weaponPool = [
+  "Sztylet o nazwie 'Argument'",
+  "Kindżał z rękojeścią w kształcie pytajnika",
+  "Miecz krótki z pochwą od miecza długiego",
+  "Tasak do mięsa (poprzedni właściciel był rzeźnikiem, co tłumaczy niektóre plamy)",
+  "Rapier z nadmiernie ozdobną gardą (niepraktyczny, ale robi wrażenie)",
+  "Sztylet do butów (but już nie istnieje, sztylet pozostał)",
+  "Nóż do listów (listy otwierał rzadziej niż gardła)",
+  "Kij z gwoździem (opis na potrzeby celny)",
+  "Miecz jednoręczny wymagający dwóch rąk",
+  "Sztylet z wyrytym słowem 'Pamiątka' — czyja, niejasne",
+  "Kusza kieszonkowa z ograniczonym zasięgiem i nieograniczoną ambicją",
+  "Włócznia skrócona do rozsądnych rozmiarów (teraz to duży nóż)",
+  "Pałka z epokową historią aresztu",
+  "Bełt bez kuszy (kusza jest gdzieś — kwestia czasu)",
+];
+
+const inscriptions = [
+  "'Nie mój pomysł'",
+  "'Własność kogoś innego'",
+  "'Zwróć jeśli znajdziesz'",
+  "'Pamiątka z Ankh-Morpork'",
+  "'W razie wątpliwości — też'",
+  "'Narzędzie do otwierania dyskusji'",
+  "'Pożyczone. Bezterminowo.'",
+  "'Gwarancja wygasła'",
+  "'Nie tnij tego, nie wiesz co to'",
+  "'Pro bono'",
+  "'Eksponat muzealny — nie dotykać'",
+  "'Ostatni argument'",
+  "'Numer inwentarzowy: nieznany'",
+  "'Tu był Wilibald'",
+  "'Model demonstracyjny'",
+  "'Certyfikat szczerości'",
+  "'Bez VAT'",
+];
+
+const SKILL_POINTS_TOTAL = 10;
+
+const skillGroups = [
+  { stat: "Ciało",    name: "Chyżość",     skills: ["Kondycja", "Pływanie", "Wspinaczka"] },
+  { stat: "Ciało",    name: "Budowa",       skills: ["Mocarność", "Wytrzymałość", "Rzucanie"] },
+  { stat: "Ciało",    name: "Gibkość",      skills: ["Równowaga", "Zwinność", "Skradanie się"] },
+  { stat: "Zdolność", name: "Finezja",      skills: ["Zwinne dłonie", "Celowanie", "Koordynacja"] },
+  { stat: "Zdolność", name: "Reakcja",      skills: ["Fechtunek", "Refleks", "Sterowanie"] },
+  { stat: "Zdolność", name: "Precyzja",     skills: ["Kradzież", "Operowanie", "Manualność"] },
+  { stat: "Psycha",   name: "Hart",         skills: ["Autorytet", "Zastraszanie", "Niezłomność"] },
+  { stat: "Psycha",   name: "Influencja",   skills: ["Empatia", "Aktorstwo", "Perswazja"] },
+  { stat: "Psycha",   name: "Wola",         skills: ["Odporność", "Skupienie", "Odwaga"] },
+  { stat: "Rozum",    name: "Teoria",       skills: ["Dedukcja", "Rachowanie", "Pojętność"] },
+  { stat: "Rozum",    name: "Praktyka",     skills: ["Majsterkowanie", "Konstruowanie", "Alchemia"] },
+  { stat: "Rozum",    name: "Wiedza",       skills: [], custom: true },
+  { stat: "Zmysł",    name: "Percepcja",    skills: ["Nasłuchiwanie", "Wypatrywanie", "Powonienie"] },
+  { stat: "Zmysł",    name: "Uduchowienie", skills: ["Dreszcze", "Wyczucie", "Kontakt"] },
+  { stat: "Zmysł",    name: "Przetrwanie",  skills: ["Łowiectwo", "Przyrządzanie", "Orientacja"] },
+];
+
+const statColors = {
+  "Ciało":    "#c0392b",
+  "Zdolność": "#8e44ad",
+  "Psycha":   "#2980b9",
+  "Rozum":    "#27ae60",
+  "Zmysł":    "#eea65f",
+};
+
+const skillLevels = {};
+const customEntries = {};
+
+function rollDice() {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+function stat() {
+  return rollDice() + rollDice() + 4;
+}
+
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function pickUnique(arr, count) {
+  return [...arr].sort(() => Math.random() - 0.5).slice(0, count);
+}
+
+function levelCost(level) {
+  return (level * (level + 1)) / 2;
+}
+
+function getSpent() {
+  return Object.values(skillLevels).reduce((sum, lvl) => sum + levelCost(lvl), 0);
+}
+
+function updatePointsDisplay() {
+  const remaining = SKILL_POINTS_TOTAL - getSpent();
+  const el = document.getElementById("pts-remaining");
+  el.textContent = remaining;
+  el.style.color = remaining < 0 ? "#e07070" : "#ffd700";
+}
+
+function changeLevel(key, delta) {
+  const current = skillLevels[key] || 0;
+  const next = current + delta;
+  if (next < 0) return;
+  const wouldSpend = getSpent() - levelCost(current) + levelCost(next);
+  if (wouldSpend > SKILL_POINTS_TOTAL) return;
+  skillLevels[key] = next;
+  renderSkills();
+}
+
+function addCustomSkill(key) {
+  const input = document.getElementById("custom-input-" + key);
+  const val = input.value.trim();
+  if (!val) return;
+  if (!customEntries[key]) customEntries[key] = [];
+  customEntries[key].push(val);
+  input.value = "";
+  renderSkills();
+}
+
+function removeCustomSkill(key, index) {
+  customEntries[key].splice(index, 1);
+  renderSkills();
+}
+
+function renderSkills() {
+  const container = document.getElementById("skills-container");
+  const byGroup = {};
+  skillGroups.forEach(g => {
+    if (!byGroup[g.stat]) byGroup[g.stat] = [];
+    byGroup[g.stat].push(g);
+  });
+
+  let html = "";
+  for (const [statName, groups] of Object.entries(byGroup)) {
+    const color = statColors[statName] || "#888";
+    html += `<div style="margin-bottom:14px;">
+      <div style="font-size:13px;color:${color};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ${color}44;padding-bottom:2px;">${statName}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">`;
+
+    groups.forEach(g => {
+      const key = g.name;
+      const level = skillLevels[key] || 0;
+      const cost = levelCost(level);
+      const customSkills = g.custom ? (customEntries[key] || []) : [];
+      const allSkills = [...g.skills, ...customSkills];
+
+      const skillsHtml = allSkills.length > 0
+        ? allSkills.map((s, i) => {
+            if (i >= g.skills.length) {
+              return `<span style="color:#999;">${s}&nbsp;<span onclick="removeCustomSkill('${key}',${i - g.skills.length})" style="color:#555;cursor:pointer;font-size:10px;">✕</span></span>`;
+            }
+            return `<span>${s}</span>`;
+          }).join('<span style="color:#444"> · </span>')
+        : `<span style="color:#444;font-style:italic;">brak umiejętności</span>`;
+
+      const customInputHtml = g.custom ? `
+        <div style="display:flex;gap:4px;margin-top:6px;">
+          <input id="custom-input-${key}" placeholder="Dodaj umiejętność..."
+            style="flex:1;font-size:11px;padding:3px 6px;background:#1a1a1a;color:#ccc;border:1px solid #444;border-radius:4px;font-family:serif;">
+          <button onclick="addCustomSkill('${key}')"
+            style="padding:2px 8px;font-size:13px;background:#444;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
+        </div>` : "";
+
+      html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;">
+        <div style="font-size:13px;font-weight:bold;margin-bottom:4px;color:#ddd;">${key}</div>
+        <div style="font-size:11px;color:#666;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
+        ${customInputHtml}
+        <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+          <button onclick="changeLevel('${key}',-1)"
+            style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">−</button>
+          <span style="min-width:20px;text-align:center;color:#ffd700;font-size:16px;font-weight:bold;">${level}</span>
+          <button onclick="changeLevel('${key}',1)"
+            style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
+          <span style="font-size:11px;color:#555;margin-left:2px;">${level > 0 ? `wydane: ${cost} pkt` : ""}</span>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  }
+
+  container.innerHTML = html;
+  updatePointsDisplay();
+}
+
+function generateName() {
+  const noun = second[Math.floor(Math.random() * second.length)];
+  let name;
+  if (noun.gender === "phrase") {
+    // frazy już mają wbudowany przymiotnik, nie doklejamy drugiego
+    name = noun.word;
+  } else {
+    const adjectiveList = firstByGender[noun.gender];
+    const adj = adjectiveList[Math.floor(Math.random() * adjectiveList.length)];
+    name = adj + " " + noun.word;
+  }
+  document.getElementById("nickname-wrapper").style.display = "block";
+  document.getElementById("nickname").value = name;
+}
+
+function rollStats() {
+  document.getElementById("stats").innerHTML = statNames.map(name =>
+    `<div class="stat-row"><span>${name}</span><span class="stat-val">${stat()}</span></div>`
+  ).join("");
+  rollTimestamp = Date.now();
+  startCooldown(rollTimestamp);
+}
+
+function startCooldown(since) {
+  const btn = document.getElementById("rollBtn");
+  const msg = document.getElementById("cooldown-msg");
+  btn.disabled = true;
+  msg.style.display = "block";
+  if (cooldownInterval) clearInterval(cooldownInterval);
+  cooldownInterval = setInterval(() => {
+    const remaining = COOLDOWN_MS - (Date.now() - since);
+    if (remaining <= 0) {
+      clearInterval(cooldownInterval);
+      btn.disabled = false;
+      msg.style.display = "none";
+      rollTimestamp = null;
+    } else {
+      const m = Math.floor(remaining / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      msg.textContent = `Kości ostygną za: ${m}:${s.toString().padStart(2, "0")}`;
+    }
+  }, 500);
+}
+
+function resetCooldown() {
+  rollTimestamp = null;
+  if (cooldownInterval) clearInterval(cooldownInterval);
+  document.getElementById("rollBtn").disabled = false;
+  document.getElementById("cooldown-msg").style.display = "none";
+}
+
+function rollFlaw() {
+  document.getElementById("flaw-input").value = pickRandom(flaws);
+  document.getElementById("flaw").style.display = "block";
+}
+
+function rollLuck() {
+  const luck = Math.floor(Math.random() * 7);
+  const fame = Math.floor(Math.random() * 7);
+  const reputation = Math.floor(Math.random() * 41) - 20;
+
+  const repColor = reputation > 5 ? "#7ec87e" : reputation < -5 ? "#e07070" : "#aaa";
+
+  const repLabel = reputation >= 18 ? "— Gildia rozważa pomnik za życia"
+    : reputation >= 14 ? "— Święty patron złodziei"
+    : reputation >= 10 ? "— Słowo honoru coś znaczy"
+    : reputation >= 6  ? "— Umowy dotrzymuje. Zazwyczaj."
+    : reputation >= 2  ? "— Można mu zaufać w drobnych sprawach"
+    : reputation >= -1 ? "— Wszystko zależy od kwoty"
+    : reputation >= -5 ? "— Zależy co rozumiesz przez 'uczciwy'"
+    : reputation >= -9 ? "— Nie odwracaj się plecami"
+    : reputation >= -13? "— Własna matka liczy srebrne łyżki"
+    : reputation >= -17? "— Nawet złodzieje zamykają przed nim drzwi"
+    : "— Legenda hańby. Cytowany jako przestroga.";
+
+  const fameLabel = fame === 0 ? "— Nie istnieje w żadnym rejestrze"
+    : fame === 1 ? "— Kto taki?"
+    : fame === 2 ? "— Ta twarz skądś znajoma"
+    : fame === 3 ? "— Znany w kręgach"
+    : fame === 4 ? "— Szepczą o nim po tawernach"
+    : fame === 5 ? "— Opiewany w balladach"
+    : "— Chodząca legenda";
+
+  const luckLabel = luck === 0 ? "— Wszechświat nie jest świadomy jego istnienia"
+    : luck === 1 ? "— Coś mu wychodzi raz na jakiś czas"
+    : luck === 2 ? "— Nieprzypadkowo wciąż żyje"
+    : luck === 3 ? "— Monety lądują właściwą stroną"
+    : luck === 4 ? "— Bez szwanku od urodzenia"
+    : luck === 5 ? "— Podobno ma 7 żyć"
+    : "— To szczęście jest cięższe niż prawa fizyki";
+
+  document.getElementById("luck").style.display = "block";
+  document.getElementById("luck").innerHTML = `
+    <div class="stat-row">
+      <span>Szczęście <span style="color:#555;font-size:12px;">${luckLabel}</span></span>
+      <span class="stat-val" style="${luck === 0 ? "color:#e07070;" : ""}">${luck}<span style="color:#555;font-size:13px;">/6</span></span>
+    </div>
+    <div class="stat-row">
+      <span>Sława <span style="color:#555;font-size:12px;">${fameLabel}</span></span>
+      <span class="stat-val" style="${fame === 0 ? "color:#e07070;" : ""}">${fame}<span style="color:#555;font-size:13px;">/6</span></span>
+    </div>
+    <div class="stat-row">
+      <span>Reputacja <span style="color:#555;font-size:12px;">${repLabel}</span></span>
+      <span class="stat-val" style="color:${repColor};">${reputation > 0 ? "+" : ""}${reputation}<span style="color:#555;font-size:13px;">/20</span></span>
+    </div>
+  `;
+}
+
+function rollGear() {
+  const html = pickUnique(gearPool, 3).map(item =>
+    `<div class="gear-item"><span class="gear-bullet">◆</span><span>${item}</span></div>`
+  ).join("");
+  document.getElementById("gear").style.display = "block";
+  document.getElementById("gear").innerHTML = html;
+}
+
+function rollWeapon() {
+  const weapon = pickRandom(weaponPool);
+  const inscription = pickRandom(inscriptions);
+  document.getElementById("weapon").style.display = "block";
+  document.getElementById("weapon").innerHTML = `
+    <div class="gear-item"><span class="gear-bullet">⚔</span><span>${weapon}</span></div>
+    <div class="gear-item" style="color:#888;font-size:13px;"><span class="gear-bullet" style="color:#555;">✦</span><span>Inskrypcja: <em>${inscription}</em></span></div>
+  `;
+}
+
+function submitCard() {
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDCt14FwTzvpqabeZQbjfVTQMNYdPCFllW6dQRgJ_tXIa4g1xFzGw7XhZ5mcT6kLIw/exec";
+
+  const statEls = document.querySelectorAll("#stats .stat-val");
+  const statValues = [...statEls].map(el => parseInt(el.textContent));
+
+  const luckEls = document.querySelectorAll("#luck .stat-val");
+  const luckValues = [...luckEls].map(el => el.textContent.replace("/6","").replace("/20","").trim());
+
+  const skillLines = skillGroups
+    .map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? `${g.name}:${lvl}` : null; })
+    .filter(Boolean).join(", ") || "brak";
+
+  const params = new URLSearchParams({
+    realname:      document.getElementById("realname").value.trim() || "—",
+    nickname:      document.getElementById("nickname").value.trim() || "—",
+    luck:          luckValues[0] || "—",
+    fame:          luckValues[1] || "—",
+    reputation:    luckValues[2] || "—",
+    stat_cialo:    statValues[0] || "—",
+    stat_zdolnosc: statValues[1] || "—",
+    stat_psycha:   statValues[2] || "—",
+    stat_rozum:    statValues[3] || "—",
+    stat_zmysl:    statValues[4] || "—",
+    skills:        skillLines,
+    flaw:          document.getElementById("flaw-input").value.trim() || "—",
+    gear:          document.getElementById("gear").innerText.replace(/\n+/g, " | ").trim() || "—",
+    weapon:        document.getElementById("weapon").innerText.replace(/\n+/g, " | ").trim() || "—",
+  });
+
+  const btn = document.querySelector("button[onclick='submitCard()']");
+  btn.disabled = true;
+  btn.textContent = "Wysyłanie...";
+
+  fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" })
+    .then(() => {
+      btn.textContent = "✓ Wysłano do Mistrza Kluczy";
+      btn.style.background = "#2d6a2d";
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = "✉ Wyślij Kartę Postaci do Mistrza Kluczy";
+      alert("Coś poszło nie tak. Spróbuj ponownie.");
+    });
+}
+
+function randomizeSkills() {
+  skillGroups.forEach(g => { skillLevels[g.name] = 0; });
+  let remaining = SKILL_POINTS_TOTAL;
+  const keys = skillGroups.map(g => g.name);
+  while (remaining > 0) {
+    const key = keys[Math.floor(Math.random() * keys.length)];
+    const current = skillLevels[key] || 0;
+    const nextCost = current + 1;
+    if (nextCost <= remaining) {
+      skillLevels[key] = current + 1;
+      remaining -= nextCost;
+    } else {
+      const affordable = keys.filter(k => (skillLevels[k] || 0) + 1 <= remaining);
+      if (affordable.length === 0) break;
+      const pick = affordable[Math.floor(Math.random() * affordable.length)];
+      const lvl = skillLevels[pick] || 0;
+      skillLevels[pick] = lvl + 1;
+      remaining -= (lvl + 1);
+    }
+  }
+  renderSkills();
+}
+
+function resetSkills() {
+  skillGroups.forEach(g => { skillLevels[g.name] = 0; });
+  renderSkills();
+}
+
+renderSkills();
   </script>
 </body>
 </html>
