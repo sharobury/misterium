@@ -129,7 +129,8 @@ h2 {
 
   <hr>
 
-  <button onclick="rollLuck()">🎲 Wylosuj szczęście i reputację</button>
+  <button id="luckBtn" onclick="rollLuck()">🎲 Wylosuj szczęście i reputację</button>
+  <div id="luck-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div id="luck" style="display:none; margin-top:10px;"></div>
 
   <hr>
@@ -180,6 +181,8 @@ h2 {
 const COOLDOWN_MS = 5 * 60 * 1000;
 let rollTimestamp = null;
 let cooldownInterval = null;
+let luckTimestamp = null;
+let luckCooldownInterval = null;
 
 const second = [
   // rodzaj męski
@@ -807,6 +810,27 @@ function rollFlaw() {
   document.getElementById("flaw").style.display = "block";
 }
 
+function startLuckCooldown(since) {
+  const btn = document.getElementById("luckBtn");
+  const msg = document.getElementById("luck-cooldown-msg");
+  btn.disabled = true;
+  msg.style.display = "block";
+  if (luckCooldownInterval) clearInterval(luckCooldownInterval);
+  luckCooldownInterval = setInterval(() => {
+    const remaining = COOLDOWN_MS - (Date.now() - since);
+    if (remaining <= 0) {
+      clearInterval(luckCooldownInterval);
+      btn.disabled = false;
+      msg.style.display = "none";
+      luckTimestamp = null;
+    } else {
+      const m = Math.floor(remaining / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      msg.textContent = `Losy ostygną za: ${m}:${s.toString().padStart(2, "0")}`;
+    }
+  }, 500);
+}
+
 function rollLuck() {
   const luck = Math.floor(Math.random() * 7);
   const fame = Math.floor(Math.random() * 7);
@@ -857,6 +881,8 @@ function rollLuck() {
       <span class="stat-val" style="color:${repColor};">${reputation > 0 ? "+" : ""}${reputation}<span style="color:#555;font-size:13px;">/20</span></span>
     </div>
   `;
+  luckTimestamp = Date.now();
+  startLuckCooldown(luckTimestamp);
 }
 
 function rollGear() {
