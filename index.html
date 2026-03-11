@@ -136,6 +136,7 @@ h2 {
     <option value="Orkoblin">Orkoblin</option>
     <option value="custom">Wpisz własne...</option>
   </select>
+  <div id="race-desc" style="display:none; font-size:13px; color:#777; margin-top:8px; line-height:1.6; font-style:italic; padding: 6px 10px; border-left: 2px solid #444;"></div>
   <div id="race-half-wrapper" style="display:none; margin-top:6px;">
     <input id="race-half-input" placeholder="...pół co? (np. elf, kret, karczmarz)" style="font-size:15px;">
   </div>
@@ -157,7 +158,8 @@ h2 {
 
   <hr>
 
-  <button onclick="rollFlaw()">🎲 Wylosuj wadę</button>
+  <button id="flawBtn" onclick="rollFlaw()">🎲 Wylosuj wadę</button>
+  <div id="flaw-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div id="flaw" style="display:none; margin-top:10px;">
     <label style="margin-top:0">Wada charakteru</label>
     <input id="flaw-input" style="font-size:16px; width:100%; background:#333; color:#e07070; border:1px solid #555; padding:8px; border-radius:6px; box-sizing:border-box; margin-top:4px;">
@@ -179,7 +181,8 @@ h2 {
 
   <hr>
 
-  <button onclick="rollGear()">🎲 Wylosuj ekwipunek</button>
+  <button id="gearBtn" onclick="rollGear()">🎲 Wylosuj ekwipunek</button>
+  <div id="gear-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div style="margin-top:10px;">
     <label style="margin-top:8px;">Przedmiot 1</label>
     <input id="gear1" placeholder="Pierwszy przedmiot ekwipunku...">
@@ -191,7 +194,8 @@ h2 {
 
   <hr>
 
-  <button onclick="rollWeapon()">🎲 Wylosuj broń</button>
+  <button id="weaponBtn" onclick="rollWeapon()">🎲 Wylosuj broń</button>
+  <div id="weapon-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div style="margin-top:10px;">
     <label style="margin-top:8px;">Broń</label>
     <input id="weapon-input" placeholder="Broń postaci...">
@@ -222,6 +226,14 @@ let rollTimestamp = null;
 let cooldownInterval = null;
 let luckTimestamp = null;
 let luckCooldownInterval = null;
+let flawTimestamp = null;
+let flawCooldownInterval = null;
+const FLAW_COOLDOWN_MS = 30 * 1000;
+let gearTimestamp = null;
+let gearCooldownInterval = null;
+let weaponTimestamp = null;
+let weaponCooldownInterval = null;
+const GEAR_COOLDOWN_MS = 30 * 1000;
 
 const second = [
   // rodzaj męski
@@ -507,22 +519,19 @@ const flaws = [
   "Omdlewa na widok krwi — własnej i cudzej, bez wyjątków",
   "Nieznośnie skrupulatny w kwestii honoru złodziejskiego tam, gdzie się nie powinno",
   "Panicznie boi się gołębi (historia długa i hańbiąca)",
-  "Znany z imienia wszystkim portierom w mieście",
-  "Instynktownie ufa ludziom, którzy mówią że można mu ufać",
+  "Instynktownie ufa ludziom, którzy mówią że można im ufać",
   "Perfekcjonizm: nie opuści miejsca zbrodni dopóki wszystko nie wygląda porządnie",
   "Uczuciowo przywiązuje się do skradzionych przedmiotów i nie potrafi ich sprzedać",
-  "Opisany w co najmniej dwóch balladach ludowych (żadna nie jest pochlebna)",
-  "Twarz na posterze — niestety bardzo trafny portret",
-  "Jedyny świadek własnego alibi jest jego kotem",
+  "Twarz na posterze — niestety bardzo trafny portret. Wszędzie go znajdą.",
   "Oficjalnie uznany za martwego przez trzy różne urzędy",
   "Dług honorowy wobec Gildii, którego szczegółów woli nie pamiętać",
   "Wampiryzm (krew jest ważna, ale klient ważniejszy — priorytetyzacja bywa trudna)",
   "Likantropia (jeden tydzień w miesiącu niedostępny; proszę nie pytać o sierść na raporcie)",
-  "Wyderkotropia (zamienia się w wydrę — mniejszy problem niż się wydaje, większy niż chciałby)",
-  "Nieumarły który powrócił do życia przez nekromantę (stosunek do tego faktu: ambiwalentny; stosunek nekromanty: ostrożny)",
-  "Przeklęty przez księdza (formalnie nadal w łasce bogów — odwołanie w toku od siedmiu lat)",
-  "Klątwa rzucona przez wiedźmę (szczegóły incydentu objęte klauzulą poufności Gildii)",
-  "Opętany przez demona (demon jest małym, leniwym i równie jak właściciel zdezorientowanym bytem — obaj jakoś funkcjonują)",
+  "Wyderkotropia (zamienia się w wydrę w kontakcie z wodą — mniejszy problem niż się wydaje, większy niż chciałby)",
+  "Nieumarły który powrócił do życia (stosunek do tego faktu: ambiwalentny)",
+  "Przeklęty przez księdza - nie może wejśc do świętych miejsc.",
+  "Klątwa rzucona przez wiedźmę - gdy mu się odbija, z ust wyskakuje żaba.",
+  "Opętany przez demona - światłowstęt, sól wypala mu skórę, nie lubi poranków itp.",
 ];
 
 const gearPool = [
@@ -800,10 +809,26 @@ function renderSkills() {
   updatePointsDisplay();
 }
 
+const raceDescriptions = {
+  "Normik (człowiek)": "Dominująca rasa w mieście — adaptacyjna, wszechstronna i przeciętna we wszystkim, co czyni ją nieprzewidywalną. Gildia rekrutuje ich najchętniej, bo można ich wyprzeć się bez komplikacji dyplomatycznych.",
+  "half": "Coś między. Dokładnie ile czego — to już kwestia nastroju i towarzystwa. Zazwyczaj odziedziczyło wady obu stron i zalety żadnej, co bywa zaskakująco użyteczne w zawodach wymagających elastyczności moralnej.",
+  "Szczurok": "Potomkowie eksperymentu alchemicznego który poszedł 'dobrze' w złym sensie. Doskonali w kanałach, ciasnych korytarzach i sytuacjach wymagających znikania. Gildia traktuje ich z szacunkiem — i trzyma z dala od kuchni.",
+  "Orkoblin": "Hybryda której nikt nie zamawiał. Za duży żeby być niezauważonym, za sprytny żeby był tylko mięśniakiem. Niedoceniany przez wszystkich, co bywa jego największą przewagą taktyczną.",
+  "custom": "",
+};
+
 function handleRaceChange() {
   const val = document.getElementById("race").value;
   document.getElementById("race-half-wrapper").style.display = val === "half" ? "block" : "none";
   document.getElementById("race-custom-wrapper").style.display = val === "custom" ? "block" : "none";
+  const descEl = document.getElementById("race-desc");
+  const desc = raceDescriptions[val];
+  if (desc) {
+    descEl.textContent = desc;
+    descEl.style.display = "block";
+  } else {
+    descEl.style.display = "none";
+  }
 }
 
 function getRaceValue() {
@@ -869,9 +894,31 @@ function resetCooldown() {
   document.getElementById("cooldown-msg").style.display = "none";
 }
 
+function startFlawCooldown(since) {
+  const btn = document.getElementById("flawBtn");
+  const msg = document.getElementById("flaw-cooldown-msg");
+  btn.disabled = true;
+  msg.style.display = "block";
+  if (flawCooldownInterval) clearInterval(flawCooldownInterval);
+  flawCooldownInterval = setInterval(() => {
+    const remaining = FLAW_COOLDOWN_MS - (Date.now() - since);
+    if (remaining <= 0) {
+      clearInterval(flawCooldownInterval);
+      btn.disabled = false;
+      msg.style.display = "none";
+      flawTimestamp = null;
+    } else {
+      const s = Math.ceil(remaining / 1000);
+      msg.textContent = `Wada ostygnie za: ${s}s`;
+    }
+  }, 500);
+}
+
 function rollFlaw() {
   document.getElementById("flaw-input").value = pickRandom(flaws);
   document.getElementById("flaw").style.display = "block";
+  flawTimestamp = Date.now();
+  startFlawCooldown(flawTimestamp);
 }
 
 function startLuckCooldown(since) {
@@ -922,7 +969,7 @@ function rollLuck() {
     : fame === 5 ? "— Opiewany w balladach"
     : "— Chodząca legenda";
 
-  const luckLabel = luck === 0 ? "— Wszechświat nie jest świadomy jego istnienia"
+  const luckLabel = luck === 0 ? "— No właśnie szczęścia brak."
     : luck === 1 ? "— Coś mu wychodzi raz na jakiś czas"
     : luck === 2 ? "— Nieprzypadkowo wciąż żyje"
     : luck === 3 ? "— Monety lądują właściwą stroną"
@@ -949,16 +996,39 @@ function rollLuck() {
   startLuckCooldown(luckTimestamp);
 }
 
+function startItemCooldown(btnId, msgId, tsVar, intervalVar, label) {
+  const btn = document.getElementById(btnId);
+  const msg = document.getElementById(msgId);
+  btn.disabled = true;
+  msg.style.display = "block";
+  if (window[intervalVar]) clearInterval(window[intervalVar]);
+  const since = Date.now();
+  window[tsVar] = since;
+  window[intervalVar] = setInterval(() => {
+    const remaining = GEAR_COOLDOWN_MS - (Date.now() - since);
+    if (remaining <= 0) {
+      clearInterval(window[intervalVar]);
+      btn.disabled = false;
+      msg.style.display = "none";
+      window[tsVar] = null;
+    } else {
+      msg.textContent = `${label} ostygnie za: ${Math.ceil(remaining / 1000)}s`;
+    }
+  }, 500);
+}
+
 function rollGear() {
   const items = pickUnique(gearPool, 3);
   document.getElementById("gear1").value = items[0];
   document.getElementById("gear2").value = items[1];
   document.getElementById("gear3").value = items[2];
+  startItemCooldown("gearBtn", "gear-cooldown-msg", "gearTimestamp", "gearCooldownInterval", "Ekwipunek");
 }
 
 function rollWeapon() {
   document.getElementById("weapon-input").value = pickRandom(weaponPool);
   document.getElementById("weapon-inscription").value = pickRandom(inscriptions);
+  startItemCooldown("weaponBtn", "weapon-cooldown-msg", "weaponTimestamp", "weaponCooldownInterval", "Broń");
 }
 
 function generatePrompt() {
