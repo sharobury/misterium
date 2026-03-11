@@ -119,6 +119,9 @@ button:disabled {
   color: #666;
   margin: 2px 0 0 0;
   line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 hr {
@@ -143,7 +146,7 @@ h2 {
   </p>
 
   <label>Kto zgłasza się?</label>
-  <input id="realname" placeholder="Np. Michał Kowalski, bym wiedział kto kryje się pod maską!">
+  <textarea id="realname" rows="1" oninput="autoGrow(this)" placeholder="Np. Michał Kowalski, bym wiedział kto kryje się pod maską!"></textarea>
 
   <label style="margin-top:16px; display:block;">Planuję:</label>
   <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
@@ -160,7 +163,7 @@ h2 {
   <div id="rpg-section" style="display:none; margin-top:10px;">
 
   <label style="margin-top:16px;display:block">Imię postaci:</label>
-  <input id="name" placeholder="Imię jakie zna tylko matka i strażnicy...">
+  <textarea id="name" rows="1" oninput="autoGrow(this)" placeholder="Imię jakie zna tylko matka i strażnicy..."></textarea>
 
   <button onclick="generateName()">🎲 Wylosuj pseudonim</button>
   <div id="nickname-wrapper" style="display:none; margin-top:10px;">
@@ -820,8 +823,8 @@ function renderSkills() {
             style="padding:2px 8px;font-size:13px;background:#444;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
         </div>` : "";
 
-      html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;">
-        <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;">${g.icon ? `<span style="font-size:16px;line-height:1;flex-shrink:0;">${g.icon}</span>` : ""}<span style="overflow:hidden;text-overflow:ellipsis;">${key}</span></div>
+      html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;">
+        <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;display:flex;align-items:center;gap:5px;min-width:0;">${g.icon ? `<span style="font-size:16px;line-height:1;flex-shrink:0;">${g.icon}</span>` : ""}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${key}</span></div>
         <div style="font-size:11px;color:#666;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
         ${customInputHtml}
         <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px;">
