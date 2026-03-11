@@ -127,6 +127,22 @@ h2 {
     <input id="nickname" style="font-size:18px; width:100%; background:#333; color:#ffd700; border:1px solid #555; padding:8px; border-radius:6px; box-sizing:border-box;" placeholder="Jak wołają Cię w Gildii...">
   </div>
 
+  <label style="margin-top:16px; display:block;">Rasa</label>
+  <select id="race" onchange="handleRaceChange()" style="width:100%; box-sizing:border-box; padding:8px; font-size:16px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-top:4px; font-family:serif;">
+    <option value="">— wybierz rasę —</option>
+    <option value="Normik (człowiek)">Normik (człowiek)</option>
+    <option value="half">Pół człowiek, pół...</option>
+    <option value="Szczurok">Szczurok</option>
+    <option value="Orkoblin">Orkoblin</option>
+    <option value="custom">Wpisz własne...</option>
+  </select>
+  <div id="race-half-wrapper" style="display:none; margin-top:6px;">
+    <input id="race-half-input" placeholder="...pół co? (np. elf, kret, karczmarz)" style="font-size:15px;">
+  </div>
+  <div id="race-custom-wrapper" style="display:none; margin-top:6px;">
+    <input id="race-custom-input" placeholder="Wpisz rasę postaci..." style="font-size:15px;">
+  </div>
+
   <hr>
 
   <button id="luckBtn" onclick="rollLuck()">🎲 Wylosuj szczęście i reputację</button>
@@ -500,6 +516,13 @@ const flaws = [
   "Jedyny świadek własnego alibi jest jego kotem",
   "Oficjalnie uznany za martwego przez trzy różne urzędy",
   "Dług honorowy wobec Gildii, którego szczegółów woli nie pamiętać",
+  "Wampiryzm (krew jest ważna, ale klient ważniejszy — priorytetyzacja bywa trudna)",
+  "Likantropia (jeden tydzień w miesiącu niedostępny; proszę nie pytać o sierść na raporcie)",
+  "Wyderkotropia (zamienia się w wydrę — mniejszy problem niż się wydaje, większy niż chciałby)",
+  "Nieumarły który powrócił do życia przez nekromantę (stosunek do tego faktu: ambiwalentny; stosunek nekromanty: ostrożny)",
+  "Przeklęty przez księdza (formalnie nadal w łasce bogów — odwołanie w toku od siedmiu lat)",
+  "Klątwa rzucona przez wiedźmę (szczegóły incydentu objęte klauzulą poufności Gildii)",
+  "Opętany przez demona (demon jest małym, leniwym i równie jak właściciel zdezorientowanym bytem — obaj jakoś funkcjonują)",
 ];
 
 const gearPool = [
@@ -777,6 +800,24 @@ function renderSkills() {
   updatePointsDisplay();
 }
 
+function handleRaceChange() {
+  const val = document.getElementById("race").value;
+  document.getElementById("race-half-wrapper").style.display = val === "half" ? "block" : "none";
+  document.getElementById("race-custom-wrapper").style.display = val === "custom" ? "block" : "none";
+}
+
+function getRaceValue() {
+  const val = document.getElementById("race").value;
+  if (val === "half") {
+    const half = document.getElementById("race-half-input").value.trim();
+    return half ? `Pół człowiek, pół ${half}` : "Pół człowiek, pół (nieokreślone)";
+  }
+  if (val === "custom") {
+    return document.getElementById("race-custom-input").value.trim() || "—";
+  }
+  return val || "—";
+}
+
 function generateName() {
   const noun = second[Math.floor(Math.random() * second.length)];
   let name;
@@ -941,6 +982,7 @@ function generatePrompt() {
     `--- KARTA POSTACI ---`,
     get("realname")  ? `Gracz: ${get("realname")}` : null,
     get("name")      ? `Imię postaci: ${get("name")}` : null,
+    getRaceValue() !== "—" ? `Rasa: ${getRaceValue()}` : null,
     get("nickname")  ? `Pseudonim w Gildii: ${get("nickname")}` : null,
     luckValues[0]    ? `Szczęście: ${luckValues[0]}/6` : null,
     luckValues[1]    ? `Sława: ${luckValues[1]}/6` : null,
@@ -979,6 +1021,7 @@ function submitCard() {
     realname:      document.getElementById("realname").value.trim() || "—",
     name:          document.getElementById("name").value.trim() || "—",
     nickname:      document.getElementById("nickname").value.trim() || "—",
+    race:          getRaceValue(),
     luck:          luckValues[0] || "—",
     fame:          luckValues[1] || "—",
     reputation:    luckValues[2] || "—",
