@@ -20,7 +20,7 @@ body {
   padding: 30px;
   border-radius: 10px;
   width: 100%;
-  max-width: 600px;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -90,6 +90,25 @@ button:disabled {
 .stat-val {
   color: #ffd700;
   font-weight: bold;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  gap: 8px;
+  justify-content: center;
+}
+
+.skill-tag {
+  display: inline-block;
+  background: #1e1e1e;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: #666;
+  margin: 2px 2px 0 0;
+  line-height: 1.4;
 }
 
 hr {
@@ -765,7 +784,7 @@ function renderSkills() {
     const color = statColors[statName] || "#888";
     html += `<div style="margin-bottom:14px;">
       <div style="font-size:13px;color:${color};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ${color}44;padding-bottom:2px;">${statName}</div>
-      <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 160px));gap:8px;justify-content:center;">`;
+      <div class="skills-grid">`;
 
     groups.forEach(g => {
       const key = g.name;
@@ -777,11 +796,11 @@ function renderSkills() {
       const skillsHtml = allSkills.length > 0
         ? allSkills.map((s, i) => {
             if (i >= g.skills.length) {
-              return `<span style="color:#999;">${s}&nbsp;<span onclick="removeCustomSkill('${key}',${i - g.skills.length})" style="color:#555;cursor:pointer;font-size:10px;">✕</span></span>`;
+              return `<span class="skill-tag" style="color:#888;">${s}<span onclick="removeCustomSkill('${key}',${i - g.skills.length})" style="color:#555;cursor:pointer;margin-left:3px;font-size:10px;">✕</span></span>`;
             }
-            return `<span>${s}</span>`;
-          }).join('<span style="color:#444"> · </span>')
-        : `<span style="color:#444;font-style:italic;">brak umiejętności</span>`;
+            return `<span class="skill-tag">${s}</span>`;
+          }).join("")
+        : `<span style="color:#444;font-style:italic;font-size:11px;">brak</span>`;
 
       const customInputHtml = g.custom ? `
         <div style="display:flex;gap:4px;margin-top:6px;">
@@ -792,7 +811,7 @@ function renderSkills() {
         </div>` : "";
 
       html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;">
-        <div style="font-size:13px;font-weight:bold;margin-bottom:4px;color:#ddd;">${g.icon ? g.icon + " " : ""}${key}</div>
+        <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;display:flex;align-items:center;gap:5px;">${g.icon ? `<span style="font-size:16px;line-height:1;">${g.icon}</span>` : ""}<span>${key}</span></div>
         <div style="font-size:11px;color:#666;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
         ${customInputHtml}
         <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px;">
