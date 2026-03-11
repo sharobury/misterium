@@ -86,21 +86,6 @@ button:disabled {
   font-weight: bold;
 }
 
-.gear-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid #333;
-  font-size: 15px;
-  line-height: 1.4;
-}
-
-.gear-bullet {
-  color: #ffd700;
-  flex-shrink: 0;
-}
-
 hr {
   border-color: #444;
   margin: 20px 0;
@@ -239,25 +224,15 @@ h2 {
   <hr>
 
   <div id="submit-section" style="display:none;">
-    <button onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
+    <button id="submitBtn" onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
       ✉ Wyślij zgłoszenie do Mistrza Kluczy
     </button>
   </div>
 </div>
   <script>
-const COOLDOWN_MS = 5 * 60 * 1000;
-let rollTimestamp = null;
-let cooldownInterval = null;
-let luckTimestamp = null;
-let luckCooldownInterval = null;
-let flawTimestamp = null;
-let flawCooldownInterval = null;
-const FLAW_COOLDOWN_MS = 30 * 1000;
-let gearTimestamp = null;
-let gearCooldownInterval = null;
-let weaponTimestamp = null;
-let weaponCooldownInterval = null;
-const GEAR_COOLDOWN_MS = 30 * 1000;
+const COOLDOWN_5MIN = 5 * 60 * 1000;
+const COOLDOWN_30SEC = 30 * 1000;
+const cooldownIntervals = {};
 
 const second = [
   // rodzaj męski
@@ -382,7 +357,6 @@ const second = [
   { word: "Niekompletny",     gender: "phrase" },
   { word: "Bezuszy",          gender: "phrase" },  // jak Beznos ale ucho
   { word: "Złamany",          gender: "phrase" },
-  { word: "Śmierdzący",       gender: "phrase" },
   { word: "Spóźniony",        gender: "phrase" },
   { word: "Zaspany",          gender: "phrase" },
   { word: "Zmoczony",         gender: "phrase" },
@@ -872,7 +846,9 @@ function handleRaceChange() {
 }
 
 function getRaceValue() {
-  const val = document.getElementById("race").value;
+  const raceEl = document.getElementById("race");
+  if (!raceEl) return "—";
+  const val = raceEl.value;
   if (val === "half") {
     const half = document.getElementById("race-half-input").value.trim();
     return half ? `Pół człowiek, pół ${half}` : "Pół człowiek, pół (nieokreślone)";
@@ -898,88 +874,40 @@ function generateName() {
   document.getElementById("nickname").value = name;
 }
 
+function startCooldown(btnId, msgId, durationMs, label) {
+  const btn = document.getElementById(btnId);
+  const msg = document.getElementById(msgId);
+  btn.disabled = true;
+  msg.style.display = "block";
+  if (cooldownIntervals[btnId]) clearInterval(cooldownIntervals[btnId]);
+  const since = Date.now();
+  cooldownIntervals[btnId] = setInterval(() => {
+    const remaining = durationMs - (Date.now() - since);
+    if (remaining <= 0) {
+      clearInterval(cooldownIntervals[btnId]);
+      btn.disabled = false;
+      msg.style.display = "none";
+    } else if (durationMs >= 60000) {
+      const m = Math.floor(remaining / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      msg.textContent = `${label} za: ${m}:${s.toString().padStart(2, "0")}`;
+    } else {
+      msg.textContent = `${label} za: ${Math.ceil(remaining / 1000)}s`;
+    }
+  }, 500);
+}
+
 function rollStats() {
   document.getElementById("stats").innerHTML = statNames.map(name =>
     `<div class="stat-row"><span>${name}</span><span class="stat-val">${stat()}</span></div>`
   ).join("");
-  rollTimestamp = Date.now();
-  startCooldown(rollTimestamp);
-}
-
-function startCooldown(since) {
-  const btn = document.getElementById("rollBtn");
-  const msg = document.getElementById("cooldown-msg");
-  btn.disabled = true;
-  msg.style.display = "block";
-  if (cooldownInterval) clearInterval(cooldownInterval);
-  cooldownInterval = setInterval(() => {
-    const remaining = COOLDOWN_MS - (Date.now() - since);
-    if (remaining <= 0) {
-      clearInterval(cooldownInterval);
-      btn.disabled = false;
-      msg.style.display = "none";
-      rollTimestamp = null;
-    } else {
-      const m = Math.floor(remaining / 60000);
-      const s = Math.floor((remaining % 60000) / 1000);
-      msg.textContent = `Kości ostygną za: ${m}:${s.toString().padStart(2, "0")}`;
-    }
-  }, 500);
-}
-
-function resetCooldown() {
-  rollTimestamp = null;
-  if (cooldownInterval) clearInterval(cooldownInterval);
-  document.getElementById("rollBtn").disabled = false;
-  document.getElementById("cooldown-msg").style.display = "none";
-}
-
-function startFlawCooldown(since) {
-  const btn = document.getElementById("flawBtn");
-  const msg = document.getElementById("flaw-cooldown-msg");
-  btn.disabled = true;
-  msg.style.display = "block";
-  if (flawCooldownInterval) clearInterval(flawCooldownInterval);
-  flawCooldownInterval = setInterval(() => {
-    const remaining = FLAW_COOLDOWN_MS - (Date.now() - since);
-    if (remaining <= 0) {
-      clearInterval(flawCooldownInterval);
-      btn.disabled = false;
-      msg.style.display = "none";
-      flawTimestamp = null;
-    } else {
-      const s = Math.ceil(remaining / 1000);
-      msg.textContent = `Wada ostygnie za: ${s}s`;
-    }
-  }, 500);
+  startCooldown("rollBtn", "cooldown-msg", COOLDOWN_5MIN, "Kości ostygną");
 }
 
 function rollFlaw() {
   document.getElementById("flaw-input").value = pickRandom(flaws);
   document.getElementById("flaw").style.display = "block";
-  flawTimestamp = Date.now();
-  startFlawCooldown(flawTimestamp);
-}
-
-function startLuckCooldown(since) {
-  const btn = document.getElementById("luckBtn");
-  const msg = document.getElementById("luck-cooldown-msg");
-  btn.disabled = true;
-  msg.style.display = "block";
-  if (luckCooldownInterval) clearInterval(luckCooldownInterval);
-  luckCooldownInterval = setInterval(() => {
-    const remaining = COOLDOWN_MS - (Date.now() - since);
-    if (remaining <= 0) {
-      clearInterval(luckCooldownInterval);
-      btn.disabled = false;
-      msg.style.display = "none";
-      luckTimestamp = null;
-    } else {
-      const m = Math.floor(remaining / 60000);
-      const s = Math.floor((remaining % 60000) / 1000);
-      msg.textContent = `Losy ostygną za: ${m}:${s.toString().padStart(2, "0")}`;
-    }
-  }, 500);
+  startCooldown("flawBtn", "flaw-cooldown-msg", COOLDOWN_30SEC, "Wada ostygnie");
 }
 
 function rollLuck() {
@@ -1032,29 +960,7 @@ function rollLuck() {
       <span class="stat-val" style="color:${repColor};">${reputation > 0 ? "+" : ""}${reputation}<span style="color:#555;font-size:13px;">/20</span></span>
     </div>
   `;
-  luckTimestamp = Date.now();
-  startLuckCooldown(luckTimestamp);
-}
-
-function startItemCooldown(btnId, msgId, tsVar, intervalVar, label) {
-  const btn = document.getElementById(btnId);
-  const msg = document.getElementById(msgId);
-  btn.disabled = true;
-  msg.style.display = "block";
-  if (window[intervalVar]) clearInterval(window[intervalVar]);
-  const since = Date.now();
-  window[tsVar] = since;
-  window[intervalVar] = setInterval(() => {
-    const remaining = GEAR_COOLDOWN_MS - (Date.now() - since);
-    if (remaining <= 0) {
-      clearInterval(window[intervalVar]);
-      btn.disabled = false;
-      msg.style.display = "none";
-      window[tsVar] = null;
-    } else {
-      msg.textContent = `${label} ostygnie za: ${Math.ceil(remaining / 1000)}s`;
-    }
-  }, 500);
+  startCooldown("luckBtn", "luck-cooldown-msg", COOLDOWN_5MIN, "Losy ostygną");
 }
 
 function rollGear() {
@@ -1062,13 +968,13 @@ function rollGear() {
   document.getElementById("gear1").value = items[0];
   document.getElementById("gear2").value = items[1];
   document.getElementById("gear3").value = items[2];
-  startItemCooldown("gearBtn", "gear-cooldown-msg", "gearTimestamp", "gearCooldownInterval", "Ekwipunek");
+  startCooldown("gearBtn", "gear-cooldown-msg", COOLDOWN_30SEC, "Ekwipunek ostygnie");
 }
 
 function rollWeapon() {
   document.getElementById("weapon-input").value = pickRandom(weaponPool);
   document.getElementById("weapon-inscription").value = pickRandom(inscriptions);
-  startItemCooldown("weaponBtn", "weapon-cooldown-msg", "weaponTimestamp", "weaponCooldownInterval", "Broń");
+  startCooldown("weaponBtn", "weapon-cooldown-msg", COOLDOWN_30SEC, "Broń ostygnie");
 }
 
 function generatePrompt() {
@@ -1155,7 +1061,7 @@ function submitCard() {
                    ].filter(Boolean).join(" | ") || "—",
   });
 
-  const btn = document.querySelector("button[onclick='submitCard()']");
+  const btn = document.getElementById("submitBtn");
   btn.disabled = true;
   btn.textContent = "Wysyłanie...";
 
@@ -1163,10 +1069,16 @@ function submitCard() {
     .then(() => {
       btn.textContent = "✓ Wysłano do Mistrza Kluczy";
       btn.style.background = "#2d6a2d";
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = "✉ Wyślij zgłoszenie do Mistrza Kluczy";
+        btn.style.background = "#7a5c10";
+      }, 4000);
     })
     .catch(() => {
       btn.disabled = false;
-      btn.textContent = "✉ Wyślij Kartę Postaci do Mistrza Kluczy";
+      btn.textContent = "✉ Wyślij zgłoszenie do Mistrza Kluczy";
+      btn.style.background = "#7a5c10";
       alert("Coś poszło nie tak. Spróbuj ponownie.");
     });
 }
