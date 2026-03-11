@@ -179,13 +179,13 @@ h2 {
   <hr>
 
   <div id="skills-section">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-      <span style="font-size:18px;">Umiejętności</span>
+    <span style="font-size:18px;">Umiejętności</span>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; margin-bottom:8px;">
       <div style="display:flex; gap:8px; align-items:center;">
         <button onclick="randomizeSkills()" style="font-size:13px; padding:6px 10px; margin-top:0;">🎲 Losuj</button>
         <button onclick="resetSkills()" style="font-size:13px; padding:6px 10px; margin-top:0; background:#333; color:#888;">✕ Reset</button>
-        <span style="font-size:14px; color:#aaa;">Punkty: <span id="pts-remaining">10</span> / 10</span>
       </div>
+      <span style="font-size:14px; color:#aaa;">Punkty: <span id="pts-remaining">10</span> / 10</span>
     </div>
     <div id="skills-container"></div>
   </div>
@@ -668,21 +668,21 @@ const inscriptions = [
 const SKILL_POINTS_TOTAL = 10;
 
 const skillGroups = [
-  { stat: "Ciało",    name: "Chyżość",     skills: ["Kondycja", "Pływanie", "Wspinaczka"] },
-  { stat: "Ciało",    name: "Budowa",       skills: ["Mocarność", "Wytrzymałość", "Rzucanie"] },
-  { stat: "Ciało",    name: "Gibkość",      skills: ["Równowaga", "Zwinność", "Skradanie się"] },
-  { stat: "Zdolność", name: "Finezja",      skills: ["Zwinne dłonie", "Celowanie", "Koordynacja"] },
-  { stat: "Zdolność", name: "Reakcja",      skills: ["Fechtunek", "Refleks", "Sterowanie"] },
-  { stat: "Zdolność", name: "Precyzja",     skills: ["Kradzież", "Operowanie", "Manualność"] },
-  { stat: "Psycha",   name: "Hart",         skills: ["Autorytet", "Zastraszanie", "Niezłomność"] },
-  { stat: "Psycha",   name: "Influencja",   skills: ["Empatia", "Aktorstwo", "Perswazja"] },
-  { stat: "Psycha",   name: "Wola",         skills: ["Odporność", "Skupienie", "Odwaga"] },
-  { stat: "Rozum",    name: "Teoria",       skills: ["Dedukcja", "Rachowanie", "Pojętność"] },
-  { stat: "Rozum",    name: "Praktyka",     skills: ["Majsterkowanie", "Konstruowanie", "Alchemia"] },
-  { stat: "Rozum",    name: "Wiedza",       skills: [], custom: true },
-  { stat: "Zmysł",    name: "Percepcja",    skills: ["Nasłuchiwanie", "Wypatrywanie", "Powonienie"] },
-  { stat: "Zmysł",    name: "Uduchowienie", skills: ["Dreszcze", "Wyczucie", "Kontakt"] },
-  { stat: "Zmysł",    name: "Przetrwanie",  skills: ["Łowiectwo", "Przyrządzanie", "Orientacja"] },
+  { stat: "Ciało",    name: "Chyżość",     icon: "🌬️", skills: ["Kondycja", "Pływanie", "Wspinaczka"] },
+  { stat: "Ciało",    name: "Budowa",       icon: "🦴", skills: ["Mocarność", "Wytrzymałość", "Rzucanie"] },
+  { stat: "Ciało",    name: "Gibkość",      icon: "🐍", skills: ["Równowaga", "Zwinność", "Skradanie się"] },
+  { stat: "Zdolność", name: "Finezja",      icon: "🗡️", skills: ["Zwinne dłonie", "Celowanie", "Koordynacja"] },
+  { stat: "Zdolność", name: "Reakcja",      icon: "⚡", skills: ["Fechtunek", "Refleks", "Sterowanie"] },
+  { stat: "Zdolność", name: "Precyzja",     icon: "🗝️", skills: ["Kradzież", "Operowanie", "Manualność"] },
+  { stat: "Psycha",   name: "Hart",         icon: "💀", skills: ["Autorytet", "Zastraszanie", "Niezłomność"] },
+  { stat: "Psycha",   name: "Influencja",   icon: "🎭", skills: ["Empatia", "Aktorstwo", "Perswazja"] },
+  { stat: "Psycha",   name: "Wola",         icon: "🕯️", skills: ["Odporność", "Skupienie", "Odwaga"] },
+  { stat: "Rozum",    name: "Teoria",       icon: "📜", skills: ["Dedukcja", "Rachowanie", "Pojętność"] },
+  { stat: "Rozum",    name: "Praktyka",     icon: "⚙️", skills: ["Majsterkowanie", "Konstruowanie", "Alchemia"] },
+  { stat: "Rozum",    name: "Wiedza",       icon: "🔮", skills: [], custom: true },
+  { stat: "Zmysł",    name: "Percepcja",    icon: "👁️", skills: ["Nasłuchiwanie", "Wypatrywanie", "Powonienie"] },
+  { stat: "Zmysł",    name: "Uduchowienie", icon: "🌑", skills: ["Dreszcze", "Wyczucie", "Kontakt"] },
+  { stat: "Zmysł",    name: "Przetrwanie",  icon: "🐗", skills: ["Łowiectwo", "Przyrządzanie", "Orientacja"] },
 ];
 
 const statColors = {
@@ -765,7 +765,7 @@ function renderSkills() {
     const color = statColors[statName] || "#888";
     html += `<div style="margin-bottom:14px;">
       <div style="font-size:13px;color:${color};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ${color}44;padding-bottom:2px;">${statName}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">`;
+      <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 160px));gap:8px;justify-content:center;">`;
 
     groups.forEach(g => {
       const key = g.name;
@@ -792,16 +792,18 @@ function renderSkills() {
         </div>` : "";
 
       html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;">
-        <div style="font-size:13px;font-weight:bold;margin-bottom:4px;color:#ddd;">${key}</div>
+        <div style="font-size:13px;font-weight:bold;margin-bottom:4px;color:#ddd;">${g.icon ? g.icon + " " : ""}${key}</div>
         <div style="font-size:11px;color:#666;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
         ${customInputHtml}
-        <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
-          <button onclick="changeLevel('${key}',-1)"
-            style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">−</button>
-          <span style="min-width:20px;text-align:center;color:#ffd700;font-size:16px;font-weight:bold;">${level}</span>
-          <button onclick="changeLevel('${key}',1)"
-            style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
-          <span style="font-size:11px;color:#555;margin-left:2px;">${level > 0 ? `wydane: ${cost} pkt` : ""}</span>
+        <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button onclick="changeLevel('${key}',-1)"
+              style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">−</button>
+            <span style="min-width:20px;text-align:center;color:#ffd700;font-size:16px;font-weight:bold;">${level}</span>
+            <button onclick="changeLevel('${key}',1)"
+              style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
+          </div>
+          ${level > 0 ? `<span style="font-size:11px;color:#555;">${cost} pkt</span>` : ""}
         </div>
       </div>`;
     });
@@ -966,16 +968,19 @@ function rollLuck() {
   document.getElementById("luck").style.display = "block";
   document.getElementById("luck").innerHTML = `
     <div class="stat-row">
-      <span>Szczęście <span style="color:#555;font-size:12px;">${luckLabel}</span></span>
+      <span>Szczęście</span>
       <span class="stat-val" style="${luck === 0 ? "color:#e07070;" : ""}">${luck}<span style="color:#555;font-size:13px;">/6</span></span>
+      <span style="color:#555;font-size:12px;width:100%;margin-top:2px;">${luckLabel}</span>
     </div>
     <div class="stat-row">
-      <span>Sława <span style="color:#555;font-size:12px;">${fameLabel}</span></span>
+      <span>Sława</span>
       <span class="stat-val" style="${fame === 0 ? "color:#e07070;" : ""}">${fame}<span style="color:#555;font-size:13px;">/6</span></span>
+      <span style="color:#555;font-size:12px;width:100%;margin-top:2px;">${fameLabel}</span>
     </div>
     <div class="stat-row">
-      <span>Reputacja <span style="color:#555;font-size:12px;">${repLabel}</span></span>
+      <span>Reputacja</span>
       <span class="stat-val" style="color:${repColor};">${reputation > 0 ? "+" : ""}${reputation}<span style="color:#555;font-size:13px;">/20</span></span>
+      <span style="color:#555;font-size:12px;width:100%;margin-top:2px;">${repLabel}</span>
     </div>
   `;
   startCooldown("luckBtn", "luck-cooldown-msg", COOLDOWN_5MIN, "Losy ostygną");
