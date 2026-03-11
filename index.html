@@ -186,10 +186,11 @@ h2 {
   <hr>
 
   <label>Krótkie Bio</label>
-  <textarea id="bio" placeholder="Kilka słów o postaci — skąd pochodzi, czym się zajmuje, co ją tu przywiodło..." style="width:100%; box-sizing:border-box; padding:8px; font-size:15px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-top:4px; font-family:serif; resize:vertical; min-height:90px;"></textarea>
+  <p style="color:#666; font-size:13px; margin:4px 0 6px 0; line-height:1.5;">Kilka słów o postaci albo interesujący fakt — kim była zanim została złodziejem? Jaki był twój największy skok? Jaka największa wpadka? Co ludzie myślą, gdy wchodzisz do pokoju?</p>
+  <textarea id="bio" placeholder="Max 3 zdania. Reszta niech pozostanie tajemnicą Gildii..." style="width:100%; box-sizing:border-box; padding:8px; font-size:15px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-top:4px; font-family:serif; resize:vertical; min-height:90px;"></textarea>
 
   <button onclick="generatePrompt()" style="background:#2a3a4a; font-size:15px; padding:12px; width:100%; margin-top:10px; box-sizing:border-box;">
-    📜 Skopiuj prompt do generatora historii
+    📜 Skopiuj prompt historii postaci (dla leniwych)
   </button>
   <div id="prompt-msg" style="display:none; font-size:13px; color:#7ec87e; margin-top:6px;">✓ Prompt skopiowany — wklej do ChatGPT lub innego agenta.</div>
 
@@ -935,7 +936,7 @@ function generatePrompt() {
   const weapon = [get("weapon-input"), get("weapon-inscription") ? `inskrypcja: ${get("weapon-inscription")}` : null].filter(Boolean).join(", ") || "—";
 
   const lines = [
-    `Jesteś narratorem mrocznej gry fabularnej w stylu Złodziei z Ankh-Morpork i Dżentelmenów Bastardów. Na podstawie poniższej karty postaci napisz krótką historię tej postaci (3-5 zdań) — kim jest, skąd pochodzi, jak trafiła do Gildii i co ją wyróżnia. Styl: ciemny humor, ironiczny dystans, konkretne szczegóły. Nie używaj ogólników.`,
+    `Jesteś narratorem mrocznej, lecz humorystycznej gry fabularnej w stylu Złodziei z Ankh-Morpork i Dżentelmenów Bastardów. Na podstawie poniższej karty postaci napisz krótką historię tej postaci — maksymalnie 3 zdania. Kim jest, skąd pochodzi, jak trafiła do Gildii i co ją wyróżnia. Styl: ciemny humor, ironiczny dystans, konkretne szczegóły. Nie używaj ogólników. Nie przekraczaj 3 zdań.`,
     ``,
     `--- KARTA POSTACI ---`,
     get("realname")  ? `Gracz: ${get("realname")}` : null,
