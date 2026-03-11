@@ -185,6 +185,16 @@ h2 {
 
   <hr>
 
+  <label>Krótkie Bio</label>
+  <textarea id="bio" placeholder="Kilka słów o postaci — skąd pochodzi, czym się zajmuje, co ją tu przywiodło..." style="width:100%; box-sizing:border-box; padding:8px; font-size:15px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-top:4px; font-family:serif; resize:vertical; min-height:90px;"></textarea>
+
+  <button onclick="generatePrompt()" style="background:#2a3a4a; font-size:15px; padding:12px; width:100%; margin-top:10px; box-sizing:border-box;">
+    📜 Skopiuj prompt do generatora historii
+  </button>
+  <div id="prompt-msg" style="display:none; font-size:13px; color:#7ec87e; margin-top:6px;">✓ Prompt skopiowany — wklej do ChatGPT lub innego agenta.</div>
+
+  <hr>
+
   <button onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
     ✉ Wyślij Kartę Postaci do Mistrza Kluczy
   </button>
@@ -909,6 +919,48 @@ function rollWeapon() {
   document.getElementById("weapon-inscription").value = pickRandom(inscriptions);
 }
 
+function generatePrompt() {
+  const get = id => document.getElementById(id)?.value?.trim() || null;
+
+  const statEls = document.querySelectorAll("#stats .stat-val");
+  const statValues = [...statEls].map(el => el.textContent.replace(/\/\d+/, "").trim());
+  const luckEls = document.querySelectorAll("#luck .stat-val");
+  const luckValues = [...luckEls].map(el => el.textContent.replace("/6","").replace("/20","").trim());
+
+  const skillLines = skillGroups
+    .map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? `${g.name} (poziom ${lvl})` : null; })
+    .filter(Boolean).join(", ") || "brak";
+
+  const gear = [get("gear1"), get("gear2"), get("gear3")].filter(Boolean).join(", ") || "—";
+  const weapon = [get("weapon-input"), get("weapon-inscription") ? `inskrypcja: ${get("weapon-inscription")}` : null].filter(Boolean).join(", ") || "—";
+
+  const lines = [
+    `Jesteś narratorem mrocznej gry fabularnej w stylu Złodziei z Ankh-Morpork i Dżentelmenów Bastardów. Na podstawie poniższej karty postaci napisz krótką historię tej postaci (3-5 zdań) — kim jest, skąd pochodzi, jak trafiła do Gildii i co ją wyróżnia. Styl: ciemny humor, ironiczny dystans, konkretne szczegóły. Nie używaj ogólników.`,
+    ``,
+    `--- KARTA POSTACI ---`,
+    get("realname")  ? `Gracz: ${get("realname")}` : null,
+    get("name")      ? `Imię postaci: ${get("name")}` : null,
+    get("nickname")  ? `Pseudonim w Gildii: ${get("nickname")}` : null,
+    luckValues[0]    ? `Szczęście: ${luckValues[0]}/6` : null,
+    luckValues[1]    ? `Sława: ${luckValues[1]}/6` : null,
+    luckValues[2]    ? `Reputacja: ${luckValues[2]}` : null,
+    statValues.length === 5
+      ? `Staty — Ciało: ${statValues[0]}, Zdolność: ${statValues[1]}, Psycha: ${statValues[2]}, Rozum: ${statValues[3]}, Zmysł: ${statValues[4]}`
+      : null,
+    skillLines !== "brak" ? `Umiejętności: ${skillLines}` : null,
+    get("flaw-input") ? `Wada: ${get("flaw-input")}` : null,
+    gear !== "—"      ? `Ekwipunek: ${gear}` : null,
+    weapon !== "—"    ? `Broń: ${weapon}` : null,
+    get("bio")        ? `Bio: ${get("bio")}` : null,
+  ].filter(Boolean).join("\n");
+
+  navigator.clipboard.writeText(lines).then(() => {
+    const msg = document.getElementById("prompt-msg");
+    msg.style.display = "block";
+    setTimeout(() => { msg.style.display = "none"; }, 4000);
+  });
+}
+
 function submitCard() {
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDCt14FwTzvpqabeZQbjfVTQMNYdPCFllW6dQRgJ_tXIa4g1xFzGw7XhZ5mcT6kLIw/exec";
 
@@ -924,6 +976,7 @@ function submitCard() {
 
   const params = new URLSearchParams({
     realname:      document.getElementById("realname").value.trim() || "—",
+    name:          document.getElementById("name").value.trim() || "—",
     nickname:      document.getElementById("nickname").value.trim() || "—",
     luck:          luckValues[0] || "—",
     fame:          luckValues[1] || "—",
@@ -935,6 +988,7 @@ function submitCard() {
     stat_zmysl:    statValues[4] || "—",
     skills:        skillLines,
     flaw:          document.getElementById("flaw-input").value.trim() || "—",
+    bio:           document.getElementById("bio").value.trim() || "—",
     gear:          [
                      document.getElementById("gear1").value.trim(),
                      document.getElementById("gear2").value.trim(),
