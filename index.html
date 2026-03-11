@@ -164,12 +164,24 @@ h2 {
   <hr>
 
   <button onclick="rollGear()">🎲 Wylosuj ekwipunek</button>
-  <div id="gear" style="display:none; margin-top:10px;"></div>
+  <div style="margin-top:10px;">
+    <label style="margin-top:8px;">Przedmiot 1</label>
+    <input id="gear1" placeholder="Pierwszy przedmiot ekwipunku...">
+    <label style="margin-top:8px;">Przedmiot 2</label>
+    <input id="gear2" placeholder="Drugi przedmiot ekwipunku...">
+    <label style="margin-top:8px;">Przedmiot 3</label>
+    <input id="gear3" placeholder="Trzeci przedmiot ekwipunku...">
+  </div>
 
   <hr>
 
   <button onclick="rollWeapon()">🎲 Wylosuj broń</button>
-  <div id="weapon" style="display:none; margin-top:10px;"></div>
+  <div style="margin-top:10px;">
+    <label style="margin-top:8px;">Broń</label>
+    <input id="weapon-input" placeholder="Broń postaci...">
+    <label style="margin-top:8px;">Inskrypcja</label>
+    <input id="weapon-inscription" placeholder="Inskrypcja na broni..." style="color:#888;">
+  </div>
 
   <hr>
 
@@ -886,21 +898,15 @@ function rollLuck() {
 }
 
 function rollGear() {
-  const html = pickUnique(gearPool, 3).map(item =>
-    `<div class="gear-item"><span class="gear-bullet">◆</span><span>${item}</span></div>`
-  ).join("");
-  document.getElementById("gear").style.display = "block";
-  document.getElementById("gear").innerHTML = html;
+  const items = pickUnique(gearPool, 3);
+  document.getElementById("gear1").value = items[0];
+  document.getElementById("gear2").value = items[1];
+  document.getElementById("gear3").value = items[2];
 }
 
 function rollWeapon() {
-  const weapon = pickRandom(weaponPool);
-  const inscription = pickRandom(inscriptions);
-  document.getElementById("weapon").style.display = "block";
-  document.getElementById("weapon").innerHTML = `
-    <div class="gear-item"><span class="gear-bullet">⚔</span><span>${weapon}</span></div>
-    <div class="gear-item" style="color:#888;font-size:13px;"><span class="gear-bullet" style="color:#555;">✦</span><span>Inskrypcja: <em>${inscription}</em></span></div>
-  `;
+  document.getElementById("weapon-input").value = pickRandom(weaponPool);
+  document.getElementById("weapon-inscription").value = pickRandom(inscriptions);
 }
 
 function submitCard() {
@@ -929,8 +935,15 @@ function submitCard() {
     stat_zmysl:    statValues[4] || "—",
     skills:        skillLines,
     flaw:          document.getElementById("flaw-input").value.trim() || "—",
-    gear:          document.getElementById("gear").innerText.replace(/\n+/g, " | ").trim() || "—",
-    weapon:        document.getElementById("weapon").innerText.replace(/\n+/g, " | ").trim() || "—",
+    gear:          [
+                     document.getElementById("gear1").value.trim(),
+                     document.getElementById("gear2").value.trim(),
+                     document.getElementById("gear3").value.trim(),
+                   ].filter(Boolean).join(" | ") || "—",
+    weapon:        [
+                     document.getElementById("weapon-input").value.trim(),
+                     document.getElementById("weapon-inscription").value.trim(),
+                   ].filter(Boolean).join(" | ") || "—",
   });
 
   const btn = document.querySelector("button[onclick='submitCard()']");
