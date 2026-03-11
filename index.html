@@ -31,7 +31,7 @@ label {
   font-size: 14px;
 }
 
-input {
+input, textarea {
   width: 100%;
   box-sizing: border-box;
   padding: 8px;
@@ -42,6 +42,12 @@ input {
   border-radius: 6px;
   margin-top: 4px;
   font-family: serif;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
 }
 
 button {
@@ -129,7 +135,7 @@ h2 {
 
   <button onclick="generateName()">🎲 Wylosuj pseudonim</button>
   <div id="nickname-wrapper" style="display:none; margin-top:10px;">
-    <input id="nickname" style="font-size:18px; width:100%; background:#333; color:#ffd700; border:1px solid #555; padding:8px; border-radius:6px; box-sizing:border-box;" placeholder="Jak wołają Cię w Gildii...">
+    <textarea id="nickname" rows="2" oninput="autoGrow(this)" style="font-size:18px; color:#ffd700;" placeholder="Jak wołają Cię w Gildii..."></textarea>
   </div>
 
   <label style="margin-top:16px; display:block;">Rasa</label>
@@ -167,7 +173,7 @@ h2 {
   <div id="flaw-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div id="flaw" style="display:none; margin-top:10px;">
     <label style="margin-top:0">Wada charakteru</label>
-    <input id="flaw-input" style="font-size:16px; width:100%; background:#333; color:#e07070; border:1px solid #555; padding:8px; border-radius:6px; box-sizing:border-box; margin-top:4px;">
+    <textarea id="flaw-input" rows="2" oninput="autoGrow(this)" style="font-size:16px; color:#e07070;" placeholder="Wylosuj lub wpisz wadę..."></textarea>
   </div>
 
   <hr>
@@ -190,11 +196,11 @@ h2 {
   <div id="gear-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div style="margin-top:10px;">
     <label style="margin-top:8px;">Przedmiot 1</label>
-    <input id="gear1" placeholder="Pierwszy przedmiot ekwipunku...">
+    <textarea id="gear1" rows="2" oninput="autoGrow(this)" placeholder="Pierwszy przedmiot ekwipunku..."></textarea>
     <label style="margin-top:8px;">Przedmiot 2</label>
-    <input id="gear2" placeholder="Drugi przedmiot ekwipunku...">
+    <textarea id="gear2" rows="2" oninput="autoGrow(this)" placeholder="Drugi przedmiot ekwipunku..."></textarea>
     <label style="margin-top:8px;">Przedmiot 3</label>
-    <input id="gear3" placeholder="Trzeci przedmiot ekwipunku...">
+    <textarea id="gear3" rows="2" oninput="autoGrow(this)" placeholder="Trzeci przedmiot ekwipunku..."></textarea>
   </div>
 
   <hr>
@@ -203,9 +209,9 @@ h2 {
   <div id="weapon-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
   <div style="margin-top:10px;">
     <label style="margin-top:8px;">Broń</label>
-    <input id="weapon-input" placeholder="Broń postaci...">
+    <textarea id="weapon-input" rows="2" oninput="autoGrow(this)" placeholder="Broń postaci..."></textarea>
     <label style="margin-top:8px;">Inskrypcja</label>
-    <input id="weapon-inscription" placeholder="Inskrypcja na broni..." style="color:#888;">
+    <textarea id="weapon-inscription" rows="2" oninput="autoGrow(this)" placeholder="Inskrypcja na broni..." style="color:#888;"></textarea>
   </div>
 
   <hr>
@@ -445,8 +451,8 @@ const second = [
 ];
 const firstByGender = {
   m: [
-    "Krzywy", "Złamany", "Śmierdzący", "Spóźniony", "Zaspany", "Zmoczony",
-    "Poparzony", "Posiniaczony", "Podrapany", "Naćpany", "Trzeźwy",
+    "Krzywy", "Złamany", "Spóźniony", "Zaspany", "Zmoczony",
+    "Poparzony", "Posiniaczony", "Podrapany", "Trzeźwy",
     "Wstrzemięźliwy", "Porządny", "Szanowny", "Grzeczny", "Uczciwy",
     "Dobroczynny", "Niekompletny",
     "Cichy", "Szybki", "Niewidzialny", "Nieuchwytny", "Szczwany", "Sprytny",
@@ -473,7 +479,7 @@ const firstByGender = {
     "Wstrzemięźliwa", "Porządna", "Szanowna", "Grzeczna", "Uczciwa",
     "Dobroczynna", "Niekompletna",
     "Cicha", "Szybka", "Niewidzialna", "Nieuchwytna", "Szczwana", "Sprytna",
-    "Kulawa", "Jednookia", "Bezzębna", "Łysa", "Gruba", "Chuda",
+    "Kulawa", "Jednooka", "Bezzębna", "Łysa", "Gruba", "Chuda",
     "Zdumiewająco Uczciwa", "Podejrzanie Uprzejma", "Niespodziewanie Miła",
     "Zaskakująco Punktualna", "Zadziwiająco Trzeźwa", "Niezwykle Spokojna",
     "Zupełnie Niewinna", "Absolutnie Legalna", "Niemal Godna Zaufania",
@@ -815,6 +821,16 @@ const raceDescriptions = {
   "custom": "",
 };
 
+function autoGrow(el) {
+  el.style.height = "auto";
+  el.style.height = el.scrollHeight + "px";
+}
+
+function autoGrowById(id) {
+  const el = document.getElementById(id);
+  if (el) autoGrow(el);
+}
+
 function handleAttendance() {
   const val = document.querySelector('input[name="attendance"]:checked')?.value;
   const rpg = document.getElementById("rpg-section");
@@ -872,6 +888,7 @@ function generateName() {
   }
   document.getElementById("nickname-wrapper").style.display = "block";
   document.getElementById("nickname").value = name;
+  autoGrowById("nickname");
 }
 
 function startCooldown(btnId, msgId, durationMs, label) {
@@ -907,6 +924,7 @@ function rollStats() {
 function rollFlaw() {
   document.getElementById("flaw-input").value = pickRandom(flaws);
   document.getElementById("flaw").style.display = "block";
+  autoGrowById("flaw-input");
   startCooldown("flawBtn", "flaw-cooldown-msg", COOLDOWN_30SEC, "Wada ostygnie");
 }
 
@@ -965,15 +983,18 @@ function rollLuck() {
 
 function rollGear() {
   const items = pickUnique(gearPool, 3);
-  document.getElementById("gear1").value = items[0];
-  document.getElementById("gear2").value = items[1];
-  document.getElementById("gear3").value = items[2];
+  ["gear1","gear2","gear3"].forEach((id, i) => {
+    document.getElementById(id).value = items[i];
+    autoGrowById(id);
+  });
   startCooldown("gearBtn", "gear-cooldown-msg", COOLDOWN_30SEC, "Ekwipunek ostygnie");
 }
 
 function rollWeapon() {
   document.getElementById("weapon-input").value = pickRandom(weaponPool);
   document.getElementById("weapon-inscription").value = pickRandom(inscriptions);
+  autoGrowById("weapon-input");
+  autoGrowById("weapon-inscription");
   startCooldown("weaponBtn", "weapon-cooldown-msg", COOLDOWN_30SEC, "Broń ostygnie");
 }
 
