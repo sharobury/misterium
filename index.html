@@ -20,7 +20,7 @@ body {
   padding: 30px;
   border-radius: 10px;
   width: 100%;
-  max-width: 100%;
+  max-width: 600px;
   box-sizing: border-box;
 }
 
@@ -97,6 +97,16 @@ button:disabled {
   grid-template-columns: repeat(3, 120px);
   gap: 8px;
   justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .card {
+    max-width: 100%;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .skill-tag {
@@ -690,7 +700,7 @@ const skillGroups = [
   { stat: "Ciało",    name: "Chyżość",     icon: "🌬️", skills: ["Kondycja", "Pływanie", "Wspinaczka"] },
   { stat: "Ciało",    name: "Budowa",       icon: "🦴", skills: ["Mocarność", "Wytrzymałość", "Rzucanie"] },
   { stat: "Ciało",    name: "Gibkość",      icon: "🐍", skills: ["Równowaga", "Zwinność", "Skradanie się"] },
-  { stat: "Zdolność", name: "Finezja",      icon: "🗡️", skills: ["Zwinne dłonie", "Celowanie", "Koordynacja"] },
+  { stat: "Zdolność", name: "Finezja",      icon: "💫", skills: ["Zwinne dłonie", "Celowanie", "Koordynacja"] },
   { stat: "Zdolność", name: "Reakcja",      icon: "⚡", skills: ["Fechtunek", "Refleks", "Sterowanie"] },
   { stat: "Zdolność", name: "Precyzja",     icon: "🗝️", skills: ["Kradzież", "Operowanie", "Manualność"] },
   { stat: "Psycha",   name: "Hart",         icon: "💀", skills: ["Autorytet", "Zastraszanie", "Niezłomność"] },
