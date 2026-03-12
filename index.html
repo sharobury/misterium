@@ -119,7 +119,7 @@ button:disabled {
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 11px;
-  color: #666;
+  color: #999;
   margin: 2px 0 0 0;
   line-height: 1.4;
   white-space: nowrap;
@@ -812,7 +812,7 @@ function renderSkills() {
       const skillsHtml = allSkills.length > 0
         ? allSkills.map((s, i) => {
             if (i >= g.skills.length) {
-              return `<span class="skill-tag" style="color:#888;">${s}<span onclick="removeCustomSkill('${key}',${i - g.skills.length})" style="color:#555;cursor:pointer;margin-left:3px;font-size:10px;">✕</span></span>`;
+              return `<span class="skill-tag" style="color:#999;">${s}<span onclick="removeCustomSkill('${key}',${i - g.skills.length})" style="color:#555;cursor:pointer;margin-left:3px;font-size:10px;">✕</span></span>`;
             }
             return `<span class="skill-tag">${s}</span>`;
           }).join("")
@@ -829,7 +829,7 @@ function renderSkills() {
       html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">
         ${g.icon ? `<div style="font-size:20px;line-height:1;margin-bottom:4px;">${g.icon}</div>` : ""}
         <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${key}</div>
-        <div style="font-size:11px;color:#666;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
+        <div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
         ${customInputHtml}
         <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:6px;">
           <div style="display:flex;align-items:center;gap:6px;">
@@ -1056,6 +1056,8 @@ function generatePrompt() {
 
   const lines = [
     `Jesteś narratorem mrocznej, lecz humorystycznej gry fabularnej w stylu Złodziei z Ankh-Morpork i Dżentelmenów Bastardów. Na podstawie poniższej karty postaci napisz krótką historię tej postaci — maksymalnie 3 zdania. Kim jest, skąd pochodzi, jak trafiła do Gildii i co ją wyróżnia. Styl: ciemny humor, ironiczny dystans, konkretne szczegóły. Nie używaj ogólników. Nie przekraczaj 3 zdań.`,
+    ``,
+    `Kilka słów o postaci albo interesujący fakt — kim była zanim została złodziejem? Jaki był twój największy skok? Jaka największa wpadka? Co ludzie myślą, gdy wchodzisz do pokoju?`,
     ``,
     `--- KARTA POSTACI ---`,
     get("realname")  ? `Gracz: ${get("realname")}` : null,
