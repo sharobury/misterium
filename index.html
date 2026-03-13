@@ -394,9 +394,14 @@ h2 {
 .music-act h3 { font-size: 1.2rem; color: #7eb8da; margin: 0 0 6px; }
 .music-act-desc { font-size: 14px; color: #8b9eb0; margin-bottom: 12px; line-height: 1.5; }
 .music-spotify { width: 100%; min-height: 352px; border-radius: 12px; border: none; background: #1a2332; }
-.music-soundboard { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-.music-soundboard iframe { border: none; width: 100%; height: 110px; border-radius: 8px; }
-@media (max-width: 600px) { .music-soundboard { grid-template-columns: repeat(2, 1fr); } }
+.music-soundboard { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.music-sound-cell { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.music-sound-cell iframe { border: none; width: 100%; height: 100px; border-radius: 8px; }
+.music-sound-label { font-size: 12px; color: #ddd; font-weight: bold; text-align: center; line-height: 1.2; word-break: break-word; }
+.music-sound-desc { font-size: 10px; color: #888; text-align: center; line-height: 1.2; display: block; margin-top: 2px; }
+.music-stop-btn { display: block; width: 100%; padding: 12px; margin-bottom: 20px; background: #5a2a2a; color: #ffaaaa; border: 1px solid #7a3a3a; border-radius: 8px; cursor: pointer; font-size: 15px; font-family: serif; }
+.music-stop-btn:hover { background: #6a3a3a; }
+@media (max-width: 600px) { .music-soundboard { grid-template-columns: repeat(2, 1fr); } .music-sound-label { font-size: 10px; } }
 
 @media print {
   body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-size: 9pt; }
@@ -1063,50 +1068,51 @@ h2 {
     <h2>🎵 Muzyka na sesję</h2>
     <p style="color:#888;font-size:14px;margin-top:-6px;margin-bottom:20px;">Spotify i dźwięki do odtwarzania podczas sesji.</p>
 
+    <button class="music-stop-btn" onclick="stopAllSounds()">⏹ Stop wszystkich dźwięków</button>
+
     <div class="music-act">
       <h3>Dźwięki – MyInstants</h3>
+      <p class="music-act-desc" style="margin-bottom:16px;">Sytuacyjne (jak u Doug Doug) + FF victory.</p>
       <div class="music-soundboard">
-        <iframe src="https://www.myinstants.com/instant/akh-26815/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/all-abord-crazy-train-41070/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/deep-meow-35837/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/fahhhhhhh-84270/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/final-fantasy-7-battle-93311/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/final-fantasy-victoria-34544/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/final-fantasy-victory-93854/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/mog-4939/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/tidus-laugh-japanese/embed/" scrolling="no"></iframe>
-        <iframe src="https://www.myinstants.com/instant/windows-xp-start/embed/" scrolling="no"></iframe>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/sad-trombone/embed/" src="https://www.myinstants.com/instant/sad-trombone/embed/" scrolling="no"></iframe><span class="music-sound-label">Sad Trombone</span><span class="music-sound-desc">Porażka, zawód</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/record-scratch/embed/" src="https://www.myinstants.com/instant/record-scratch/embed/" scrolling="no"></iframe><span class="music-sound-label">Record Scratch</span><span class="music-sound-desc">Nagły zwrot</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/curb-your-enthusiasm-26943/embed/" src="https://www.myinstants.com/instant/curb-your-enthusiasm-26943/embed/" scrolling="no"></iframe><span class="music-sound-label">Curb Your Enthusiasm</span><span class="music-sound-desc">Awkward moment</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/wilhelm-scream/embed/" src="https://www.myinstants.com/instant/wilhelm-scream/embed/" scrolling="no"></iframe><span class="music-sound-label">Wilhelm Scream</span><span class="music-sound-desc">Upadek, katastrofa</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/nopeavi/embed/" src="https://www.myinstants.com/instant/nopeavi/embed/" scrolling="no"></iframe><span class="music-sound-label">Nope.avi</span><span class="music-sound-desc">Odmowa, nie</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/wrong-price-is-right-55647/embed/" src="https://www.myinstants.com/instant/wrong-price-is-right-55647/embed/" scrolling="no"></iframe><span class="music-sound-label">Price is Right Wrong</span><span class="music-sound-desc">Błąd, nie tak</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/thats-rough-buddy-62663/embed/" src="https://www.myinstants.com/instant/thats-rough-buddy-62663/embed/" scrolling="no"></iframe><span class="music-sound-label">That's rough buddy</span><span class="music-sound-desc">Współczucie</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/akh-26815/embed/" src="https://www.myinstants.com/instant/akh-26815/embed/" scrolling="no"></iframe><span class="music-sound-label">AKH</span><span class="music-sound-desc">Reakcja</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/fahhhhhhh-84270/embed/" src="https://www.myinstants.com/instant/fahhhhhhh-84270/embed/" scrolling="no"></iframe><span class="music-sound-label">FAHHHHHHH</span><span class="music-sound-desc">Reakcja</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/final-fantasy-7-battle-93311/embed/" src="https://www.myinstants.com/instant/final-fantasy-7-battle-93311/embed/" scrolling="no"></iframe><span class="music-sound-label">FF7 Battle</span><span class="music-sound-desc">Walka</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/final-fantasy-victory-93854/embed/" src="https://www.myinstants.com/instant/final-fantasy-victory-93854/embed/" scrolling="no"></iframe><span class="music-sound-label">FF Victory</span><span class="music-sound-desc">Sukces</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/final-fantasy-victoria-34544/embed/" src="https://www.myinstants.com/instant/final-fantasy-victoria-34544/embed/" scrolling="no"></iframe><span class="music-sound-label">FF Victoria</span><span class="music-sound-desc">Sukces</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/mog-4939/embed/" src="https://www.myinstants.com/instant/mog-4939/embed/" scrolling="no"></iframe><span class="music-sound-label">Mog</span><span class="music-sound-desc">Kupo!</span></div>
+        <div class="music-sound-cell"><iframe data-src="https://www.myinstants.com/instant/tidus-laugh-japanese/embed/" src="https://www.myinstants.com/instant/tidus-laugh-japanese/embed/" scrolling="no"></iframe><span class="music-sound-label">Tidus laugh</span><span class="music-sound-desc">Śmiech</span></div>
       </div>
     </div>
 
     <div class="music-act">
-      <h3>Prolog – Przybycie</h3>
-      <p class="music-act-desc">Ciepłe powitanie, intryga, lekka przygoda.</p>
-      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5fEkyTeRzYV32RcT8c5tTn?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <h3>Akt I – The Grand Budapest Hotel</h3>
+      <p class="music-act-desc">Nastrojowa, lekko nostalgiczną atmosfera.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/4JSC6btqLvqKRnW4It66pQ?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <div class="music-act">
-      <h3>Akt I – Napięcie, katastrofa</h3>
-      <p class="music-act-desc">Determinacja, pierwsze misje.</p>
-      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5jTYZA6b4VoSRnR5TMldgb?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <h3>Akt II – Final Fantasy IX</h3>
+      <p class="music-act-desc">Klasyczna przygoda, eksploracja.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5fBnqWQiAiyB59phgu4pNS?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <div class="music-act">
-      <h3>Akt II – Zdrada, konflikt</h3>
-      <p class="music-act-desc">Ciemniej, walka o przetrwanie.</p>
+      <h3>Akt III – Hollow Knight</h3>
+      <p class="music-act-desc">Ciemniejszy, atmosferyczny climax.</p>
       <iframe class="music-spotify" src="https://open.spotify.com/embed/album/4XgGOMRY7H4hl6OQi5wb2Z?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <div class="music-act">
-      <h3>Akt III – Climax</h3>
-      <p class="music-act-desc">Epicki finał.</p>
-      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/3B61kSKTxlY36cYgzvf3cP?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-
-    <div class="music-act">
-      <h3>Epilog – Odbudowa</h3>
-      <p class="music-act-desc">Spokój, zamknięcie, nadzieja.</p>
-      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5fEkyTeRzYV32RcT8c5tTn?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <h3>Walki – Hades</h3>
+      <p class="music-act-desc">Dynamiczne bitwy.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5jTYZA6b4VoSRnR5TMldgb?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </div>
 </div>
@@ -2937,6 +2943,16 @@ function generateClientPassword() {
 }
 
 function markUnsaved() { hasUnsavedChanges = true; }
+
+// =====================================================================
+// MUSIC PAGE - STOP ALL SOUNDS
+// =====================================================================
+function stopAllSounds() {
+  document.querySelectorAll('#page-music .music-soundboard iframe[data-src]').forEach(function(iframe) {
+    var src = iframe.getAttribute('data-src');
+    if (src) { iframe.src = 'about:blank'; setTimeout(function(){ iframe.src = src; }, 50); }
+  });
+}
 
 // =====================================================================
 // ROUTING
