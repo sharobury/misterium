@@ -282,6 +282,7 @@ h2 {
     <button class="nav-btn" onclick="location.hash='#create'">✉ Wyślij zgłoszenie</button>
     <button class="nav-btn" onclick="location.hash='#view'" style="background:#333;">🔑 Zobacz swoją kartę</button>
     <button class="nav-btn" onclick="location.hash='#tricks'" style="background:#2a2a2a;color:#aaa;">📜 Lista sztuczek</button>
+    <button class="nav-btn" onclick="location.hash='#mechanics'" style="background:#2a2a2a;color:#aaa;">⚙️ Mechanika (MG)</button>
   </div>
 </div>
 
@@ -462,6 +463,195 @@ h2 {
     <h2>📜 Lista sztuczek</h2>
     <p style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:16px;line-height:1.6;">Każda sztuczka wymaga min. 1 punktu w danym pakiecie umiejętności. Dodaj wybrane sztuczki do swojej karty postaci.</p>
     <div id="tricks-content"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: MECHANICS ===== -->
+<div id="page-mechanics" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+    <h2>⚙️ Mechanika — Zasłonka MG</h2>
+    <p style="color:#666;font-size:12px;margin-top:-8px;margin-bottom:20px;">Uproszczone zasady Neuroshimy dla one-shota Misterium.</p>
+
+    <!-- ── TEST PODSTAWOWY ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #e0a040;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#e0a040;font-weight:bold;font-size:15px;margin-bottom:8px;">🎲 Test Podstawowy</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        Rzuć <b style="color:white;">1k20</b>. Wynik <b style="color:white;">≤ wartość statu</b> = sukces.<br>
+        Każdy poziom pakietu umiejętności: <b style="color:#7ec87e;">+2</b> do wartości statu.<br>
+        <span style="color:#888;font-size:12px;">Np. Ciało 12 + Gibkość lvl 2 (+4) = test ≤ 16 na skradanie.</span>
+      </div>
+    </div>
+
+    <!-- ── TRUDNOŚĆ ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #8e44ad;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#8e44ad;font-weight:bold;font-size:15px;margin-bottom:8px;">📊 Poziomy Trudności</div>
+      <table style="width:100%;color:#ccc;font-size:14px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Łatwy</td><td style="text-align:right;color:#7ec87e;font-weight:bold;">+4</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Przeciętny</td><td style="text-align:right;color:#aaa;font-weight:bold;">+2</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Normalny</td><td style="text-align:right;color:white;font-weight:bold;">0</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Trudny</td><td style="text-align:right;color:#e0a040;font-weight:bold;">−2</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Bardzo Trudny</td><td style="text-align:right;color:#e07070;font-weight:bold;">−5</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Cholernie Trudny</td><td style="text-align:right;color:#c0392b;font-weight:bold;">−8</td></tr>
+        <tr><td style="padding:4px 0;">Fart / Mistrzowski</td><td style="text-align:right;color:#888;font-weight:bold;">−11 / −15</td></tr>
+      </table>
+    </div>
+
+    <!-- ── TESTY SPECJALNE ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #2980b9;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#2980b9;font-weight:bold;font-size:15px;margin-bottom:8px;">🎯 Testy Specjalne</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b style="color:white;">Test Otwarty</b> — rzuć 2k20, odrzuć gorszą, od lepszej odejmij umiejętność. Reszta oczek na kości = <b>Punkty Sukcesu</b>.<br>
+        <span style="color:#888;font-size:12px;">Im więcej PS, tym lepszy efekt.</span>
+      </div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:8px;">
+        <b style="color:white;">Test Przeciwstawny</b> — obie strony robią test otwarty. Różnica PS = <b>Punkty Przewagi</b> zwycięzcy.
+      </div>
+    </div>
+
+    <!-- ── SZCZĘŚLIWA 1 / PECHOWA 20 ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #27ae60;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#27ae60;font-weight:bold;font-size:15px;margin-bottom:8px;">🍀 Fart i Pech</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b style="color:#7ec87e;">1 na k20</b> (poza walką) — obniża trudność o jeden poziom.<br>
+        <b style="color:#e07070;">20 na k20</b> (poza walką) — podnosi trudność o jeden poziom.<br>
+        <span style="color:#888;font-size:12px;margin-top:4px;display:block;">W walce: 1 lub 2 = obrażenia o poziom wyższe. 20 = automatyczna porażka na tej kości.</span>
+      </div>
+    </div>
+
+    <!-- ── WALKA ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #c0392b;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#c0392b;font-weight:bold;font-size:15px;margin-bottom:8px;">⚔️ Walka</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b style="color:white;">Inicjatywa</b> — otwarty test Zdolności (raz na walkę). Wyższy PS = pierwszy ruch.<br>
+        Można użyć umiejętności broni, którą walczysz.
+      </div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+        <b style="color:white;">Tura</b> — każda postać ma <b>3 segmenty</b> na turę:
+      </div>
+      <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;margin-top:6px;">
+        <tr style="color:#888;border-bottom:1px solid #333;font-size:11px;"><td style="padding:3px 0;">AKCJA</td><td style="text-align:right;">SEGMENTY</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Atak wręcz / strzał</td><td style="text-align:right;color:#e0a040;">1</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Ruch (2m) / przyklęknięcie</td><td style="text-align:right;color:#e0a040;">1</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Wychylenie z osłony / schowanie</td><td style="text-align:right;color:#e0a040;">1</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Dobycie broni / rzut nożem</td><td style="text-align:right;color:#e0a040;">2</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Strzał z łuku</td><td style="text-align:right;color:#e0a040;">2</td></tr>
+        <tr><td style="padding:3px 0;">Przeładowanie / wstanie z ziemi</td><td style="text-align:right;color:#e0a040;">3</td></tr>
+      </table>
+    </div>
+
+    <!-- ── ATAK I OBRONA ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #e07070;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#e07070;font-weight:bold;font-size:15px;margin-bottom:8px;">🗡️ Atak i Obrona</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b style="color:white;">Wręcz</b> — test przeciwstawny: atakujący (Zdolność + Reakcja/Fechtunek) vs obrońca.<br>
+        Wygrana atakującego = trafienie. Punkty Przewagi → poziom obrażeń.
+      </div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:8px;">
+        <b style="color:white;">Dystans</b> — test podstawowy: Zdolność + Finezja/Celowanie + modyfikator odległości.<br>
+        Cel nie robi testu obrony (chyba że unika — test przeciwstawny).
+      </div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:8px;">
+        <b style="color:white;">Punkty Przewagi → Obrażenia:</b>
+      </div>
+      <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;margin-top:4px;">
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">1–3 PP</td><td style="text-align:right;">Draśnięcie</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">4–6 PP</td><td style="text-align:right;color:#e0a040;">Lekka rana</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">7–9 PP</td><td style="text-align:right;color:#e07070;">Ciężka rana</td></tr>
+        <tr><td style="padding:3px 0;">10+ PP</td><td style="text-align:right;color:#c0392b;">Krytyczna rana</td></tr>
+      </table>
+      <div style="color:#888;font-size:12px;margin-top:6px;">Trafienie w głowę — obrażenia o 1 poziom wyższe. Broń może mieć bonus do obrażeń.</div>
+    </div>
+
+    <!-- ── RANY ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #e74c3c;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#e74c3c;font-weight:bold;font-size:15px;margin-bottom:8px;">💉 Rany i Kary</div>
+      <table style="width:100%;color:#ccc;font-size:14px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #333;">
+          <td style="padding:5px 0;color:#aaa;">Draśnięcie</td>
+          <td style="text-align:right;">bez kary</td>
+        </tr>
+        <tr style="border-bottom:1px solid #333;">
+          <td style="padding:5px 0;color:#e0a040;">Lekka rana</td>
+          <td style="text-align:right;"><b>−2</b> do testów</td>
+        </tr>
+        <tr style="border-bottom:1px solid #333;">
+          <td style="padding:5px 0;color:#e07070;">Ciężka rana</td>
+          <td style="text-align:right;"><b>−5</b> do testów</td>
+        </tr>
+        <tr>
+          <td style="padding:5px 0;color:#c0392b;">Krytyczna rana</td>
+          <td style="text-align:right;"><b>−10</b>, bez pomocy → zgon</td>
+        </tr>
+      </table>
+      <div style="color:#888;font-size:12px;margin-top:8px;line-height:1.5;">
+        Lekka rana → test Ciała (przeciętny) by działać normalnie.<br>
+        Ciężka rana → test Ciała (trudny) by nie stracić przytomności.<br>
+        Krytyczna → nieprzytomność. Pierwsza pomoc lub śmierć.
+      </div>
+    </div>
+
+    <!-- ── LOKACJE TRAFIEŃ ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #888;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#aaa;font-weight:bold;font-size:15px;margin-bottom:8px;">🎯 Lokacje Trafień</div>
+      <div style="color:#888;font-size:12px;margin-bottom:6px;">Wynik na kości ataku określa lokację:</div>
+      <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">1–2</td><td>Głowa <span style="color:#e07070;font-size:11px;">(obrażenia +1 lvl)</span></td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">3–4</td><td>Prawa ręka</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">5–6</td><td>Lewa ręka</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">7–15</td><td>Tułów</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">16–17</td><td>Prawa noga</td></tr>
+        <tr><td style="padding:3px 0;">18–19</td><td>Lewa noga</td></tr>
+      </table>
+    </div>
+
+    <!-- ── OSŁONA I RUCH ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #2c3e50;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#5d7d9a;font-weight:bold;font-size:15px;margin-bottom:8px;">🛡️ Osłona i Ruch</div>
+      <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Widoczny w 2/3</td><td style="text-align:right;color:#e0a040;">+20%</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Widoczny w 1/2 (klęczy)</td><td style="text-align:right;color:#e0a040;">+40%</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Widoczny w 1/3 (leży)</td><td style="text-align:right;color:#e07070;">+60%</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Wystaje łeb i broń</td><td style="text-align:right;color:#c0392b;">+80%</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Cel biegnący</td><td style="text-align:right;color:#e0a040;">+20%</td></tr>
+        <tr><td style="padding:3px 0;">Cel pędzący (sam nie strzela)</td><td style="text-align:right;color:#e07070;">+40%</td></tr>
+      </table>
+      <div style="color:#888;font-size:12px;margin-top:6px;">Utrudnienia do strzału konwertuj na modyfikator: +20% ≈ −4 do testu, +40% ≈ −8, itd.</div>
+    </div>
+
+    <!-- ── ODLEGŁOŚĆ (uproszczone) ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #6c5b7b;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#9b8fb4;font-weight:bold;font-size:15px;margin-bottom:8px;">📏 Odległość (strzał)</div>
+      <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
+        <tr style="color:#888;border-bottom:1px solid #333;font-size:11px;"><td style="padding:3px 0;">ZASIĘG</td><td style="text-align:center;">Rzut/Krótka</td><td style="text-align:right;">Łuk/Kusza</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Do 10m</td><td style="text-align:center;color:#7ec87e;">0</td><td style="text-align:right;color:#7ec87e;">0</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Do 20m</td><td style="text-align:center;color:#e0a040;">−4</td><td style="text-align:right;color:#7ec87e;">0</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Do 30m</td><td style="text-align:center;color:#e07070;">−8</td><td style="text-align:right;color:#e0a040;">−2</td></tr>
+        <tr><td style="padding:3px 0;">Powyżej 30m</td><td style="text-align:center;color:#888;">—</td><td style="text-align:right;color:#e07070;">−4 do −8</td></tr>
+      </table>
+      <div style="color:#888;font-size:12px;margin-top:6px;">W Misterium walka na dystansie to głównie rzut nożem, kusza i łuk. Brak broni palnej.</div>
+    </div>
+
+    <!-- ── STATY → UMIEJĘTNOŚCI ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #eea65f;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#eea65f;font-weight:bold;font-size:15px;margin-bottom:8px;">📋 Staty i Pakiety — szybka ściąga</div>
+      <div style="color:#ccc;font-size:13px;line-height:1.8;" id="mechanics-skills-ref"></div>
+    </div>
+
+    <!-- ── QUICK TIPS ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #555;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#888;font-weight:bold;font-size:15px;margin-bottom:8px;">💡 Rady dla MG (one-shot)</div>
+      <div style="color:#888;font-size:13px;line-height:1.7;">
+        • Nie licz segmentów co do jednego — „masz turę, co robisz?"<br>
+        • Testy tylko gdy jest ryzyko lub napięcie. Chodzenie po schodach ≠ test.<br>
+        • Jeśli gracz ma pomysł, który pasuje do jego umiejętności — daj bonus lub obniż trudność.<br>
+        • Walka powinna trwać 3–5 tur max. Potem ktoś ucieka albo ktoś leży.<br>
+        • Krytyczna rana = dramat. Nie zabijaj od razu — daj szansę na ratunek.<br>
+        • Fabularne konsekwencje > mechaniczne kary. Złamana ręka to nie „−5", to „nie udźwigniesz skrzyni ze skarbem".<br>
+        • W razie wątpliwości: test przeciwstawny rozwiązuje wszystko.
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -934,74 +1124,74 @@ const raceDescriptions = {
 
 const allTricks = [
   { group: "Chyżość", stat: "Ciało", tricks: [
-    { name: "Dach to Droga", desc: "Poruszasz się po dachach jak inni po ulicach. Nie wykonujesz testów Wspinaczki na budynkach do 3 pięter." },
-    { name: "Drugie Tchnienie", desc: "Raz na sesję możesz zignorować efekty zmęczenia i działać normalnie przez kolejną scenę." },
-    { name: "Mokry Szczur", desc: "W wodzie czujesz się jak w domu. Bonus +2 do wszystkich testów w środowisku wodnym." },
+    { name: "Dach to Droga", desc: "Poruszasz się po dachach jak inni po ulicach — uważnie, bez pośpiechu. Nie musisz wykonywać testów Wspinaczki, gdy poruszasz się ostrożnie. Przy skokach, biegu i pościgu na dachach testy obowiązują jak zwykle." },
+    { name: "Drugie Tchnienie", desc: "Raz na sesję możesz zignorować efekty zmęczenia i działać normalnie przez kolejną scenę. Nie działa podczas walki — ciało nawet swoje granice zna." },
+    { name: "Mokry Szczur", desc: "W wodzie czujesz się niemal jak w domu. Bonus +2 do wszystkich testów Pływania i działania w środowisku wodnym. Nie obejmuje walki pod wodą — tam każdy tonie na swój własny sposób." },
   ]},
   { group: "Budowa", stat: "Ciało", tricks: [
-    { name: "Żywa Taran", desc: "Możesz wyważyć drzwi bez testu. Drzwi wzmocnione wymagają testu, ale z bonusem +3." },
-    { name: "Twardy Kark", desc: "Pierwsza rana w każdej walce jest o 1 stopień lżejsza." },
-    { name: "Rzut Ostateczny", desc: "Możesz rzucić dowolnym przedmiotem jako atak z pełnym bonusem Rzucania. Tak, sojusznikiem też." },
+    { name: "Żywa Taran", desc: "Możesz wyważyć zwykłe drzwi bez testu, o ile masz kilka sekund rozbiegu i nikogo po drugiej stronie nie poirytowałeś za mocno. Drzwi wzmocnione, okucia, zapory — wymagają testu z bonusem +3." },
+    { name: "Twardy Kark", desc: "Pierwsza rana w każdej walce jest o 1 stopień lżejsza. Twoje ciało zarejestrowało ból, ale uprzejmie postanowiło zająć się nim później." },
+    { name: "Rzut Ostateczny", desc: "Możesz rzucić dowolnym trzymanym przedmiotem jako atak z pełnym bonusem Rzucania. Tak, sojusznikiem też — ale tylko za jego zgodą, lub gdy nie ma czasu jej udzielić." },
   ]},
   { group: "Gibkość", stat: "Ciało", tricks: [
-    { name: "Cień w Cieniu", desc: "Gdy się skradasz w ciemności, przeciwnik musi zdać test żeby Cię wykryć (zamiast Ty zdawać test skradania)." },
-    { name: "Koci Refleks", desc: "Spadając, automatycznie lądujesz na nogach. Obrażenia od upadku zmniejszone o połowę." },
-    { name: "Wymknij się", desc: "Raz na sesję automatycznie uciekasz z fizycznego schwytania (pęta, chwyt, kajdanki)." },
+    { name: "Cień w Cieniu", desc: "Gdy skradasz się w ciemności lub głębokim cieniu, to przeciwnik musi zdać test percepcji żeby Cię wykryć — zamiast Ty zdawać test skradania. W miejscach oświetlonych testy wracają do normy." },
+    { name: "Koci Refleks", desc: "Spadając z wysokości do 5 metrów, lądujesz na nogach i zmniejszasz obrażenia o połowę. Powyżej 5 metrów — zdajesz test Gibkości, by skorzystać z efektu. Grawitacja ma dobre opinie o sobie i rzadko ustępuje bez walki." },
+    { name: "Wymknij się", desc: "Raz na sesję możesz uwolnić się z fizycznego schwytania — chwytu, pęt, kajdanek. Zajmuje całą turę i wymaga choć jednej wolnej kończyny. Z zamkniętej celi ani kajdan na obu rękach sztuczka nie wyciągnie." },
   ]},
   { group: "Finezja", stat: "Zdolność", tricks: [
-    { name: "Złote Palce", desc: "Otwieranie prostych zamków bez narzędzi. Złożone zamki z improwizowanymi narzędziami bez kary." },
-    { name: "Precyzyjny Rzut", desc: "Rzucasz nożem z taką precyzją, że możesz trafić w konkretny przedmiot (sznur, pasek, klamkę) bez testu." },
-    { name: "Prestidigitacja", desc: "Możesz ukryć lub podmienić mały przedmiot w rękach innej osoby bez wykrycia." },
+    { name: "Złote Palce", desc: "Otwierasz proste zamki bez narzędzi, używając tego co masz pod ręką — szpilki, kości, wyczucia. Na skomplikowanych zamkach zdajesz test z bonusem +2, ale bez narzędzi wciąż jesteś na minusie." },
+    { name: "Precyzyjny Rzut", desc: "Jeśli poświęcisz jedną pełną fazę walki na celowanie (bez ataku w tej turze), na pewno trafisz w konkretny mały cel w zasięgu do 10 metrów i zadasz lekką ranę. Raz na sesję. Nie działa, gdy jesteś atakowany lub w ruchu." },
+    { name: "Prestidigitacja", desc: "Możesz ukryć lub podmienić mały przedmiot w rękach innej osoby bez testu — o ile ona nie jest w stanie pełnej czujności i nie spodziewa się niczego. Wobec ostrożnych lub przeszukujących zdajesz normalny test." },
   ]},
   { group: "Reakcja", stat: "Zdolność", tricks: [
-    { name: "Zawsze Pierwszy", desc: "W walce wręcz zawsze działasz przed przeciwnikiem, niezależnie od inicjatywy." },
-    { name: "Ripostuj!", desc: "Gdy przeciwnik pudłuje w walce wręcz, dostajesz darmowy kontratak." },
-    { name: "Odruch Przetrwania", desc: "Raz na sesję możesz uniknąć jednego ataku, nawet jeśli go nie widzisz." },
+    { name: "Zawsze Pierwszy", desc: "W walce wręcz jeden na jeden działasz przed przeciwnikiem, niezależnie od inicjatywy. Przy starciach z wieloma przeciwnikami lub zasadzkach — nie gwarantuje nic; są sytuacje nawet refleks przegrywa." },
+    { name: "Ripostuj!", desc: "Gdy przeciwnik pudłuje w walce wręcz, możesz wykonać darmowy kontratak. Raz na turę — ciało ma swoje limity, nawet jeśli ego nie." },
+    { name: "Odruch Przetrwania", desc: "Raz na sesję możesz uniknąć jednego ataku, który widzisz lub słyszysz w ostatniej chwili. Nie działa na ataki całkowicie z zaskoczenia ani na zasadzki, o których nie miałeś żadnej wskazówki." },
   ]},
   { group: "Precyzja", stat: "Zdolność", tricks: [
-    { name: "Czysta Robota", desc: "Ofiara Twojej kradzieży kieszonkowej zauważy brak dopiero następnego dnia." },
-    { name: "Mechaniczna Intuicja", desc: "Rozumiesz mechanizm zamka/pułapki po krótkim zbadaniu. GM musi ujawnić jedną wskazówkę." },
-    { name: "Cechy Szczególne Brak", desc: "Nie zostawiasz śladów. Żadnych. Test tropienia Cię ma karę -3." },
+    { name: "Czysta Robota", desc: "Ofiara Twojej kradzieży kieszonkowej zauważy brak dopiero następnego dnia — o ile nikt jej nie ostrzeże i nie zajrzy do kieszeni wcześniej. Nie oszukuje aktywnie czujnych strażników." },
+    { name: "Mechaniczna Intuicja", desc: "Po chwili zbadania mechanizmu zamka lub pułapki GM musi ujawnić jedną wskazówkę — jak działa, co go uruchamia, gdzie jest słaby punkt. Nie rozwiązuje problemu za Ciebie." },
+    { name: "Cechy Szczególne Brak", desc: "Starasz się nie zostawiać śladów i zazwyczaj Ci to wychodzi. Testy tropienia Cię mają karę −3. Ale krew na podłodze, świadkowie i wyważone drzwi to nie Twoja wina mechaniczna — to Twoja wina fabularna." },
   ]},
   { group: "Hart", stat: "Psycha", tricks: [
-    { name: "Reputacja Wchodzi Pierwsza", desc: "Gdy Twoja tożsamość jest znana, przeciwnicy o niższej Woli muszą zdać test, by zaatakować." },
-    { name: "Zimna Krew", desc: "Jesteś odporny na zastraszanie i tortury. Automatycznie zdajesz testy Woli przeciw strachowi." },
-    { name: "Twarde Słowo", desc: "Raz na sesję możesz zakończyć konfrontację słowami zamiast walką." },
+    { name: "Reputacja Wchodzi Pierwsza", desc: "Gdy Twoja tożsamość jest znana przeciwnikowi, osoby o Woli niższej niż Twoja Psycha muszą zdać test, by zaatakować Cię pierwsze. Nie działa na najemników, zdespero­wanych ani tych, którym zapłacono z góry." },
+    { name: "Zimna Krew", desc: "Masz bonus +3 do testów Woli przeciw zastraszaniu, torturom i strachowi. Nie jesteś nietykalny — po prostu trudniejszy do złamania niż przeciętny człowiek, który dba o własne zdrowie." },
+    { name: "Twarde Słowo", desc: "Raz na sesję możesz zakończyć konfrontację słowami zamiast walką — jeśli druga strona ma choć odrobinę rozsądku. Nie działa na szaleńców, fanatycznych strażników ani kogoś kto już ma nóż przy Twoim gardle." },
   ]},
   { group: "Influencja", stat: "Psycha", tricks: [
-    { name: "Tysiąc Twarzy", desc: "Możesz wiarygodnie udawać członka dowolnej profesji. Test tylko przy szczegółowym sprawdzaniu." },
-    { name: "Język Srebro", desc: "Raz na sesję możesz przekonać jedną osobę do jednej nieprawdy, która jest oczywiście absurdalna." },
-    { name: "Czytanie Ludzi", desc: "Po 5 minutach rozmowy GM musi ujawnić jedną motywację lub sekret rozmówcy." },
+    { name: "Tysiąc Twarzy", desc: "Możesz wiarygodnie udawać członka dowolnej pospolitej profesji. Test tylko przy szczegółowym sprawdzaniu przez kogoś, kto zna fach od środka. Nie obejmuje arystokracji, kapłanów wyższych rang ani złożonych tożsamości z dokumentami." },
+    { name: "Język Srebro", desc: "Raz na sesję możesz przekonać jedną osobę do jednej absurdalnej nieprawdy — o ile masz chwilę na gadanie i ona nie jest bezpośrednio tym zagrożona. Nie działa jako tarcza w środku walki." },
+    { name: "Czytanie Ludzi", desc: "Po 5 minutach rozmowy GM musi ujawnić jedną motywację lub sekret rozmówcy. Wymaga rzeczywistej rozmowy — nie działa na milczących, nieprzytomnych ani tych, którzy wiedzą co robisz." },
   ]},
   { group: "Wola", stat: "Psycha", tricks: [
-    { name: "Nie Dzisiaj", desc: "Raz na sesję możesz zignorować efekt nadprzyrodzonego strachu lub klątwy na jedną scenę." },
-    { name: "Ostatni Stojący", desc: "Gdy HP spadnie do 0, możesz działać jeszcze jedną turę zanim padniesz." },
-    { name: "Żelazna Determinacja", desc: "Raz na sesję możesz powtórzyć dowolny nieudany test Woli." },
+    { name: "Nie Dzisiaj", desc: "Raz na sesję możesz zignorować efekt nadprzyrodzonego strachu lub klątwy na jedną scenę. Klątwa nie znika — tylko odsuwa się na bok z wyraźną dezaprobatą i czeka na lepszy moment." },
+    { name: "Ostatni Stojący", desc: "Gdy otrzymasz ranę, która powaliłaby Cię natychmiast, możesz działać jeszcze jedną turę zanim padniesz. Raz na sesję. Potem prawidłowo tracisz przytomność." },
+    { name: "Żelazna Determinacja", desc: "Raz na sesję możesz powtórzyć jeden nieudany test Woli. Wynik drugiego rzutu jest ostateczny — determinacja ma swoje granice, nazywane przez lekarzy 'stanem pacjenta'." },
   ]},
   { group: "Teoria", stat: "Rozum", tricks: [
-    { name: "Elementarne", desc: "Raz na sesję możesz poprosić GM o jedną logiczną dedukcję na podstawie dostępnych poszlak." },
-    { name: "Kalkulacja Ryzyka", desc: "Przed akcją możesz zapytać GM o szanse powodzenia (niskie/średnie/wysokie)." },
-    { name: "Pamięć Absolutna", desc: "Możesz zapytać GM o dowolny szczegół, który Twoja postać widziała lub słyszała wcześniej w sesji." },
+    { name: "Elementarne", desc: "Raz na sesję możesz poprosić GM o jedną logiczną dedukcję na podstawie poszlak dostępnych Twojej postaci. GM odpowiada uczciwie — ale tylko na to, co postać mogłaby faktycznie wywnioskować." },
+    { name: "Kalkulacja Ryzyka", desc: "Przed podjęciem działania możesz zapytać GM o orientacyjne szanse powodzenia: niskie, średnie lub wysokie. Raz na scenę — nadużywanie tego staje się paraliżem analitycznym, nie strategią." },
+    { name: "Pamięć Absolutna", desc: "Możesz zapytać GM o dowolny szczegół, który Twoja postać widziała lub słyszała wcześniej w sesji. Nie obejmuje informacji, których postać nie miała szansy zapamiętać lub przetworzyć." },
   ]},
   { group: "Praktyka", stat: "Rozum", tricks: [
-    { name: "Improwizacja", desc: "Z dostępnych materiałów możesz skonstruować proste narzędzie lub pułapkę bez testu." },
-    { name: "Alchemiczna Niespodzianka", desc: "Nosisz ze sobą 1k3 losowych mikstur. Na początku sesji losuj efekty." },
-    { name: "Złota Rączka", desc: "Możesz naprawić dowolny uszkodzony przedmiot, ale naprawiony zyska nową 'cechę' (GM decyduje)." },
+    { name: "Improwizacja", desc: "Z dostępnych materiałów możesz skonstruować proste narzędzie lub pułapkę. Zdajesz test z bonusem +2 zamiast normalnego. Bez bonusu nie ma — sztuczka skraca czas i obniża trudność, ale nie cuduje." },
+    { name: "Alchemiczna Niespodzianka", desc: "Nosisz ze sobą 1k3 losowych mikstur. Na początku sesji GM losuje ich efekty — mogą być pomocne, neutralne lub interesujące w złym sensie. Mikstura to inwestycja w niepewność." },
+    { name: "Złota Rączka", desc: "Możesz naprawić dowolny uszkodzony przedmiot. Działa — ale naprawiony przedmiot zyska nową drobną 'cechę' (GM decyduje). Mechanizm jest sprawny. Charakter mechanizmu bywa dyskusyjny." },
   ]},
   { group: "Percepcja", stat: "Zmysł", tricks: [
-    { name: "Szósty Zmysł", desc: "GM ostrzega Cię o zasadzkach i pułapkach automatycznie (ale nie mówi jakich)." },
-    { name: "Sokolie Oko", desc: "Widzisz drobne szczegóły na dystansie. Bonus +2 do wypatrywania." },
-    { name: "Nos Jak Pies", desc: "Możesz tropić po zapachu. W zamkniętych pomieszczeniach wyczuwasz obecność ukrytych osób." },
+    { name: "Szósty Zmysł", desc: "Masz bonus +3 do testów wykrycia zasadzek i pułapek. Jeśli test zdasz, GM sygnalizuje że coś jest nie tak — bez szczegółów. Instynkt mówi 'uważaj', nie 'to jest tam i robi to'." },
+    { name: "Sokolie Oko", desc: "Widzisz drobne szczegóły na dystansie. Bonus +2 do testów Wypatrywania. W złym oświetleniu lub przez przeszkody bonus spada do +1 — oko sokole, nie oka rentgenowskie." },
+    { name: "Nos Jak Pies", desc: "Możesz tropić po zapachu i w zamkniętych pomieszczeniach wyczuwasz obecność ukrytych osób. Wymaga testu Powonienia przy wielu zapachach lub słabym śladzie. Gildia nie odpowiada za konsekwencje pracy w garbarniach." },
   ]},
   { group: "Uduchowienie", stat: "Zmysł", tricks: [
-    { name: "Rozmówca Umarłych", desc: "Możesz zadać jedno pytanie duchowi lub ciału. Odpowiedź może być kryptyczna." },
-    { name: "Dreszcz Ostrzegawczy", desc: "Wyczuwasz nadprzyrodzone zagrożenie. GM musi ostrzec Cię o obecności magii/klątwy." },
-    { name: "Medium", desc: "Raz na sesję możesz wejść w trans i uzyskać wizję dotyczącą bieżącego problemu." },
+    { name: "Rozmówca Umarłych", desc: "Raz na sesję możesz zadać jedno pytanie duchowi lub świeżym zwłokom. Odpowiedź jest szczera, ale duchy mają własne priorytety i rzadko mówią wprost. Wymaga chwili skupienia i braku świadków, którzy krzyczą." },
+    { name: "Dreszcz Ostrzegawczy", desc: "Masz bonus +2 do testów wykrycia nadprzyrodzonego zagrożenia. Jeśli w pobliżu działa magia lub klątwa, GM informuje Cię że czujesz coś dziwnego. Nie mówi co — twoje nerwy to nie encyklopedia." },
+    { name: "Medium", desc: "Raz na sesję możesz wejść w trans i uzyskać mglistą wizję dotyczącą bieżącego problemu. Wymaga 10 minut spokoju i braku ktoś-kopie-mnie-w-żebra. Wizje są metaforyczne — duchy nie rysują map z podpisami." },
   ]},
   { group: "Przetrwanie", stat: "Zmysł", tricks: [
-    { name: "Nigdy Nie Zgubiony", desc: "Nie możesz się zgubić. Nawet w labiryncie, kanałach, czy lesie nocą." },
-    { name: "Kucharz Polowy", desc: "Z byle czego przygotujesz posiłek. Dobrze nakarmiona drużyna dostaje +1 do następnego testu." },
-    { name: "Łowca", desc: "Potrafisz tropić i polować efektywnie. Nigdy nie grozi Ci głód w dziczy." },
+    { name: "Nigdy Nie Zgubiony", desc: "Masz doskonały zmysł kierunku i rzadko się gubisz. Bonus +3 do testów Orientacji. W miejscach zaprojektowanych żeby dezorientować — magicznych labiryntach, iluzjach przestrzeni — zdajesz test normalnie." },
+    { name: "Kucharz Polowy", desc: "Z byle czego przygotujesz przyzwoity posiłek. Dobrze nakarmiona drużyna dostaje +1 do pierwszego testu w następnej scenie. Nie kumuluje się — dwie kolacje nie dają +2, dają niestrawność." },
+    { name: "Łowca", desc: "Potrafisz tropić i polować efektywnie. W warunkach dzikiej przyrody zdajesz testy Łowiectwa z bonusem +2 i nigdy nie grozi Ci głód. W mieście ta sztuczka jest mniej użyteczna i bardziej nielegalna." },
   ]},
 ];
 
@@ -1114,7 +1304,7 @@ function markUnsaved() { hasUnsavedChanges = true; }
 // =====================================================================
 function navigate() {
   const hash = (location.hash || '#home').slice(1);
-  ['page-home','page-create','page-view','page-tricks'].forEach(id => {
+  ['page-home','page-create','page-view','page-tricks','page-mechanics'].forEach(id => {
     document.getElementById(id).style.display = 'none';
   });
 
@@ -1136,6 +1326,9 @@ function navigate() {
   } else if (hash === 'tricks') {
     document.getElementById('page-tricks').style.display = 'block';
     renderTricksPage();
+  } else if (hash === 'mechanics') {
+    document.getElementById('page-mechanics').style.display = 'block';
+    renderMechanicsSkills();
   } else {
     document.getElementById('page-home').style.display = 'block';
   }
@@ -1760,6 +1953,27 @@ function renderTricksPage() {
     html += '</div>';
   });
   container.innerHTML = html;
+}
+
+// =====================================================================
+// MECHANICS PAGE
+// =====================================================================
+function renderMechanicsSkills() {
+  const el = document.getElementById('mechanics-skills-ref');
+  if (!el || el.innerHTML) return;
+  const byGroup = {};
+  skillGroups.forEach(g => {
+    if (!byGroup[g.stat]) byGroup[g.stat] = [];
+    byGroup[g.stat].push(g);
+  });
+  let html = '';
+  for (const [statName, groups] of Object.entries(byGroup)) {
+    const color = statColors[statName] || '#888';
+    html += '<div style="margin-bottom:6px;"><span style="color:' + color + ';font-weight:bold;">' + statName + '</span> → ';
+    html += groups.map(g => g.icon + ' ' + g.name).join(' · ');
+    html += '</div>';
+  }
+  el.innerHTML = html;
 }
 
 // =====================================================================
