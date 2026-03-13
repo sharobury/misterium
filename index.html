@@ -471,6 +471,7 @@ h2 {
     <button class="nav-btn" onclick="location.hash='#maps'" style="background:#2a2a2a;color:#aaa;">🗺️ Mapy</button>
     <button class="nav-btn" onclick="location.hash='#tricks'" style="background:#2a2a2a;color:#aaa;">📜 Lista sztuczek</button>
     <button class="nav-btn" onclick="location.hash='#mechanics'" style="background:#2a2a2a;color:#aaa;">⚙️ Mechanika (MG)</button>
+    <button class="nav-btn" onclick="location.hash='#gm'" style="background:#2a2a2a;color:#aaa;">🎭 Mistrz gry i fabuła</button>
   </div>
 </div>
 
@@ -733,7 +734,7 @@ h2 {
     <!-- MAPA 5: Skarbiec (hasło: SKARBIEC) -->
     <div id="player-map-5" class="player-map-card hidden">
       <div class="player-map-title">Skarbiec</div>
-      <div class="player-map-desc">Podziemna komnata pod rezydencją. Na piedestale — Serce Króla. Posąg z brązu i obsydianu. Ciężki, emanuje czymś dziwnym.</div>
+      <div class="player-map-desc">Podziemna komnata pod rezydencją. Na piedestale — Serce z Gliny. Posąg z brązu i obsydianu. Ciężki, emanuje czymś dziwnym.</div>
       <div class="player-map-ascii">  ┌─────────────┐
   │   SKARBIEC   │
   │             │
@@ -1033,9 +1034,9 @@ h2 {
         </div>
 
         <div class="gm-npc">
-          <div style="color:#888;font-weight:bold;font-size:14px;">Najemnicy Hrabiego <span style="color:#888;font-weight:normal;">(„Kruki Nocy")</span></div>
+          <div style="color:#888;font-weight:bold;font-size:14px;">Koty <span style="color:#888;font-weight:normal;">(najemnicy Hrabiego)</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
-            5-8 najemników w ciemnych kapturach. Mają dymne bomby, aparaty FLASH (ikonografy — pudła z demonem rysownikiem w środku, jak u Pratchetta) i kusze. Jeden z nich nosi „Listę" — spis twarzy do identyfikacji.
+            5-8 Kotów w ciemnych kapturach. Mają tatuaże wokół oczu — podobno potrafią widzieć w ciemności. Nie przestrzegają żadnych zasad; najemnicy Hrabiego to hańba kodeksu złodziejskiego. Koty mają złą reputację. Wyposażenie: dymne bomby, aparaty FLASH (ikonografy — pudła z demonem rysownikiem w środku, jak u Pratchetta) i kusze. Jeden z nich nosi „Listę" — spis twarzy do identyfikacji.
             <br>
             <span class="gm-stat">Ciało: 11 · Zdolność: 12 · Psycha: 8 · Rozum: 7 · Zmysł: 10</span>
             <br><span style="color:#888;">Umiejętności: Reakcja:1, Hart:1, Percepcja:1 · Broń: kusza (+4 dmg) lub krótki miecz.</span>
@@ -1062,12 +1063,14 @@ h2 {
         <div class="gm-npc">
           <div style="color:#b0a0e0;font-weight:bold;font-size:14px;">Golem <span style="color:#888;font-weight:normal;">(akt V)</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
-            Starożytny konstrukt z brązu i obsydianu, 3 metry wzrostu. Gdy się budzi, zaczyna transmutować otoczenie — dotknięte przedmioty i ściany zmieniają się w złoto, a potem pękają i rozpadają. To nie skarb — to zniszczenie. Powolny ale niezniszczalny konwencjonalną bronią.
+            Starożytny konstrukt z brązu i obsydianu, 3 metry wzrostu. Gdy się budzi, transmutuje otoczenie — dotknięte przedmioty pękają i rozpadają (zniszczenie, nie złoto). Powolny ale niezniszczalny konwencjonalną bronią.
+            <br><b style="color:#e07070;">Jeśli golem połknie kamień filozoficzny</b> — transmutuje wszystko w pozorne złoto, katastrofa mnoży się wielokrotnie.
+            <br><b style="color:#7ec87e;">Jak prawdziwa legenda o golemie:</b> w głowie ma inskrypcję — ktoś z dużą Wiedzą może znać ten fakt. Zetarcie inskrypcji zatrzymuje golema.
             <br>
             <span class="gm-stat">Ciało: 20 · Zdolność: 6 · Psycha: — · Rozum: — · Zmysł: 5</span>
             <br><span style="color:#888;">Pancerz: pochłania 8 punktów obrażeń. Odporny na broń zwykłą (maks. draśnięcie).</span>
             <br><span style="color:#888;">Atak: uderzenie pięścią (ciężka rana) lub dotyk transmutacji (test Zdolności Trudny, by uniknąć).</span>
-            <br><span style="color:#e07070;">Słabość: woda (powolnieje, rdzewieje), klątwa/magia (Arkana), kamień filozoficzny (kontrola/wyłączenie), fizyczne zakopanie (wymaga czasu).</span>
+            <br><span style="color:#e07070;">Słabość: woda (powolnieje, rdzewieje), klątwa/magia (Arkana), kamień filozoficzny (kontrola/wyłączenie — jeśli Marceyli go użyje), zetarcie inskrypcji w głowie (Wiedza), fizyczne zakopanie (wymaga czasu).</span>
           </div>
         </div>
       </div>
@@ -1095,9 +1098,9 @@ h2 {
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Marceyli „Zawieszona Zagadka"</b> <span style="color:#888;">· Elf · Wiedza:2, Chaos:3, Rep -18</span><br>
-          <span style="color:#aaa;">Magiczka. Zgubiła kamień filozoficzny! Przepustka na teren, który nie istnieje.</span><br>
+          <span style="color:#aaa;">Ukradła odłamek kamienia filozoficznego ze strzeżonej świątyni elfów — miała ukryty motyw. Została nakryta, uciekła, poszukiwana w całym elfim królestwie (stąd Rep -18). W Tantalos zniknęła w tłumie, ale plotki o jej przestępstwie dotarły nawet tu (zła reputacja). Kontakt z odłamkiem przesiąknął ją mocą transmutacji — jej ręce zamieniają dotknięte rzeczy w ołów o złotawym kolorze lub złotawy obsydian (waga i wytrzymałość drastycznie rośnie). Ciało osłabiło się (niskie staty). Prawdziwy cel kradzieży znany tylko jej. Zgubiła odłamek po przybyciu do Tantalos. Przepustka na teren, który nie istnieje.</span><br>
           <span style="color:#e07070;">Wada: omdlewa na widok krwi. MAGIA: Chaos 3.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: Jej kamień filozoficzny może kontrolować Golema w Akcie V!</span>
+          <span style="color:#b0a0e0;">KLUCZ: Przy skoku na rezydencję odczuwa obecność odłamka — może go odzyskać. Jeśli odzyska PRZED aktywacją golema — może go użyć do kontroli lub zatrzymania. Jeśli golem połknie kamień — transmutuje wszystko w pozorne złoto, katastrofa mnoży się wielokrotnie.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Rastlin „Samozwańczy Kruk"</b> <span style="color:#888;">· Pół Łylf · Percepcja:2, Luck 6</span><br>
@@ -1142,11 +1145,11 @@ h2 {
             <br><br>
             Zehla kładzie na kamiennym stole starą, pożółkłą mapę.
             <br><br>
-            „Artefakt Ślepego Kruka — Serce Króla, zapieczętowane trzydzieści lat temu — został skradziony. Nie przez nas. Nie przez żadną szanującą się gildię. Przez <i>nich</i>."
+            „Artefakt Ślepego Kruka — Serce z Gliny, zapieczętowane trzydzieści lat temu — został skradziony. Nie przez nas. Nie przez żadną szanującą się gildię. Przez <i>nich</i>."
             <br><br>
-            Puka palcem w herb na mapie: dwa skrzyżowane sztylety na tle kruka z wydłubanymi oczami.
+            Puka palcem w herb na mapie: kot z zielonymi oczami.
             <br><br>
-            „Hrabia Vex Morrigan. Syn Lorda Morrigan — tego samego, który przegrał z Kruka trzydzieści lat temu i do śmierci twierdził, że został oszukany. Jego syn najwyraźniej odziedziczył urazę i słaby gust."
+            „Hrabia Vex Morrigan. Syn Lorda Morrigan — tego samego, który przegrał z Krukiem trzydzieści lat temu i do śmierci twierdził, że został oszukany. Jego syn najwyraźniej odziedziczył urazę i słaby gust."
             <br><br>
             „Nasi informatorzy donoszą, że Hrabia trzyma artefakt w swojej rezydencji w mieście. Za dwa dni ceremonia. Bez artefaktu — żadnego pokoju ze skrytobójcami, a złodzieje z Tantalos staną się pośmiewiskiem kontynentu."
             <br><br>
@@ -1156,14 +1159,14 @@ h2 {
           </div>
 
           <div class="gm-tip">
-            <b style="color:#e0a040;">Tip MG:</b> Zehla daje do zrozumienia, że Hrabia nie przestrzega kodeksu złodziei — używa najemników i przemocy. To „obrażenie profesji". Gracze powinni czuć, że to sprawa honoru, nie tylko misja.
+            <b style="color:#e0a040;">Tip MG:</b> Zehla daje do zrozumienia, że Hrabia nie przestrzega kodeksu złodziei — używa Kotów i przemocy. To „obrażenie profesji". Gracze powinni czuć, że to sprawa honoru, nie tylko misja.
           </div>
 
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
             <b style="color:white;">Informacje od Zehli (na pytania):</b>
             <ul style="margin:6px 0;">
               <li>Rezydencja Hrabiego jest w <b>Dzielnicy Brązowej</b> — bogatej części miasta.</li>
-              <li>Hrabia ma 10-15 najemników, „Kruki Nocy".</li>
+              <li>Hrabia ma 10-15 Kotów — swoich najemników.</li>
               <li>Artefakt najprawdopodobniej w podziemnym skarbcu rezydencji.</li>
               <li>Ceremonia jest za 2 dni — czas ucieka.</li>
               <li>Nie wie, jak Hrabia go odnalazł. Ślepy Kruk ukrył artefakt 30 lat temu i zabrał sekret do grobu.</li>
@@ -1174,7 +1177,7 @@ h2 {
         <div class="gm-section" style="border-left-color:#e07070;">
           <div class="gm-section-title" style="color:#e07070;">Scena 3: Atak! FLASH i bomby dymne</div>
           <div style="color:#ccc;font-size:14px;line-height:1.7;">
-            <b style="color:white;">W trakcie dyskusji</b> — gdy gracze zaczynają planować — nadchodzi atak najemników Hrabiego. Spotkanie było pułapką. Ktoś zdradził lokalizację Misterium (kto — zagadka na inny dzień).
+            <b style="color:white;">W trakcie dyskusji</b> — gdy gracze zaczynają planować — nadchodzi atak Kotów. Spotkanie było pułapką. Ktoś zdradził lokalizację Misterium (kto — zagadka na inny dzień).
           </div>
 
           <div class="gm-tip">
@@ -1200,16 +1203,16 @@ h2 {
             <ul style="margin:6px 0;">
               <li><b>2 Ikonografy (aparaty FLASH)</b> — demony-rysownicy portretują wszystkich obecnych.</li>
               <li><b>4 bomby dymne</b> — polana tonie w dymie, widoczność 2m.</li>
-              <li><b>6 najemników</b> — nie atakują na zabój, ich cel to DOKUMENTACJA twarzy, nie zabijanie.</li>
+              <li><b>6 Kotów</b> — nie atakują na zabój, ich cel to DOKUMENTACJA twarzy, nie zabijanie.</li>
               <li>Zehla ucieka natychmiast (ma swoje sposoby).</li>
               <li>Inni delegaci gildii rozpierzchają się w las.</li>
             </ul>
           </div>
 
           <div class="gm-danger">
-            <b style="color:#e07070;">Konsekwencja FLASH:</b> Każdy gracz, którego sfotografowano, rano pojawi się na listach gończych w mieście. Nie jako „złodziej" — ale jako „poszukiwany w sprawie zaginięcia artefaktu Serca Króla". Hrabia obrócił sytuację — teraz to GRACZE są podejrzani o kradzież!
+            <b style="color:#e07070;">Konsekwencja FLASH:</b> Każdy gracz, którego sfotografowano, rano pojawi się na listach gończych w mieście. Nie jako „złodziej" — ale jako „poszukiwany w sprawie zaginięcia artefaktu Serca z Gliny". Hrabia obrócił sytuację — teraz to GRACZE są podejrzani o kradzież!
             <br><br>
-            <b>Mechanicznie:</b> Sława +1, Reputacja −10. Gracze dowiedzą się dopiero w mieście (Akt III), chyba że złapią jednego z najemników.
+            <b>Mechanicznie:</b> Sława +1, Reputacja −10. Gracze dowiedzą się dopiero w mieście (Akt III), chyba że złapią jednego z Kotów.
           </div>
 
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
@@ -1228,7 +1231,7 @@ h2 {
           </div>
 
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
-            <b style="color:white;">Jeśli gracze schwytają najemnika:</b>
+            <b style="color:white;">Jeśli gracze schwytają Kota:</b>
             <br>
             <span class="gm-test">Psycha + Influencja, Problemowy</span> — przesłuchanie.
             <br>Najemnik się boi Hrabiego, ale wyda informacje:
@@ -1236,7 +1239,7 @@ h2 {
               <li>Hrabia opłacił straż miejską — rano rozwieszą portrety.</li>
               <li>Artefakt jest w rezydencji, w podziemnym skarbcu.</li>
               <li>Hrabia planuje „ceremonię alternatywną" — sam przedstawi artefakt i oskarży gildie złodziejskie o ukrywanie niebezpiecznej broni.</li>
-              <li>Jeśli test bardzo dobry (5+ PS): najemnik wspomina, że „Hrabia mówił coś o budzeniu" — nie wie o co chodzi.</li>
+              <li>Jeśli test bardzo dobry (5+ PS): Kot wspomina, że „Hrabia mówił coś o budzeniu" — nie wie o co chodzi.</li>
             </ul>
           </div>
         </div>
@@ -1258,7 +1261,7 @@ h2 {
           <div class="gm-tip">
             <b style="color:#e0a040;">Opcjonalne komplikacje (1-2 max):</b>
             <ul style="margin:6px 0;">
-              <li><b>Patrol najemników</b> na ścieżce — 3 ludzi z pochodniami. Ominięcie: <span class="gm-test">Zdolność + Gibkość, Zwykły</span>.</li>
+              <li><b>Patrol Kotów</b> na ścieżce — 3 ludzi z pochodniami. Ominięcie: <span class="gm-test">Zdolność + Gibkość, Zwykły</span>.</li>
               <li><b>Kubol</b> ma wyrzuty sumienia, bo mijają chatkę ze staruszką/psem — nie może się powstrzymać i chce sprawdzić czy u niej wszystko OK. Komiczny moment.</li>
               <li><b>Marceyli omdlewa</b> — ktoś się skaleczył o gałąź (Marceyli widzi krew → test Psycha Problemowy lub omdlenie). Grupa musi ją nieść/budzić.</li>
             </ul>
@@ -1318,7 +1321,7 @@ h2 {
         <div class="gm-section" style="border-left-color:#e07070;">
           <div class="gm-section-title" style="color:#e07070;">Listy gończe</div>
           <div style="color:#ccc;font-size:14px;line-height:1.7;">
-            <b>Jeśli gracze NIE uniknęli FLASH:</b> Na każdym rogu wiszą świeże portrety — karykaturalne, ale rozpoznawalne. Pod nimi: „POSZUKIWANI w sprawie kradzieży Serca Króla. Nagroda: 50 złotych monet za informację."
+            <b>Jeśli gracze NIE uniknęli FLASH:</b> Na każdym rogu wiszą świeże portrety — karykaturalne, ale rozpoznawalne. Pod nimi: „POSZUKIWANI w sprawie kradzieży Serca z Gliny. Nagroda: 50 złotych monet za informację."
             <br><br>
             <b>Efekt mechaniczny:</b> Sława +1 (sławni!), Reputacja −10 (ale nie wśród złodziei — wśród uczciwych ludzi i straży).
             <br><br>
@@ -1351,7 +1354,7 @@ h2 {
             <ul style="margin:6px 0;">
               <li>Artefakt w <b>podziemnym skarbcu</b>, pod głównym budynkiem.</li>
               <li>Drzwi do skarbca: zamek mechaniczny (Hulietta!) + klucz, który Hrabia nosi na szyi.</li>
-              <li>W rezydencji: Hrabia + 8 najemników (4 na patrolu, 4 wewnątrz).</li>
+              <li>W rezydencji: Hrabia + 8 Kotów (4 na patrolu, 4 wewnątrz).</li>
               <li>Hrabia wieczorem urządza kolację dla szlachty — chaos i kelnerzy = okazja.</li>
               <li>Kanały biegnące pod rezydencją łączą się z piwnicą — ale przejście zablokowane kratą.</li>
             </ul>
@@ -1392,7 +1395,7 @@ h2 {
           </div>
 
           <div class="gm-read">
-            Rezydencja Morriganów z zewnątrz wygląda jak monument do złego gustu, który poślubił fortecę. Brązowe ściany, wieżyczki zbyt małe na cokolwiek poza dekoracją, i brama z herbem — dwa skrzyżowane sztylety pod krukiem z wydłubanymi oczami. Na dziedzińcu powóz za powozem wyrzuca z siebie szlachtę w jedwabiach i szlachtę udającą szlachtę w jedwabiach. Z kuchni bocznej sączy się dym i zapach czegoś, co mogłoby być pieczenią lub małym pożarem.
+            Rezydencja Morriganów z zewnątrz wygląda jak monument do złego gustu, który poślubił fortecę. Brązowe ściany, wieżyczki zbyt małe na cokolwiek poza dekoracją, i brama z herbem — kot z zielonymi oczami. Na dziedzińcu powóz za powozem wyrzuca z siebie szlachtę w jedwabiach i szlachtę udającą szlachtę w jedwabiach. Z kuchni bocznej sączy się dym i zapach czegoś, co mogłoby być pieczenią lub małym pożarem.
           </div>
         </div>
 
@@ -1467,7 +1470,7 @@ PIĘTRO 1 — pokoje gościnne
 ┌──────────────────────────────────────┐
 │ [POKOJE]──[KORYTARZ]──[POKOJE]       │
 │            [SCHODY ↑↓]               │
-│            1 najemnik patrol         │
+│            1 Kot patrol              │
 └──────────────────────────────────────┘
 
 PIĘTRO 2 — gabinet Hrabiego            
@@ -1477,7 +1480,7 @@ PIĘTRO 2 — gabinet Hrabiego
 │  dokumentami           budynek]      │
 │  → KLUCZ zapasowy w biurku!          │
 │  [SCHODY ↑↓]                         │
-│  1 najemnik pod drzwiami gabinetu    │
+│  1 Kot pod drzwiami gabinetu         │
 └──────────────────────────────────────┘</div>
 
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
@@ -1495,9 +1498,9 @@ PIĘTRO 2 — gabinet Hrabiego
               </div>
 
               <div style="background:#2a1a1a;border-left:2px solid #e07070;padding:8px 12px;margin:6px 0;border-radius:4px;">
-                <b style="color:#e07070;">2. Patrol najemników</b>
+                <b style="color:#e07070;">2. Patrol Kotów</b>
                 <div style="color:#ccc;font-size:13px;">
-                  4 najemników wewnątrz: 2 przy bramie (parter), 1 patrol na piętrze 1, 1 pod gabinetem (piętro 2).
+                  4 Koty wewnątrz: 2 przy bramie (parter), 1 patrol na piętrze 1, 1 pod gabinetem (piętro 2).
                   <br><b>Obejście:</b> <span class="gm-test">Zdolność + Gibkość, Problemowy</span> lub dywersja (Wherk'ha wciąga strażnika w rozmowę — Influencja:2).
                   <br><b>Neutralizacja:</b> <span class="gm-test">Zdolność + Reakcja, Zwykły</span> (ogłuszenie od tyłu, ciało ukryć).
                   <br>Rastlin z tasakiem: jeśli podejdzie — strażnik automatycznie czuje niepokój (niemiła aura) i odwraca się. Walka trudniejsza, ale Rastlin ma element zaskoczenia bo strażnik odwraca się w złą stronę.
@@ -1530,7 +1533,7 @@ PIĘTRO 2 — gabinet Hrabiego
         <div class="gm-section" style="border-left-color:#ffd700;">
           <div class="gm-section-title" style="color:#ffd700;">Skarbiec — Znalezienie Artefaktu</div>
           <div style="color:#ccc;font-size:14px;line-height:1.7;">
-            Skarbiec jest mały — 4x4 metry. Na piedestale w centrum stoi <b>Serce Króla</b>: posąg z brązu i obsydianu, wielkości ludzkiego torsu, przedstawiający skurczoną humanoidalną figurę z zamkniętymi oczami. Jest ciężki (~80 kg).
+            Skarbiec jest mały — 4x4 metry. Na piedestale w centrum stoi <b>Serce z Gliny</b>: posąg z brązu i obsydianu, wielkości ludzkiego torsu, przedstawiający skurczoną humanoidalną figurę z zamkniętymi oczami. Jest ciężki (~80 kg).
           </div>
 
           <div class="gm-read">
@@ -1540,9 +1543,9 @@ PIĘTRO 2 — gabinet Hrabiego
           </div>
 
           <div class="gm-tip">
-            <b style="color:#e0a040;">Marceyli i Kamień Filozoficzny:</b> Jeśli Marceyli zbliży się do artefaktu, poczuje dziwne ciepło. Jej utracony Kamień Filozoficzny rezonuje z Golemem — to ten sam materiał. Marceyli może poczuć, że „gdzieś tu, niedaleko, jest coś, co kiedyś do niej należało". W biurku Hrabiego lub w samym golemie jest mały kryształ — kawałek (lub cały) Kamień Filozoficzny, który Hrabia użył do aktywacji golema.
+            <b style="color:#e0a040;">Marceyli i odłamek kamienia:</b> Marceyli odczuwa obecność swojego zgubionego odłamka — jest w biurku Hrabiego (Hrabia znalazł go lub kupił, nie wie że to jej). Może go odzyskać przed aktywacją golema. <b>Jeśli odzyska PRZED aktywacją</b> — może użyć do kontroli lub zatrzymania golema. <b>Jeśli golem połknie kamień</b> (np. Hrabia w desperacji wetknie go w golema próbując „kontrolować") — transmutuje wszystko w pozorne złoto, katastrofa mnoży się wielokrotnie.
             <br><br>
-            <b>Jeśli ktoś wykryje inskrypcję</b> — <span class="gm-test">Rozum + Wiedza, Problemowy</span> — odczytują ostrzeżenie. Marceyli z Wiedza:2 ma tu premię.
+            <b>Inskrypcja w głowie golema:</b> Jak w prawdziwej legendzie — w głowie jest inskrypcja. Ktoś z Wiedzą może znać ten fakt. Zetarcie inskrypcji zatrzymuje golema. <span class="gm-test">Rozum + Wiedza, Problemowy</span> — by odczytać ostrzeżenie na piedestale.
           </div>
 
           <div class="gm-danger">
@@ -1552,6 +1555,8 @@ PIĘTRO 2 — gabinet Hrabiego
             <br>• Ktoś dotknie „oczu" posągu
             <br><br>
             Gracze NIE mogą tego uniknąć — Golem się obudzi. Pytanie to KIEDY i W JAKICH okolicznościach.
+            <br><br>
+            <b style="color:#e0a040;">Kamień i katastrofa:</b> Jeśli Marceyli NIE odzyskała odłamka, Hrabia ma go w biurku. Gdy golem się budzi, Hrabia w desperacji może wetknąć kamień w golema, wierząc że go „kontroluje". Golem połyka — transmutacja zmienia się w pozorne złoto, katastrofa mnoży się. To dramatyczny moment dla MG: czy Hrabia sięga po kamień?
           </div>
         </div>
       </div>
@@ -1568,9 +1573,9 @@ PIĘTRO 2 — gabinet Hrabiego
           <div class="gm-read">
             Oczy posągu otwierają się. Nie są to oczy w normalnym tego słowa znaczeniu — to dwa wirujące dyski z obsydianu, za którymi płonie coś starszego niż ogień. Brąz skrzypi, pęka, wyciąga się. Kolana. Łokcie. Coś, co mogłoby być palcami, gdyby palce były wielkości bananów i twardsze od żelaza.
             <br><br>
-            Golem prostuje się do pełnych trzech metrów. Sufit skarbca pęka. Gruz leci. Pierwszą rzeczą, którą dotyka, jest piedestał — który w ciągu pięciu sekund zmienia kolor na złoty, lśni jak nowo wybita moneta, a potem pęka na kawałki z cichym, żałosnym dźwiękiem, jakby złoto było ceramiką.
+            Golem prostuje się do pełnych trzech metrów. Sufit skarbca pęka. Gruz leci. Pierwszą rzeczą, którą dotyka, jest piedestał — pęka i rozsypuje się w pył. Golem transmutuje: wszystko, czego dotyka, pęka i rozpada się (zniszczenie, nie złoto).
             <br><br>
-            Golem transmutuje. Wszystko, czego dotyka, zamienia się w złoto. A potem złoto się rozpada. To nie skarb — to zniszczenie w bardzo drogim opakowaniu.
+            <b style="color:#e07070;">Jeśli golem połknął kamień filozoficzny</b> — wtedy dopiero transmutuje w pozorne złoto, które lśni i pęka. Katastrofa mnoży się wielokrotnie.
           </div>
 
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
@@ -1601,13 +1606,22 @@ PIĘTRO 2 — gabinet Hrabiego
             </div>
 
             <div style="background:#1a1a2a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
-              <b style="color:#b0a0e0;">2. Kamień Filozoficzny (Marceyli)</b> <span style="color:#888;">(najlepsze zakończenie)</span>
+              <b style="color:#b0a0e0;">2. Odłamek kamienia (Marceyli)</b> <span style="color:#888;">(najlepsze zakończenie — wymaga odzyskania PRZED aktywacją)</span>
               <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
-                Jeśli Marceyli znalazła swój kamień (lub kawałek), może go użyć, by przejąć kontrolę nad Golemem lub go wyłączyć.
+                Jeśli Marceyli odzyskała swój odłamek z biurka Hrabiego (odczuwa jego obecność przy skoku), może go użyć do kontroli lub zatrzymania golema.
                 <br><span class="gm-test">Psycha + Uduchowienie, Trudny</span> — Marceyli musi skoncentrować się (KREW w pobliżu → test na omdlenie!).
-                <br>Sukces: Golem zatrzymuje się. Transmutacja odwraca się — wszystko złote wraca do normy.
-                <br><b>Efekt finałowy:</b> Golem zamienia się ponownie w posąg — ale tym razem złoty. Wszystkie okoliczne przedmioty, które dotknął, zamieniły się w złoto NA STAŁE. Deszcz złota na ulicach Tantalos. Ludzie zbierają złote cegły, złote szczury, złote kapelusze.
-                <br><b>Bonus:</b> Marceyli „odzyskuje" kamień filozoficzny — znalazła go tam, gdzie go zgubiła: w sobie samej (cheesy ale satysfakcjonujące).
+                <br>Sukces: Golem zatrzymuje się. Transmutacja ustaje.
+                <br><b>Efekt finałowy:</b> Golem zamienia się ponownie w posąg. Marceyli odzyskuje swój odłamek — i tajemnicę, po co go naprawdę ukradła.
+                <br><b>Dlaczego to korzystne:</b> Znalezienie kamienia daje drużynie szansę — bez niego jedyna opcja to utopienie lub zakopanie. Z kamieniem Marceyli może zatrzymać golema czysto, bez tracenia artefaktu.
+              </div>
+            </div>
+
+            <div style="background:#1a2a2a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#7ec87e;">2b. Zetarcie inskrypcji w głowie</b> <span style="color:#888;">(wymaga Wiedzy)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Ktoś z dużą Wiedzą może znać legendę — w głowie golema jest inskrypcja. Zetarcie jej zatrzymuje konstrukt.
+                <br><span class="gm-test">Zdolność + Gibkość, Trudny</span> — wspiąć się na golema / dosięgnąć głowy podczas chaosu. <span class="gm-test">Rozum + Wiedza</span> — wiedzieć, co zetrzeć.
+                <br>Marceyli ma Wiedza:2 — może to wiedzieć, jeśli gracze szukają informacji w Aktach III–IV.
               </div>
             </div>
 
@@ -1657,7 +1671,7 @@ PIĘTRO 2 — gabinet Hrabiego
         <div class="gm-read">
           Niezależnie od tego, jak gracze poradzili sobie z Golemem, jedno jest pewne: Tantalos przetrwał. Może z kilkoma złotymi budynkami więcej, może z jednym hrabią mniej, ale przetrwał.
           <br><br>
-          Narracja, która rozprzestrzenia się po mieście jak plotka na targu — a więc z prędkością światła — jest taka: Ślepy Kruk nie ukradł artefaktu trzydzieści lat temu z chciwości. Ukradł go, bo wiedział, czym jest. Wiedział, że Serce Króla to nie skarb — to broń. I schował ją, żeby miasto nie spłonęło. Żeby nikt nie zginął.
+          Narracja, która rozprzestrzenia się po mieście jak plotka na targu — a więc z prędkością światła — jest taka: Ślepy Kruk nie ukradł artefaktu trzydzieści lat temu z chciwości. Ukradł go, bo wiedział, czym jest. Wiedział, że Serce z Gliny to nie skarb — to broń. I schował ją, żeby miasto nie spłonęło. Żeby nikt nie zginął.
           <br><br>
           Ślepy Kruk nie był złodziejem. Był bohaterem.
           <br><br>
@@ -1670,7 +1684,7 @@ PIĘTRO 2 — gabinet Hrabiego
             <li><b>Reputacja:</b> Jeśli mieli listy gończe → listy znikają. Reputacja wraca (+10 zamiast −10). „Bohaterowie mimo woli."</li>
             <li><b>Sława:</b> +2 dla wszystkich. Opowieść o nocy, gdy złodzieje uratowali miasto, będzie opowiadana w każdej tawernie.</li>
             <li><b>Ceremonia:</b> Odbywa się, ale bez zakopywania artefaktu. Zamiast tego — uroczyste ogłoszenie, że Ślepy Kruk był obrońcą miasta. Pomnik zamiast grobu.</li>
-            <li><b>Marceyli:</b> Jeśli użyła kamienia — zyskuje trwałą więź z magią transmutacji. Kamień wraca do niej.</li>
+            <li><b>Marceyli:</b> Jeśli odzyskała i użyła odłamka — zyskuje go z powrotem. Jej prawdziwy motyw kradzieży pozostaje jej tajemnicą.</li>
             <li><b>Hrabia Morrigan:</b> Aresztowany, uciekł, lub zamieniony w złoto — zależnie od akcji graczy. Jego reputacja zniszczona.</li>
           </ul>
         </div>
@@ -1803,7 +1817,7 @@ PIĘTRO 2 — gabinet Hrabiego
             Wykrycie zasadzki: <span class="gm-test">Zmysł + Percepcja, Zwykły</span><br>
             Uniknięcie FLASH: <span class="gm-test">Zdolność + Reakcja, Problemowy</span><br>
             Zniszczenie ikonografa: <span class="gm-test">Zdolność + broń, Zwykły</span><br>
-            Przesłuchanie najemnika: <span class="gm-test">Psycha + Influencja, Problemowy</span><br>
+            Przesłuchanie Kota: <span class="gm-test">Psycha + Influencja, Problemowy</span><br>
             <br>
             <b style="color:white;">AKT II</b><br>
             Ominięcie patrolu w lesie: <span class="gm-test">Zdolność + Gibkość, Zwykły</span><br>
