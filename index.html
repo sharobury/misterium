@@ -930,6 +930,11 @@ h2 {
         Ciężka rana → test Ciała (trudny) by nie stracić przytomności.<br>
         Krytyczna → nieprzytomność. Pierwsza pomoc lub śmierć.
       </div>
+      <div style="color:#9b59b6;font-size:13px;margin-top:12px;padding-top:10px;border-top:1px solid #333;">
+        <b>Magia:</b> Niepowodzenie w użyciu magii → <span style="color:#e0a040;">zawroty głowy</span> (jak lekka rana, −2). Odpoczynek leczy.<br>
+        Dwa zawroty głowy → <span style="color:#e07070;">magioczerpanie</span> (jak ciężka rana, −5).<br>
+        Brak odpoczynku po magioczerpaniu + kolejne nadużycie magii → <span style="color:#c0392b;">krytyczne wyczerpanie</span> — bez pomocy, zgon.
+      </div>
     </div>
 
     <!-- ── MODYFIKATORY WALKI (skrót) ── -->
@@ -1252,7 +1257,7 @@ h2 {
           <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Kubol</td><td>Ambicja wspinacza. Udowodnij że wespniesz się na wszystko, nawet jeśli jest to 20-metrowy golem. Pojawia się dopiero po wzroście golema do dużych rozmiarów.</td></tr>
           <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Marceyli</td><td>Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa.</td></tr>
           <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Rastlin</td><td>Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku). Zabierz go, zanim rezydencja stanie się gruzem.</td></tr>
-          <tr><td style="padding:6px 0;color:#ffd700;">Hulietta</td><td>Spal kaplicę ku czci twego króliczego boga.</td></tr>
+          <tr><td style="padding:6px 0;color:#ffd700;">Hulietta</td><td>Zbierz tyle złota ze skarbca ile uniesiesz by wesprzeć fundusz ratowania ginących zawodów ze wsparciem Gildii Złodzieji albo wesprzyj plan Hrabiego by stał się sponsorem zegarmistrzów.</td></tr>
         </table>
       </div>
 
@@ -2777,7 +2782,7 @@ const SECRET_AGENDAS = [
   { who: "Kubol 'Otwarta Księga'", text: "Ambicja wspinacza. Udowodnij że wespniesz się na wszystko, nawet jeśli jest to 20-metrowy golem. Pojawia się dopiero po wzroście golema do dużych rozmiarów. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
   { who: "Marceyli 'Zawieszona Zagadka'", text: "Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
   { who: "Rastlin 'Samozwańczy Kruk'", text: "Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku na 2. piętrze). Zabierz go, zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Hulietta Królik 'Technik ds. Mechanizmów Zamykających'", text: "Spal kaplicę ku czci twego króliczego boga. Jeśli go osiągniesz, dostajesz bonusowy epilog." }
+  { who: "Hulietta Królik 'Technik ds. Mechanizmów Zamykających'", text: "Zbierz tyle złota ze skarbca ile uniesiesz by wesprzeć fundusz ratowania ginących zawodów ze wsparciem Gildii Złodzieji albo wesprzyj plan Hrabiego by stał się sponsorem zegarmistrzów." }
 ];
 function rollSecretAgenda() {
   const pick = SECRET_AGENDAS[Math.floor(Math.random() * SECRET_AGENDAS.length)];
@@ -2957,7 +2962,13 @@ function statTestBoxes(baseVal) {
   });
   return html + '</span>';
 }
+const MAGIC_BASE_MAX = 20;
+const MAGIC_GROUP_MAX = 3;
+
 function getMagicBaseLevel() {
+  if (magicLevels.base !== undefined && magicLevels.base !== null) {
+    return Math.max(0, Math.min(MAGIC_BASE_MAX, parseInt(magicLevels.base) || 0));
+  }
   return Math.max(0, ...magicGroups.map(g => magicLevels[g.name] || 0));
 }
 
@@ -2972,15 +2983,30 @@ function getMagicHeaderHtml() {
     '<button class="magic-level-btn" onclick="changeMagicBase(1)">+</button></div>';
 }
 
+function changeMagicGroup(name, delta) {
+  const current = magicLevels[name] || 0;
+  const next = Math.max(0, Math.min(MAGIC_GROUP_MAX, current + delta));
+  if (next === current) return;
+  magicLevels[name] = next;
+  const grid = document.getElementById('view-magic-grid');
+  if (grid) grid.innerHTML = getMagicCardsHtml();
+  markUnsaved();
+}
+
 function getMagicCardsHtml() {
   let html = '';
   magicGroups.forEach(g => {
+    const level = magicLevels[g.name] || 0;
     const skillsHtml = g.skills.map(s => '<span class="skill-tag" style="color:#8888bb;border-color:#4a4a6a;">' + s + '</span>').join('');
     html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
       (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
       '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
       '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
-      '</div>';
+      '<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;">' +
+      '<button class="magic-level-btn" onclick="changeMagicGroup(\'' + g.name + '\',-1)" style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">−</button>' +
+      '<span style="min-width:20px;text-align:center;color:' + (level > 0 ? '#ffd700' : '#555') + ';font-size:16px;font-weight:bold;">' + level + '</span>' +
+      '<button class="magic-level-btn" onclick="changeMagicGroup(\'' + g.name + '\',1)" style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>' +
+      '</div></div>';
   });
   return html;
 }
@@ -3482,7 +3508,14 @@ function renderViewCard(data) {
   dlInit('view-notes', noteItems.length ? noteItems : [], { placeholder: 'Notatka...', addLabel: '+ Dodaj notatkę', trackChanges: true });
   dlInit('view-tricks', trickItems.length ? trickItems : [], { placeholder: 'Sztuczka...', addLabel: '+ Dodaj sztuczkę', trackChanges: true });
 
-  renderViewMagic(tryParseJSON(data.magic_skills) || {});
+  let magicData = {};
+  try {
+    if (data.magic_skills && data.magic_skills !== '—') {
+      const p = JSON.parse(data.magic_skills);
+      if (p && typeof p === 'object' && !Array.isArray(p)) magicData = p;
+    }
+  } catch {}
+  renderViewMagic(magicData);
   renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl }, { magicEnabled });
 
   c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
@@ -3538,13 +3571,18 @@ async function saveCard() {
 function renderViewMagic(savedLevels) {
   Object.keys(magicLevels).forEach(k => delete magicLevels[k]);
   magicGroups.forEach(g => { magicLevels[g.name] = savedLevels[g.name] || 0; });
+  if (savedLevels.base !== undefined && savedLevels.base !== null) {
+    magicLevels.base = Math.max(0, Math.min(MAGIC_BASE_MAX, parseInt(savedLevels.base) || 0));
+  } else {
+    magicLevels.base = Math.max(0, ...magicGroups.map(g => magicLevels[g.name] || 0));
+  }
 }
 
 function changeMagicBase(delta) {
   const current = getMagicBaseLevel();
-  const next = Math.max(0, Math.min(3, current + delta));
+  const next = Math.max(0, Math.min(MAGIC_BASE_MAX, current + delta));
   if (next === current) return;
-  magicGroups.forEach(g => { magicLevels[g.name] = next; });
+  magicLevels.base = next;
   const header = document.getElementById('view-magic-header');
   if (header) header.innerHTML = getMagicHeaderHtml();
   markUnsaved();
