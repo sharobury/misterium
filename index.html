@@ -2055,6 +2055,35 @@ h2 {
 </div>
 
 <script>
+// Minimal router — uruchamia się pierwszy, działa nawet gdy główny skrypt się wykrzaczy
+(function() {
+  function route() {
+    var hash = (location.hash || '#home').slice(1);
+    var ids = ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el) el.style.display = 'none';
+    }
+    var target = 'page-home';
+    if (hash === 'create') target = 'page-create';
+    else if (hash.indexOf('view') === 0) target = 'page-view';
+    else if (hash === 'tricks') target = 'page-tricks';
+    else if (hash === 'maps') target = 'page-maps';
+    else if (hash === 'mechanics') target = 'page-mechanics';
+    else if (hash === 'gm') target = 'page-gm';
+    var el = document.getElementById(target);
+    if (el) el.style.display = 'block';
+  }
+  window._misteriumMinimalRoute = route;
+  window.addEventListener('hashchange', route);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', route);
+  } else {
+    route();
+  }
+})();
+</script>
+<script>
 // =====================================================================
 // DATA
 // =====================================================================
@@ -2823,6 +2852,9 @@ function restorePlayerMaps() {
   } catch(e) {}
 }
 
+if (window._misteriumMinimalRoute) {
+  window.removeEventListener('hashchange', window._misteriumMinimalRoute);
+}
 window.addEventListener('hashchange', navigate);
 window.addEventListener('beforeunload', function(e) {
   if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; }
