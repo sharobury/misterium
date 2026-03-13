@@ -391,7 +391,7 @@ h2 {
   body[data-print-page="mechanics"] #page-mechanics { display: block !important; }
   body[data-print-page="gm"] #page-gm { display: block !important; }
   .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; border-radius: 0 !important; }
-  .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login, .print-hide-gracz { display: none !important; }
+  .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login, .print-hide-gracz, .print-hide-empty { display: none !important; }
   .print-header { display: block !important; text-align: center; font-size: 8pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid #ccc; margin-bottom: 6px; }
 
   .print-page { display: flex !important; flex-wrap: wrap; gap: 0 12px; min-height: calc(297mm - 16mm); align-content: flex-start; }
@@ -430,8 +430,8 @@ h2 {
   .dynamic-item { margin-bottom: 1px !important; }
   .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 2px 5px !important; }
   #view-card span[style*="font-size:18px"] { font-size: 10pt !important; }
-  .print-difficulty-cheat { font-size: 7pt !important; padding: 4px !important; }
-  .print-difficulty-cheat > div { min-width: 40px !important; font-size: 7pt !important; }
+  .print-difficulty-cheat { font-size: 7pt !important; padding: 4px !important; flex-wrap: nowrap !important; }
+  .print-difficulty-cheat > div { min-width: 0 !important; flex: 1 !important; font-size: 6pt !important; }
   .stat-test-box { width: 18px !important; height: 14px !important; font-size: 7pt !important; line-height: 12px !important; }
   .stat-test-box.base { color: #333 !important; font-weight: bold !important; }
   .print-gear-weapons { border-color: #ccc !important; background: #f9f9f9 !important; }
@@ -580,7 +580,8 @@ h2 {
           <span style="font-size:18px;">Sztuczki</span>
           <a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a>
         </div>
-        <div id="create-tricks"></div>
+        <button id="trickBtn" onclick="rollTrick()">🎲 Wylosuj sztuczkę</button>
+        <div id="create-tricks" style="margin-top:10px;"></div>
 
         <hr>
 
@@ -749,7 +750,7 @@ h2 {
       </div>
     </div>
 
-    <!-- MAPA 5: Rezydencja wnętrze (hasło: WNĘTRZE) -->
+    <!-- MAPA 5: Rezydencja wnętrze (hasło: PARTER) -->
     <div id="player-map-5" class="player-map-card hidden">
       <div class="player-map-title">Posiadłość Hrabiego — wnętrze</div>
       <div class="player-map-desc">Parter: sala bankietowa, kolacja w toku — chaos i kelnerzy. Piętro: gabinet Hrabiego. Piwnica: skarbiec.</div>
@@ -1792,7 +1793,7 @@ PIĘTRO 2 — gabinet Hrabiego
             <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Las</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>LAS</b></td></tr>
             <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Tantalos</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>MIASTO</b></td></tr>
             <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Posiadłość (zewnątrz)</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>REZYDENCJA</b></td></tr>
-            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Posiadłość (wnętrze)</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>WNĘTRZE</b></td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Posiadłość (wnętrze)</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>PARTER</b></td></tr>
             <tr><td style="padding:6px 0;">Mapy graczy — Skarbiec</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>SKARBIEC</b></td></tr>
           </table>
           <p style="color:#888;font-size:12px;margin:10px 0 0;line-height:1.5;">Strona <b>#maps</b> — gracze wpisują hasła w pole na górze. Podawaj po kolei, gdy dotrą na miejsce.</p>
@@ -1899,93 +1900,6 @@ PIĘTRO 2 — gabinet Hrabiego
   (klucz u Hrabiego)</div>
             </div>
           </div>
-        </div>
-
-        <div class="gm-section" style="border-left-color:#27ae60;">
-          <div class="gm-section-title" style="color:#27ae60;">Mapa 1: Las Cichych Dębów i okolice Tantalos</div>
-          <div class="gm-map">
-                    LAS CICHYCH DĘBÓW
-                    ~~~~~~~~~~~~~~~~~~
-   🌲🌲🌲            🌲🌲
-  🌲  ⬡ POLANA  🌲🌲🌲      
- 🌲🌲 MISTERIUM 🌲     🌲    
-  🌲🌲🌲  │  🌲🌲🌲🌲🌲      
-     🌲   │    🌲🌲           
-      🌲  │   🌲              
-       ···│····               ·· = ścieżka
-          │   ╲               │  = droga 
-          │    ╲ patrol       ╲  = patrol
-          │                   
-    ══════╪═════════════ MURY TANTALOS ═══
-    ║     │              ║          ║
-    ║  [BRAMA]      [pęknięcie  [kanały
-    ║  główna        w murze]    pod
-    ║     │              ║      rzeką]
-    ║     │              ║        ║
-    ╠═════╪══════════════╩════════╩═══╗
-    ║                                 ║
-    ║        TANTALOS                 ║
-    ║     ┌──────────────┐            ║
-    ║     │  DZIELNICA   │            ║
-    ║     │  BRĄZOWA     │ ← Hrabia   ║
-    ║     │  [REZYDENCJA]│            ║
-    ║     └──────────────┘            ║
-    ║            │                    ║
-    ║     ═══════╪═══ RZEKA ══════    ║
-    ╚═════════════════════════════════╝</div>
-        </div>
-
-        <div class="gm-section" style="border-left-color:#c0392b;">
-          <div class="gm-section-title" style="color:#c0392b;">Mapa 2: Rezydencja Hrabiego — parter</div>
-          <div class="gm-map">
-          BRAMA  (2 strażników)
-            │
-    ════════╪════════════════════
-    ║    DZIEDZINIEC             ║
-    ║    (powozy, goście)        ║
-    ║         │                  ║
-    ╠═════════╪══════════════════╣
-    ║         │                  ║
-    ║  ┌──────┴──────┐  ┌─────┐ ║
-    ║  │  PRZEDSIONEK│  │KUCH-│ ║
-    ║  │      │      │  │NIA  │◄── boczne wejście
-    ║  │      │      │  └──┬──┘ ║
-    ║  │  ┌───┴───┐  │    │    ║
-    ║  │  │SCHODY │  │  KORYTARZ║
-    ║  │  │↑piętra│  │    │    ║
-    ║  │  │↓piwnic│  │    │    ║
-    ║  │  └───────┘  │    │    ║
-    ║  │             │    │    ║
-    ║  ╠═════════════╩════╪════╣
-    ║  ║   SALA BANKIETOWA     ║
-    ║  ║   (kolacja, 20+ osób) ║
-    ║  ║   stoły, muzyka       ║
-    ║  ║   Hrabia tu jest!     ║
-    ║  ╚═══════════════════════╝
-    ╚════════════════════════════</div>
-        </div>
-
-        <div class="gm-section" style="border-left-color:#e0a040;">
-          <div class="gm-section-title" style="color:#e0a040;">Mapa 3: Piwnica i Skarbiec</div>
-          <div class="gm-map">
-    KANAŁY ═══► [KRATA] ═══► PIWNICA
-    (pod                   magazyn win
-     rzeką)                    │
-                          KORYTARZ ──► schody ↑ parter
-                               │
-                        ╔══════╧══════╗
-                        ║   DRZWI     ║
-                        ║  zamek mech ║
-                        ║  + pułapka  ║
-                        ╠═════════════╣
-                        ║             ║
-                        ║  SKARBIEC   ║
-                        ║             ║
-                        ║   [    ]    ║
-                        ║   [GOLEM]   ║ ← na piedestale
-                        ║   [    ]    ║
-                        ║             ║
-                        ╚═════════════╝</div>
         </div>
       </div>
 
@@ -2663,20 +2577,23 @@ function dlRender(id) {
   const container = document.getElementById(id);
   if (!container) return;
   const { items, options } = state;
-  const { placeholder, addLabel, readonly, trackChanges } = options;
+  const { placeholder, addLabel, readonly, trackChanges, maxItems } = options;
   const onChange = trackChanges ? 'markUnsaved();' : '';
   let html = '';
+  const hideEmptyInPrint = (id === 'view-notes' || id === 'view-tricks' || id === 'view-gear' || id === 'view-weapons');
+  const atMax = maxItems != null && items.length >= maxItems;
   items.forEach((item, i) => {
+    const isEmpty = !item || !String(item).trim();
     if (readonly) {
       html += '<div class="view-field" style="margin-bottom:6px;">' + (esc(item) || '<span style="color:#555;">—</span>') + '</div>';
     } else {
-      html += '<div class="dynamic-item">' +
+      html += '<div class="dynamic-item' + (hideEmptyInPrint && isEmpty ? ' print-hide-empty' : '') + '">' +
         '<textarea rows="2" oninput="dlState[\'' + id + '\'].items[' + i + ']=this.value;autoGrow(this);' + onChange + '" placeholder="' + esc(placeholder || '') + '">' + esc(item) + '</textarea>' +
         '<button class="dynamic-remove" onclick="dlRemove(\'' + id + '\',' + i + ')">✕</button>' +
         '</div>';
     }
   });
-  if (!readonly) {
+  if (!readonly && !atMax) {
     html += '<button class="dynamic-add" onclick="dlAdd(\'' + id + '\')">' + (addLabel || '+ Dodaj') + '</button>';
   }
   container.innerHTML = html;
@@ -2684,9 +2601,11 @@ function dlRender(id) {
 }
 
 function dlAdd(id) {
+  const opts = dlState[id]?.options;
+  if (opts?.maxItems != null && (dlState[id].items.length || 0) >= opts.maxItems) return;
   dlState[id].items.push('');
   dlRender(id);
-  if (dlState[id].options.trackChanges) markUnsaved();
+  if (opts?.trackChanges) markUnsaved();
 }
 
 function dlRemove(id, index) {
@@ -2794,7 +2713,7 @@ function unlockGm() {
   }
 }
 
-const PLAYER_MAP_PASSWORDS = { 'LAS': 2, 'MIASTO': 3, 'REZYDENCJA': 4, 'WNĘTRZE': 5, 'SKARBIEC': 6 };
+const PLAYER_MAP_PASSWORDS = { 'LAS': 2, 'MIASTO': 3, 'REZYDENCJA': 4, 'PARTER': 5, 'SKARBIEC': 6 };
 const MAPS_STORAGE_KEY = 'misterium_maps_unlocked';
 function unlockPlayerMap() {
   const input = document.getElementById('maps-password-input').value.trim().toUpperCase();
@@ -2830,7 +2749,8 @@ function initCreatePage() {
   dlInit('create-gear', dlState['create-gear']?.items || ['', '', ''], { placeholder: 'Przedmiot ekwipunku...', addLabel: '+ Dodaj przedmiot' });
   dlInit('create-weapons', dlState['create-weapons']?.items || [''], { placeholder: 'Broń + inskrypcja...', addLabel: '+ Dodaj broń' });
   dlInit('create-notes', dlState['create-notes']?.items || [], { placeholder: 'Notatka...', addLabel: '+ Dodaj notatkę' });
-  dlInit('create-tricks', dlState['create-tricks']?.items || [], { placeholder: 'Nazwa sztuczki...', addLabel: '+ Dodaj sztuczkę' });
+  const trickItems = dlState['create-tricks']?.items;
+  dlInit('create-tricks', (trickItems?.length ? [trickItems[0]] : ['']), { placeholder: 'Nazwa sztuczki...', addLabel: '+ Dodaj sztuczkę', maxItems: 1 });
   renderSkills();
 }
 
@@ -2948,14 +2868,14 @@ function resetSkills() {
 // =====================================================================
 // SKILLS (VIEW MODE - READ-ONLY)
 // =====================================================================
-const DIFFICULTY_MODIFIERS = [0, 2, 0, -2, -5, -8, -15]; // X, +2, 0, -2, -5, -8, -15
+const DIFFICULTY_MODIFIERS = [2, 0, -2, -5, -8, -11, -15]; // łatwy +2, zwykły 0, problem. -2, ...
 function statTestBoxes(baseVal) {
   const base = parseInt(baseVal) || 0;
   const vals = DIFFICULTY_MODIFIERS.map(m => base + m);
   let html = '<span class="stat-test-boxes">';
   vals.forEach((v, i) => {
-    const isBase = i === 0;
-    html += '<span class="stat-test-box' + (isBase ? ' base' : '') + '" style="display:inline-block;width:22px;height:18px;border:1px solid #555;border-radius:2px;margin:0 1px;text-align:center;line-height:16px;font-size:10px;font-weight:bold;' + (isBase ? 'background:#333;color:#ffd700;' : 'background:#1a1a1a;color:#888;') + '">' + v + '</span>';
+    const isZwykly = i === 1; // druga pozycja = zwyczajny (podświetlona)
+    html += '<span class="stat-test-box' + (isZwykly ? ' base' : '') + '" style="display:inline-block;width:22px;height:18px;border:1px solid #555;border-radius:2px;margin:0 1px;text-align:center;line-height:16px;font-size:10px;font-weight:bold;' + (isZwykly ? 'background:#333;color:#ffd700;' : 'background:#1a1a1a;color:#888;') + '">' + v + '</span>';
   });
   return html + '</span>';
 }
@@ -3144,6 +3064,13 @@ function rollWeapon() {
   dlState['create-weapons'].items.splice(0, Infinity, weapon + '\nInskrypcja: ' + inscription);
   dlRender('create-weapons');
   startCooldown('weaponBtn', 'weapon-cooldown-msg', COOLDOWN_30SEC, 'Broń ostygnie');
+}
+
+function rollTrick() {
+  const allNames = allTricks.flatMap(g => g.tricks.map(t => t.name));
+  const trick = pickRandom(allNames);
+  dlState['create-tricks'].items.splice(0, Infinity, trick);
+  dlRender('create-tricks');
 }
 
 function generatePrompt() {
@@ -3387,8 +3314,13 @@ function renderViewCard(data) {
   h += '<div class="print-page print-page-2">';
   h += '<div class="print-header">Misterium Skarbów i Cieni — Umiejętności</div>';
 
-  // Left col: tylko sztuczki
+  // Left col: ściąga trudności + sztuczki
   h += '<div class="print-col print-col-left">';
+  h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:nowrap;gap:2px;margin:0 0 12px;padding:6px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
+  [['+2','łat.'],['0','zwy.'],['−2','pro.'],['−5','tru.'],['−8','zło.'],['−11','far.'],['−15','kry.']].forEach(([mod,label]) => {
+    h += '<div style="flex:1;min-width:0;text-align:center;padding:2px 4px;border:1px solid #444;border-radius:4px;font-size:10px;"><span style="font-weight:bold;color:#ffd700;">' + mod + '</span><br><span style="color:#888;font-size:9px;">' + label + '</span></div>';
+  });
+  h += '</div>';
   h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
     '<span style="font-size:18px;">Sztuczki</span>' +
     '<a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a></div>' +
@@ -3398,11 +3330,6 @@ function renderViewCard(data) {
   // Right col: skills (bez duplikatu listy statów), magic
   h += '<div class="print-col print-col-right">';
   h += '<span style="font-size:18px;">Umiejętności</span>';
-  h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:wrap;gap:4px;margin:10px 0;padding:8px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
-  [['+2','łat.'],['0','zwy.'],['−2','pro.'],['−5','tru.'],['−8','zło.'],['−11','far.'],['−15','kry.']].forEach(([mod,label]) => {
-    h += '<div style="flex:1;min-width:50px;text-align:center;padding:4px;border:1px solid #444;border-radius:4px;font-size:11px;"><span style="font-weight:bold;color:#ffd700;">' + mod + '</span><br><span style="color:#888;font-size:10px;">' + label + '</span></div>';
-  });
-  h += '</div>';
   h += '<div id="view-skills-container" style="margin-top:8px;"></div>';
   h += '<hr>';
   h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
@@ -3591,6 +3518,18 @@ function renderTricksPage() {
 // =====================================================================
 function printPage(pageId) {
   document.body.dataset.printPage = pageId;
+  if (pageId === 'view') {
+    ['view-notes', 'view-tricks', 'view-gear', 'view-weapons'].forEach(containerId => {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.querySelectorAll('.dynamic-item').forEach((el, i) => {
+          const ta = el.querySelector('textarea');
+          const isEmpty = !ta || !ta.value.trim();
+          el.classList.toggle('print-hide-empty', isEmpty);
+        });
+      }
+    });
+  }
   window.print();
   delete document.body.dataset.printPage;
 }
