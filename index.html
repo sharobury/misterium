@@ -2952,8 +2952,8 @@ function statTestBoxes(baseVal) {
     const isZwykly = i === 1; // druga pozycja = zwyczajny (podświetlona)
     const c = DIFFICULTY_COLORS[i] || '#888';
     const style = isZwykly
-      ? 'background:#333;color:' + c + ';border-color:' + c + ';'
-      : 'background:' + c + '22;color:' + c + ';border-color:' + c + '66;opacity:0.6;';
+      ? 'background:#0a0a0a;color:' + c + ';border-color:' + c + ';'
+      : 'background:#0a0a0a;color:' + c + ';border-color:' + c + '66;';
     html += '<span class="stat-test-box' + (isZwykly ? ' base' : '') + '" style="display:inline-block;width:22px;height:18px;border:1px solid;border-radius:2px;margin:0 1px;text-align:center;line-height:16px;font-size:10px;font-weight:bold;' + style + '">' + v + '</span>';
   });
   return html + '</span>';
@@ -3682,10 +3682,27 @@ function renderMechanicsSkills() {
     });
     html += '</div>';
   }
+  const md = {
+    "Piromancja": "Magia ognia — płomienie, żar, podpalenia",
+    "Aquamancja": "Magia wody — fale, lód, mgła, wilgoć",
+    "Biomancja": "Magia życia — ciało, rany, trucizny, wzrost",
+    "Czarnomagia": "Zakazana magia — przekleństwa, ciemność, zniszczenie",
+    "Szamanizm": "Kontakt z duchami, naturą i zaświatami",
+    "Transmutacja": "Zamiana materii — ołów w złoto, kształt przedmiotów",
+    "Białomagia": "Leczenie, ochrona, odganianie zła",
+    "Mistycyzm": "Widzenie ukrytego, przepowiednie, aury",
+    "Przywołanie": "Przywoływanie bytów — duchy, elementale, demony",
+    "Zaklęcia przedmiotów": "Magia w przedmiotach — latarnie, broń, narzędzia",
+    "Runy": "Inskrypcje magiczne — pułapki, wzmocnienia, pieczęcie",
+    "Utrwalanie magic": "Zatrzymywanie magii w przedmiotach na stałe"
+  };
   html += '<div style="margin-bottom:10px;"><span style="color:#b0a0e0;font-weight:bold;font-size:14px;">Umagicznienie</span>';
   magicGroups.forEach(g => {
-    html += '<div style="margin-left:8px;margin-top:3px;"><span style="color:#ddd;font-size:13px;">' + g.icon + ' ' + g.name + ':</span> ';
-    html += '<span style="color:#888;font-size:12px;">' + g.skills.join(', ') + '</span>';
+    html += '<div style="margin-left:8px;margin-top:3px;"><span style="color:#ddd;font-size:13px;">' + g.icon + ' ' + g.name + '</span>';
+    g.skills.forEach(sk => {
+      const desc = md[sk] || '';
+      html += '<div style="margin-left:16px;color:#777;font-size:11px;line-height:1.4;"><span style="color:#aaa;">' + sk + '</span> — ' + desc + '</div>';
+    });
     html += '</div>';
   });
   html += '</div>';
