@@ -368,6 +368,20 @@ h2 {
 .gm-stat { color: #ffd700; font-weight: bold; }
 #page-gm .card { max-width: 800px; }
 
+/* Player Maps page */
+.player-map-card { background: #1a1a1a; border-left: 3px solid #27ae60; padding: 16px 20px; border-radius: 6px; margin: 20px 0; }
+.player-map-card.hidden { display: none; }
+.player-map-title { font-weight: bold; font-size: 16px; color: #7ec87e; margin-bottom: 8px; }
+.player-map-desc { color: #aaa; font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+.player-map-ascii { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; padding: 16px; font-family: monospace; font-size: 11px; line-height: 1.35; color: #7ec87e; white-space: pre; overflow-x: auto; }
+.player-map-unlock { display: flex; gap: 10px; align-items: center; margin: 16px 0; flex-wrap: wrap; }
+.player-map-unlock input { max-width: 180px; text-transform: uppercase; letter-spacing: 2px; font-size: 16px; text-align: center; font-family: monospace; margin: 0; }
+.player-map-unlock button { margin: 0; }
+.player-map-unlock-msg { font-size: 13px; margin-top: 8px; }
+.player-map-unlock-msg.ok { color: #7ec87e; }
+.player-map-unlock-msg.err { color: #e07070; }
+#page-maps .card { max-width: 600px; }
+
 @media print {
   body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-size: 9pt; }
   .page { display: none !important; }
@@ -454,6 +468,7 @@ h2 {
     </p>
     <button class="nav-btn" onclick="location.hash='#create'">✉ Wyślij zgłoszenie</button>
     <button class="nav-btn" onclick="location.hash='#view'" style="background:#333;">🔑 Zobacz swoją kartę</button>
+    <button class="nav-btn" onclick="location.hash='#maps'" style="background:#2a2a2a;color:#aaa;">🗺️ Mapy</button>
     <button class="nav-btn" onclick="location.hash='#tricks'" style="background:#2a2a2a;color:#aaa;">📜 Lista sztuczek</button>
     <button class="nav-btn" onclick="location.hash='#mechanics'" style="background:#2a2a2a;color:#aaa;">⚙️ Mechanika (MG)</button>
   </div>
@@ -636,6 +651,102 @@ h2 {
     <h2>📜 Lista sztuczek</h2>
     <p style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:16px;line-height:1.6;">Każda sztuczka wymaga min. 1 punktu w danym pakiecie umiejętności. Dodaj wybrane sztuczki do swojej karty postaci.</p>
     <div id="tricks-content"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: MAPY (dla graczy) ===== -->
+<div id="page-maps" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+    <h2>🗺️ Mapy</h2>
+    <p style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:20px;line-height:1.6;">Odkrywaj lokacje w miarę postępów sesji. MG poda hasło do kolejnej mapy, gdy dotrzecie w nowe miejsce.</p>
+
+    <!-- MAPA 1: Polana Misterium (widoczna od razu) -->
+    <div id="player-map-1" class="player-map-card">
+      <div class="player-map-title">Polana Misterium</div>
+      <div class="player-map-desc">Tajna polana w Lesie Cichych Dębów. Tu zwołano Misterium — zgromadzenie przedstawicieli gildii złodziejskich. Kamienny stół, latarnie ze świetlikami, zapach wilgoci i spisku.</div>
+      <div class="player-map-ascii">        🌲  🌲
+     🌲      ⬡      🌲
+    🌲   POLANA   🌲
+     🌲  MISTERIUM  🌲
+      🌲  kamienny  🌲
+       🌲  stół  🌲
+        🌲🌲🌲🌲
+         ścieżki
+          w las</div>
+    </div>
+
+    <!-- Unlock input -->
+    <div class="player-map-unlock">
+      <input id="maps-password-input" placeholder="Hasło do kolejnej lokacji" onkeydown="if(event.key==='Enter')unlockPlayerMap()">
+      <button onclick="unlockPlayerMap()" style="background:#27ae60;">Odkryj</button>
+    </div>
+    <div id="maps-unlock-msg" class="player-map-unlock-msg"></div>
+
+    <!-- MAPA 2: Las (hasło: LAS) -->
+    <div id="player-map-2" class="player-map-card hidden">
+      <div class="player-map-title">Las Cichych Dębów</div>
+      <div class="player-map-desc">Ścieżka przez gęsty las nocą. Dęby, korzenie, ciemność. Droga prowadzi w stronę murów Tantalos.</div>
+      <div class="player-map-ascii">  🌲🌲🌲
+ 🌲  ·····  🌲
+🌲  ścieżka  🌲
+ 🌲  do miasta  🌲
+  🌲·······🌲
+   🌲🌲🌲🌲
+    │
+    ▼
+  MURY TANTALOS</div>
+    </div>
+
+    <!-- MAPA 3: Miasto (hasło: MIASTO) -->
+    <div id="player-map-3" class="player-map-card hidden">
+      <div class="player-map-title">Tantalos — wejście do miasta</div>
+      <div class="player-map-desc">Mury miasta. Brama główna, stare pęknięcia w murze przy Dzielnicy Rybaków, kanały pod rzeką. Straż na bramach.</div>
+      <div class="player-map-ascii">  ═══ MURY ═══
+ ║  BRAMA  ║  pęknięcie  ║ kanały
+ ║ główna  ║  w murze    ║ (pod rzeką)
+ ╠═════════╩════════════╣
+ ║                     ║
+ ║    TANTALOS         ║
+ ║   ulice, straże     ║
+ ║   listy gończe?     ║
+ ╚═════════════════════╝</div>
+    </div>
+
+    <!-- MAPA 4: Rezydencja (hasło: REZYDENCJA) -->
+    <div id="player-map-4" class="player-map-card hidden">
+      <div class="player-map-title">Posiadłość Hrabiego Morrigana</div>
+      <div class="player-map-desc">Dzielnica Brązowa. Trzypiętrowa rezydencja z ogrodami i murem. Brama, wejście boczne od kuchni. Kolacja w toku — chaos i kelnerzy.</div>
+      <div class="player-map-ascii">    BRAMA
+       │
+  ┌────┴────┐
+  │ DZIEDZ. │  powozy, goście
+  │    │    │
+  │  REZYDENCJA
+  │  parter: sala bankietowa
+  │  piętro: gabinet Hrabiego
+  │  piwnica: skarbiec
+  └─────────┘
+   wejście boczne (kuchnia)</div>
+    </div>
+
+    <!-- MAPA 5: Skarbiec (hasło: SKARBIEC) -->
+    <div id="player-map-5" class="player-map-card hidden">
+      <div class="player-map-title">Skarbiec</div>
+      <div class="player-map-desc">Podziemna komnata pod rezydencją. Na piedestale — Serce Króla. Posąg z brązu i obsydianu. Ciężki, emanuje czymś dziwnym.</div>
+      <div class="player-map-ascii">  ┌─────────────┐
+  │   SKARBIEC   │
+  │             │
+  │    [    ]   │
+  │    [ARTE-]  │
+  │    [FAKT ]  │
+  │    [    ]   │
+  │  piedestał  │
+  │             │
+  └─────────────┘
+  drzwi z zamkiem
+  (klucz u Hrabiego)</div>
+    </div>
   </div>
 </div>
 
@@ -1575,6 +1686,10 @@ PIĘTRO 2 — gabinet Hrabiego
       <div id="gm-maps" class="gm-act" style="border-left-color:#2980b9;">
         <div class="gm-act-title" style="color:#2980b9;">Mapy</div>
 
+        <div class="gm-tip" style="margin-top:0;">
+          <b style="color:#e0a040;">Mapy dla graczy</b> — strona <b>#maps</b>. Gracze widzą Polanę od razu. Podaj im hasła, gdy dotrą na miejsce: <b>LAS</b> → Las · <b>MIASTO</b> → Tantalos · <b>REZYDENCJA</b> → Posiadłość · <b>SKARBIEC</b> → Skarbiec.
+        </div>
+
         <div class="gm-section" style="border-left-color:#27ae60;">
           <div class="gm-section-title" style="color:#27ae60;">Mapa 1: Las Cichych Dębów i okolice Tantalos</div>
           <div class="gm-map">
@@ -2435,8 +2550,9 @@ function markUnsaved() { hasUnsavedChanges = true; }
 // =====================================================================
 function navigate() {
   const hash = (location.hash || '#home').slice(1);
-  ['page-home','page-create','page-view','page-tricks','page-mechanics','page-gm'].forEach(id => {
-    document.getElementById(id).style.display = 'none';
+  ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
   });
 
   if (hash === 'home' || hash === '') {
@@ -2457,6 +2573,9 @@ function navigate() {
   } else if (hash === 'tricks') {
     document.getElementById('page-tricks').style.display = 'block';
     renderTricksPage();
+  } else if (hash === 'maps') {
+    document.getElementById('page-maps').style.display = 'block';
+    restorePlayerMaps();
   } else if (hash === 'mechanics') {
     document.getElementById('page-mechanics').style.display = 'block';
     renderMechanicsSkills();
@@ -2476,6 +2595,30 @@ function unlockGm() {
   } else {
     document.getElementById('gm-login-error').style.display = 'block';
   }
+}
+
+const PLAYER_MAP_PASSWORDS = { 'LAS': 2, 'MIASTO': 3, 'REZYDENCJA': 4, 'SKARBIEC': 5 };
+const MAPS_STORAGE_KEY = 'misterium_maps_unlocked';
+function unlockPlayerMap() {
+  const input = document.getElementById('maps-password-input').value.trim().toUpperCase();
+  const msgEl = document.getElementById('maps-unlock-msg');
+  const mapId = PLAYER_MAP_PASSWORDS[input];
+  if (mapId) {
+    document.getElementById('player-map-' + mapId).classList.remove('hidden');
+    try { localStorage.setItem(MAPS_STORAGE_KEY, JSON.stringify((JSON.parse(localStorage.getItem(MAPS_STORAGE_KEY) || '[]')).concat(mapId).filter((v,i,a)=>a.indexOf(v)===i))); } catch(e) {}
+    msgEl.textContent = '✓ Odkryto nową lokację!';
+    msgEl.className = 'player-map-unlock-msg ok';
+    document.getElementById('maps-password-input').value = '';
+  } else if (input) {
+    msgEl.textContent = 'Nieprawidłowe hasło. MG poda właściwe, gdy dotrzecie na miejsce.';
+    msgEl.className = 'player-map-unlock-msg err';
+  }
+}
+function restorePlayerMaps() {
+  try {
+    const ids = JSON.parse(localStorage.getItem(MAPS_STORAGE_KEY) || '[]');
+    ids.forEach(id => { const el = document.getElementById('player-map-' + id); if (el) el.classList.remove('hidden'); });
+  } catch(e) {}
 }
 
 window.addEventListener('hashchange', navigate);
