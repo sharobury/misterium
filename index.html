@@ -399,6 +399,22 @@ h2 {
   body[data-print-page="gm-cheatsheet"] #gm-login { display: none !important; }
   body[data-print-page="gm-cheatsheet"] #gm-cheatsheet-print { display: block !important; padding: 8px !important; font-size: 7pt !important; }
   body[data-print-page="gm-cheatsheet"] #gm-cheatsheet-print .print-header { font-size: 7pt !important; }
+  body[data-print-page="gm-agenda"] #page-gm { display: block !important; }
+  body[data-print-page="gm-agenda"] #gm-content { display: none !important; }
+  body[data-print-page="gm-agenda"] #gm-login { display: none !important; }
+  body[data-print-page="gm-agenda"] #gm-agenda-cards-print { display: block !important; }
+  body[data-print-page="maps"] #page-maps { display: block !important; }
+  body[data-print-page="maps"] .maps-screen-only { display: none !important; }
+  body[data-print-page="maps"] .player-map-unlock { display: none !important; }
+  body[data-print-page="maps"] #maps-unlock-msg { display: none !important; }
+  body[data-print-page="maps"] .player-map-card.hidden { display: block !important; }
+  body[data-print-page="maps"] .player-map-card { page-break-after: always; break-after: page; padding: 12px 0 !important; }
+  body[data-print-page="maps"] .player-map-card:last-child { page-break-after: auto; break-after: auto; }
+  body[data-print-page="maps"] .player-map-card { background: white !important; border-left-color: #333 !important; }
+  body[data-print-page="maps"] .player-map-title { color: black !important; }
+  body[data-print-page="maps"] .player-map-desc { color: #333 !important; }
+  body[data-print-page="maps"] .player-map-img { border-color: #999 !important; width: 100% !important; max-width: 100% !important; }
+  body[data-print-page="maps"] .player-map-ascii { background: #f5f5f5 !important; border-color: #ccc !important; color: #333 !important; }
   .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; border-radius: 0 !important; }
   .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login, .print-hide-gracz, .print-hide-empty { display: none !important; }
   .print-header { display: block !important; text-align: center; font-size: 8pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid #ccc; margin-bottom: 6px; }
@@ -680,8 +696,8 @@ h2 {
 <div id="page-maps" class="page">
   <div class="card">
     <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
-    <h2>🗺️ Mapy</h2>
-    <p style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:20px;line-height:1.6;">Odkrywaj lokacje w miarę postępów sesji. MG poda hasło do kolejnej mapy, gdy dotrzecie w nowe miejsce.</p>
+    <h2 class="maps-screen-only">🗺️ Mapy</h2>
+    <p class="maps-screen-only" style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:20px;line-height:1.6;">Odkrywaj lokacje w miarę postępów sesji. MG poda hasło do kolejnej mapy, gdy dotrzecie w nowe miejsce.</p>
 
     <!-- Unlock input — na górze -->
     <div class="player-map-unlock">
@@ -689,6 +705,12 @@ h2 {
       <button onclick="unlockPlayerMap()" style="background:#27ae60;">Odkryj</button>
     </div>
     <div id="maps-unlock-msg" class="player-map-unlock-msg"></div>
+
+    <div class="no-print" style="margin: 20px 0; padding: 16px; background: #1a2a1a; border-radius: 8px; border: 1px solid #2a4a2a;">
+      <div style="font-size: 14px; color: #9ec89e; margin-bottom: 8px;">🖨️ Dokument do druku</div>
+      <p style="color: #888; font-size: 13px; margin: 0 0 12px 0; line-height: 1.5;">Wszystkie mapy na osobnych stronach — wygodne do wydruku dla MG lub graczy.</p>
+      <button onclick="printPage('maps')" style="background: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-family: serif; font-size: 15px;">🖨️ Drukuj wszystkie mapy</button>
+    </div>
 
     <!-- MAPA 1: Polana Misterium (widoczna od razu) -->
     <div id="player-map-1" class="player-map-card">
@@ -1094,7 +1116,7 @@ h2 {
         <div class="gm-npc">
           <div style="color:#e07070;font-weight:bold;font-size:14px;">Hrabia Vex Morrigan <span style="color:#888;font-weight:normal;">(antagonista)</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
-            <b>Kuzyn syna Lorda Morrigan</b> — nie bezpośredni spadkobierca. Po śmierci prawowitego dziedzica przejął posiadłość i obsesję na punkcie zhańbienia pamięci Ślepego Kruka. Arystokrata z gildii skrytobójców, który nie przestrzega kodeksu złodziei. Odnalazł artefakt i planuje użyć go, by publicznie upokorzyć złodziei, nie wiedząc (a może wiedząc?) że budzi golema. <b>W biurku ma jedyny dokument</b> dowodzący, że prawowitym dziedzicem Lorda Morrigana jest ktoś inny — Rastlin.
+            <b>Dalszy kuzyn</b> Lorda Morrigana — najmniej uprawniony ze wszystkich. Po śmierci prawowitego dziedzica przejął posiadłość i obsesję na punkcie zhańbienia pamięci Ślepego Kruka. <b>Umyślnie schował dokument</b> dowodzący, że prawowitymi dziedzicami są Wherk'ha (pierwsza krew) i Madziok (bękart ze Szczurakiem) — oboje mają więcej powodu do władania pałacem niż on. Arystokrata z gildii skrytobójców. Odnalazł artefakt i planuje użyć go, by publicznie upokorzyć złodziei, nie wiedząc (a może wiedząc?) że budzi golema.
             <br>
             <span class="gm-stat">Ciało: 12 · Zdolność: 14 · Psycha: 11 · Rozum: 13 · Zmysł: 10</span>
             <br><span style="color:#888;">Umiejętności: Finezja:2, Influencja:2, Wiedza:1, Reakcja:1</span>
@@ -1157,6 +1179,9 @@ h2 {
           <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Stara Cienista <span style="color:#888;font-weight:normal;">→ Wherk'ha</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
             Handlarka plotkami i „świadectwami". To ona załatwiała Wherk'ha alibi — za odpowiednią cenę potwierdzi, że była gdzie indziej. Zna jej pochodzenie. <b>Zwraca uwagę na herb</b> — szlacheckie korzenie Wherk'hi mogą się przydać przy przyjęciu szlachty w domu Hrabiego. Może ktoś z gości ją zna? Siedzi w tawernie „Zatopiony Klucz" w biedniejszej dzielnicy. Jeśli gracze potrzebują fałszywego świadka lub informacji o szlachcie — ona wie. Ale pamięta długi.
+            <br><span style="color:#888;">Rasa: pół-Normik, pół-Szczurok („Cienista" — bo znika w cieniu, nikt nie wie skąd przyszła)</span>
+            <br><span class="gm-stat">Ciało: 8 · Zdolność: 11 · Psycha: 13 · Rozum: 12 · Zmysł: 10</span>
+            <br><span style="color:#888;">Umiejętności: Influencja:2, Precyzja:1, Wiedza:1 · Słabość: nie znosi być w długu — gdy ktoś jej pomoże, musi oddać przysługę.</span>
           </div>
         </div>
 
@@ -1164,6 +1189,9 @@ h2 {
           <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Ślepy Gregor <span style="color:#888;font-weight:normal;">→ Madziok</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
             Stary szczurok, „król kanałów". To z nim Madziok kiedyś planował skok na skarbiec — mapa nieistniejącego skarbca była pomysłem Gregora (albo jego mistrza). Gregor teraz handluje informacjami w podziemiach. Wie, które kanały prowadzą pod rezydencję. Może pomóc — za przysługę. Kusza Madzioka? Gregor twierdzi, że „ktoś" ją znalazł w kanałach. Może to on.
+            <br><span style="color:#888;">Rasa: Szczurok („Ślepy" — nie dlatego że nie widzi; widzi świetnie w ciemności. Ślepy na koncept „honoru".)</span>
+            <br><span class="gm-stat">Ciało: 9 · Zdolność: 13 · Psycha: 10 · Rozum: 11 · Zmysł: 12</span>
+            <br><span style="color:#888;">Umiejętności: Percepcja:2, Gibkość:1, Wiedza:1 · Broń: nóż. Zna kanały jak własną kieszeń — bonus +3 do Orientacji w podziemiach.</span>
           </div>
         </div>
 
@@ -1171,6 +1199,9 @@ h2 {
           <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Babcia Piwonka <span style="color:#888;font-weight:normal;">→ Kubol</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
             Staruszka z chatki przy drodze do miasta (Akt II — ucieczka z lasu). Ma psa Burego i ogródek pełny ziół. <b>Była kiedyś właścicielką Kubola</b> — gdy był pieskiem (zamienił się na dłużej i zapomniał o byciu człowiekiem). Później wrócił do siebie, ale sentyment został. Dla niej Kubol to wciąż ten sam „Burek" — nie wie o przemianach. Może dać graczom schronienie na noc, jedzenie, albo wskazać skrót. Jej syn jest strażnikiem — nie wie, że matka gości złodziei. Komiczny potencjał: Kubol nie może odmówić sprawdzenia czy u niej wszystko OK.
+            <br><span style="color:#888;">Rasa: Normik (syn — pół-Normik, pół-Orkoblin, stąd „twardy w służbie")</span>
+            <br><span class="gm-stat">Ciało: 7 · Zdolność: 9 · Psycha: 12 · Rozum: 10 · Zmysł: 11</span>
+            <br><span style="color:#888;">Umiejętności: Wiedza:1 (zioła), Influencja:1 · Nie walczy. Bury (pies) C8 Z10 — gryzie na rozkaz. Syn strażnik: C12 Z9 P10 R8 Zm9.</span>
           </div>
         </div>
 
@@ -1178,6 +1209,9 @@ h2 {
           <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Liriel Złotolistna <span style="color:#888;font-weight:normal;">→ Marceyli</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
             Elfa, dawna przyjaciółka Marceyli ze świątynnych czasów. Jedyna, która udzieliła jej schronienia w Tantalos po ucieczce. Zna jej sekret — i wie, że Marceyli zgubiła odłamek. Prowadzi małą zielarnię w Dzielnicy Brązowej, blisko rezydencji. Może przekazać plotkę: „słyszałam, że Hrabia kupował dziwne kryształy od handlarza". Nie wie o golemie. Jeśli Marceyli się z nią skontaktuje — ryzyko, że ktoś ją śledzi.
+            <br><span style="color:#888;">Rasa: pół-Elf, pół-Normik („Złotolistna" — włosy jak jesienne liście, w zielarni czuje się jak w domu)</span>
+            <br><span class="gm-stat">Ciało: 8 · Zdolność: 10 · Psycha: 12 · Rozum: 13 · Zmysł: 11</span>
+            <br><span style="color:#888;">Umiejętności: Wiedza:2, Percepcja:1, Influencja:1 · Nie walczy. Zna się na ziołach i truciznach (Wiedza).</span>
           </div>
         </div>
 
@@ -1185,6 +1219,9 @@ h2 {
           <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Rzeźnik Brom <span style="color:#888;font-weight:normal;">→ Rastlin</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
             U niego Rastlin kiedyś pracował — tasak to „pożyczka na wieczność". Brom nie wie, że Rastlin jest złodziejem; myśli, że to nadal ten sam chłopak od porządków. Ma jatkę w targowej dzielnicy. Jeśli gracze potrzebują mięsa jako przynęty (dla psa, dla kogoś), Brom da „na kredyt" — bo Rastlin. Odznaka inspektora? Brom raz widział Rastlina w mundurze i był dumny. Nie pytał skąd.
+            <br><span style="color:#888;">Rasa: pół-Normik, pół-Orkoblin („Rzeźnik" — duże ręce, dobra robota. Nikt nie pyta skąd mięso.)</span>
+            <br><span class="gm-stat">Ciało: 13 · Zdolność: 9 · Psycha: 10 · Rozum: 8 · Zmysł: 9</span>
+            <br><span style="color:#888;">Umiejętności: Budowa:1, Hart:1 · Broń: tasak (jak miecz). Łapówka w mięsie — da się przekonać.</span>
           </div>
         </div>
 
@@ -1192,6 +1229,61 @@ h2 {
           <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Ojciec Szymon <span style="color:#888;font-weight:normal;">→ Hulietta</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
             Ksiądz, który przeklął Huliettę — nie wejdzie do świętych miejsc. <b>Za co:</b> Hulietta była zatrudniona przy inwentaryzacji archiwum kościelnego. Wykorzystała dostęp i ukradła teczkę „Poufne" (dokumenty — nie wiadomo po co, może dla gildii). Szymon odkrył kradzież i w gniewie rzucił klątwę: „niech nie stąpi nogą w świętym miejscu". Klątwa się przyjęła. Teraz żałuje — ale klątwa trwa. Może pojawić się w mieście podczas chaosu z golemem. Jeśli Hulietta go spotka: może oferować zdjęcie klątwy w zamian za zwrot dokumentów. Albo po prostu — niewygodne spotkanie.
+            <br><span style="color:#888;">Rasa: Normik (klątwa działa — nie wie że ma odrobinę elfiej krwi, stąd słowa miały moc)</span>
+            <br><span class="gm-stat">Ciało: 9 · Zdolność: 8 · Psycha: 14 · Rozum: 12 · Zmysł: 10</span>
+            <br><span style="color:#888;">Umiejętności: Wiedza:2, Influencja:2, Wola:1 · Nie walczy. Klątwa: raz rzucona, trudna do zdjęcia. Może negocjować.</span>
+          </div>
+        </div>
+
+        <div style="color:#9b8fb4;font-weight:bold;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px;padding-bottom:4px;border-bottom:1px solid #444;">NPC drugoplanowi — miasto pełne pół-czegoś</div>
+
+        <div class="gm-npc">
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Węgorz „Zwinny" <span style="color:#888;font-weight:normal;">— Gildia Boa</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Pół-Szczurok, pół-rybak. Znajomy z Gildii Boa — gildia złodziei specjalizująca się w kradzieżach z portu. <b>Pratchett twist:</b> „Boa" to nie wąż, tylko skrót od „Brak Ostatecznej Alternatywy" — gdy nie ma wyjścia, kradniemy. Węgorz ma fobię na wodę: wpadł kiedyś do portu i ledwo przeżył. Teraz kradnie tylko z suchych magazynów. Może dać tip o ładunku, trasie patrolu, albo „zapomnieć" zamknąć drzwi — za przysługę.
+            <br><span style="color:#888;">Rasa: pół-Szczurok, pół-Normik</span>
+            <br><span class="gm-stat">Ciało: 10 · Zdolność: 14 · Psycha: 9 · Rozum: 8 · Zmysł: 11</span>
+            <br><span style="color:#888;">Umiejętności: Finezja:2, Gibkość:1, Precyzja:1 · Słabość: test Woli (Trudny) przy wejściu na statek lub do wody.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Baron von Kesselheim <span style="color:#888;font-weight:normal;">— zna Werke</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Szlachcic pół-Elf, pół-Normik. Zna Wherk'hę z dawnych czasów — ich rody kiedyś się przyjaźniły. Na przyjęciu u Hrabiego może ją rozpoznać po herbie lub głosie. <b>Pratchett twist:</b> Von Kesselheim to jedyny szlachcic w mieście, który szczerze lubi złodziei — „przynajmniej wiedzą że kradną, nie jak ci od polityki". Może dać alibi, odwrócić uwagę, albo po prostu nie wydać. Ale ma dług u Hrabiego. Jeśli Hrabia go przyciśnie…
+            <br><span style="color:#888;">Rasa: pół-Elf, pół-Normik</span>
+            <br><span class="gm-stat">Ciało: 9 · Zdolność: 10 · Psycha: 13 · Rozum: 12 · Zmysł: 11</span>
+            <br><span style="color:#888;">Umiejętności: Influencja:2, Wiedza:1 · Broń: szpada (dekoracyjna, ale ostra). Konflikt lojalności: dług vs przyjaźń.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Klik „Trafny" <span style="color:#888;font-weight:normal;">— handlarz kusz</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Goblin (pół-Goblin, pół-Szczurok — „najmniejszy goblin w mieście, ale z palcami szczura"). Sprzedaje kusze w bazarze pod mostem. <b>Pratchett twist:</b> Jego kusze są „trafne" — nie dlatego że celne, tylko że „trafiają w punkt"… ceny. Zawsze w kieszeń klienta. Jedna z jego kusz to ta zgubiona przez Madzioka? „Znalazłem w kanale. Legitymacja? Jaka legitymacja. Kup albo idź." Może handlować, może wiedzieć coś o bełtach Kotów.
+            <br><span style="color:#888;">Rasa: pół-Goblin, pół-Szczurok</span>
+            <br><span class="gm-stat">Ciało: 8 · Zdolność: 12 · Psycha: 11 · Rozum: 10 · Zmysł: 13</span>
+            <br><span style="color:#888;">Umiejętności: Praktyka:2, Influencja:1, Percepcja:1 · Broń: kusza pod ladą. Zna wartość każdego przedmiotu na pierwszy rzut oka.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Sierżant Grom <span style="color:#888;font-weight:normal;">— strażnik, Orkoblin</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Orkoblin w straży miejskiej. Jeden z nielicznych „pełnoprawnych" — wstąpił do służby żeby udowodnić że „nie wszyscy Orkobliny to bandyci". <b>Pratchett twist:</b> Jest uczciwy. Naprawdę. To go irytuje, bo koledzy biorą łapówki i on musi udawać że nie widzi. Może być sojusznikiem graczy — jeśli zobaczą w nim człowieka (orkoblina?) honoru. Albo zagrożeniem — jeśli uznają go za „tylko strażnika". Przy bramie, patrolach. Zna Kapitan Rorke — szanuje go, mimo że Rorke bierze.
+            <br><span style="color:#888;">Rasa: Orkoblin</span>
+            <br><span class="gm-stat">Ciało: 13 · Zdolność: 10 · Psycha: 11 · Rozum: 9 · Zmysł: 10</span>
+            <br><span style="color:#888;">Umiejętności: Hart:1, Budowa:1, Reakcja:1 · Broń: halabarda. Nie da się przekupić. Influencja (szacunek, honor) — może zadziałać.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Pani Miodowa <span style="color:#888;font-weight:normal;">— karczmarka</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Pół-Piesołak, pół-Normik. Właścicielka „Zatopionego Klucza" — tej samej tawerny co Stara Cienista. <b>Pratchett twist:</b> Nie zmienia się w psa. Zmienia się w pszczołę. Jedną. Wielką. „Miód to mój interes, dosłownie." Ma ule na dachu. Gdy ktoś robi problemy — brzęczy. Wtedy wchodzi „kuzyn" (też pół-pszczoła, pół-coś). Może dać schronienie, jedzenie, plotkę — za spokój w lokalu.
+            <br><span style="color:#888;">Rasa: pół-Piesołak (pszczeli wariant), pół-Normik</span>
+            <br><span class="gm-stat">Ciało: 10 · Zdolność: 11 · Psycha: 12 · Rozum: 10 · Zmysł: 13</span>
+            <br><span style="color:#888;">Umiejętności: Influencja:2, Percepcja:1 · Słyszy wszystko w swojej tawernie. „Kuzyn" C9 Z12 P8 R7 Zm14 — gdy brzęczy, leci.</span>
           </div>
         </div>
       </div>
@@ -1204,15 +1296,15 @@ h2 {
 
         <div class="gm-pc">
           <b style="color:#ffd700;">Wherk'ha „Sprytny Cień"</b> <span style="color:#888;">· Pół elf · Zmysł 15, Psycha 14</span><br>
-          <span style="color:#aaa;">Influencja:2. Alibi zawsze gotowe. Miecz z prawdziwym herbem. Słyszy przez ściany.</span><br>
+          <span style="color:#aaa;">Dziedziczka pierwszej krwi Lorda Morrigana — dokument w biurku Hrabiego to dowód. Hrabia umyślnie go schował. Influencja:2. Alibi zawsze gotowe. Miecz z prawdziwym herbem. Słyszy przez ściany.</span><br>
           <span style="color:#e07070;">Wada: nie potrafi kłamać — od razu po niej widać, że coś kręci. Tłumaczy alibi zanim ktoś spyta.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: Słysząc przez ścianę sali bankietowej — podsłuchuje rozmowę Hrabiego z dowódcą Kotów. Dowiaduje się czegoś krytycznego (gdzie klucz, plany ceremonii). Albo: miecz z herbem — przy kolacji może podszyć się pod szlachcica z gości, jeśli rozpozna herb i wykorzysta alibi.</span>
+          <span style="color:#b0a0e0;">KLUCZ: Dokument dziedzictwa — w biurku na 2. piętrze (Hrabia go schował). Dowodzi, że jesteś dziedziczką pierwszej krwi. Słysząc przez ścianę — podsłuchuje rozmowę Hrabiego. Miecz z herbem — przy kolacji może podszyć się pod gościa.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Madziok „Inspektor Cudzych Kieszeni"</b> <span style="color:#888;">· Szczurok · Zdolność 14, Luck 6</span><br>
-          <span style="color:#aaa;">Mega szybkie palce. Mapa nieistniejącego skarbca. Kusza zaginiona, bełt jako sztylet.</span><br>
+          <span style="color:#aaa;">Bękart Lorda Morrigana (ze Szczurakiem) — dokument w biurku dowodzi też twojego dziedzictwa. Wherk'ha to pierwsza krew, ty bękart — oboje macie więcej praw niż Hrabia. Mapa nieistniejącego skarbca. Mega szybkie palce. Kusza zaginiona, bełt jako sztylet.</span><br>
           <span style="color:#e07070;">Wada: kichanie w najgłębszej ciszy.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: Mapa „nieistniejącego skarbca" — w piwnicy rozpoznaje układ. To ten sam architekt, te same plany. Wie gdzie pułapki, ukryte przejście albo słaby punkt. „Znałem ten skarbiec zanim tu wszedłem."</span>
+          <span style="color:#b0a0e0;">KLUCZ: Dokument dziedzictwa — w biurku (obok klucza i odłamka Marceyli). Hrabia go schował. Dowodzi twojego bękarciego dziedzictwa — pałac może być twój. Mapa — w piwnicy rozpoznaje układ skarbca.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Kubol „Otwarta Księga"</b> <span style="color:#888;">· Piesołak · Ciało 14, Chyżość:3</span><br>
@@ -1228,9 +1320,9 @@ h2 {
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Rastlin „Samozwańczy Kruk"</b> <span style="color:#888;">· Pół Łylf · Percepcja:2, Luck 6</span><br>
-          <span style="color:#aaa;">Benkart Lorda Morrigana — teoretycznie posiadłość powinna należeć do niego. Hrabia to tylko kuzyn syna Lorda, nie prawowity spadkobierca. Jedyny dokument dowodzący dziedzictwa Rastlina jest w biurku Hrabiego. Odznaka inspektora nieznanej służby. Tasak rzeźnika. Niemiła aura, drzwi się zatrzaskują.</span><br>
+          <span style="color:#aaa;">W skarbcu jest coś więcej niż artefakt — stary dokument. Musi go znaleźć i zabrać, zanim grupa wyjdzie. Odznaka inspektora nieznanej służby. Tasak rzeźnika. Niemiła aura, drzwi się zatrzaskują.</span><br>
           <span style="color:#e07070;">Wada: drzwi same się zatrzaskują (niemiła aura — ciężko go polubić).</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: Dokument dziedzictwa — w biurku Hrabiego na 2. piętrze (obok klucza zapasowego i odłamka Marceyli). Bez niego Rastlin nie udowodni praw do posiadłości. Odznaka — gdy Koty lub straż zatrzymują grupę, bluff Psycha+Influencja.</span>
+          <span style="color:#b0a0e0;">KLUCZ: Stary dokument w skarbcu — obok artefaktu/golema. Rastlin musi go wyciągnąć dyskretnie. Odznaka — gdy Koty lub straż zatrzymują grupę, bluff Psycha+Influencja.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Hulietta Królik „Technik ds. Mechanizmów Zamykających"</b> <span style="color:#888;">· Pół Reptilianin · Finezja:2, Precyzja:3</span><br>
@@ -1249,6 +1341,7 @@ h2 {
 
         <div style="margin-bottom:14px;">
           <button onclick="rollSecretAgenda()" style="background:#c0392b;color:white;border:none;padding:10px 18px;border-radius:6px;font-size:15px;cursor:pointer;font-weight:bold;">🎲 Wylosuj gracza z ukrytą agendą</button>
+          <button onclick="printPage('gm-agenda')" style="background:#8b4513;color:white;border:none;padding:10px 18px;border-radius:6px;font-size:15px;cursor:pointer;margin-left:10px;">🖨️ Drukuj karteczki</button>
           <div id="gm-agenda-result" style="margin-top:12px;padding:12px;background:#2a1a1a;border-radius:6px;border-left:3px solid #c0392b;display:none;">
             <div style="color:#ffd700;font-weight:bold;font-size:16px;margin-bottom:8px;" id="gm-agenda-who"></div>
             <div style="color:#ccc;font-size:14px;line-height:1.7;margin-bottom:10px;" id="gm-agenda-text"></div>
@@ -1258,11 +1351,11 @@ h2 {
 
         <div style="color:#888;font-size:12px;margin-bottom:8px;">Wszystkie agendy (do wyboru ręcznego, jeśli nie losujesz):</div>
         <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
-          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;width:140px;">Wherk'ha</td><td>Upewnij się, że Hrabia przeżyje — jest ci winien przysługę (dawny dług rodzinny).</td></tr>
-          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Madziok</td><td>W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie.</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;width:140px;">Wherk'ha</td><td>Jesteś dziedziczką pierwszej krwi Lorda Morrigana. Hrabia schował dokument w biurku. Zabierz go — zostaniesz prawdziwym szlachcicem. Jak się dogadacie z Madziokiem — wasza sprawa.</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Madziok</td><td>Jesteś bękartem Lorda Morrigana (ze Szczurakiem). Dokument w biurku dowodzi też twojego dziedzictwa. Hrabia go schował. Zabierz go — oboje z Wherk'hą macie więcej praw niż on. Kto pierwszy znajdzie — albo jak się dogadacie.</td></tr>
           <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Kubol</td><td>Ambicja wspinacza. Udowodnij że wespniesz się na wszystko, nawet jeśli jest to 20-metrowy golem. Pojawia się dopiero po wzroście golema do dużych rozmiarów.</td></tr>
           <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Marceyli</td><td>Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa.</td></tr>
-          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Rastlin</td><td>Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku). Zabierz go, zanim rezydencja stanie się gruzem.</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Rastlin</td><td>W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie.</td></tr>
           <tr><td style="padding:6px 0;color:#ffd700;">Hulietta</td><td>Zbierz tyle złota ze skarbca ile uniesiesz by wesprzeć fundusz ratowania ginących zawodów ze wsparciem Gildii Złodzieji albo wesprzyj plan Hrabiego by stał się sponsorem zegarmistrzów.</td></tr>
         </table>
       </div>
@@ -1302,7 +1395,7 @@ h2 {
             <br><br>
             Puka palcem w herb na mapie: kot z zielonymi oczami.
             <br><br>
-            „Hrabia Vex Morrigan. Kuzyn syna Lorda Morrigan — tego samego, który przegrał z Krukiem trzydzieści lat temu i do śmierci twierdził, że został oszukany. Nie prawowity spadkobierca, ale przejął posiadłość. Odziedziczył urazę i słaby gust."
+            „Hrabia Vex Morrigan. Dalszy kuzyn Lorda Morrigan — tego samego, który przegrał z Krukiem trzydzieści lat temu. Nie prawowity spadkobierca, przejął posiadłość i umyślnie schował dokument dowodzący prawdziwych dziedziców. Odziedziczył urazę i słaby gust."
             <br><br>
             „Nasi informatorzy donoszą, że Hrabia trzyma artefakt w swojej rezydencji w mieście. Za dwa dni ceremonia. Bez artefaktu — żadnego pokoju ze skrytobójcami, a złodzieje z Tantalos staną się pośmiewiskiem kontynentu."
             <br><br>
@@ -1604,7 +1697,7 @@ h2 {
                 <div style="color:#ccc;font-size:13px;">
                   Hrabia nosi klucz na łańcuszku pod koszulą. Jest na kolacji w sali bankietowej.
                   <br><b>Opcja A — Madziok kradnie klucz:</b> <span class="gm-test">Zdolność + Finezja, Trudny</span> (bo Hrabia jest czujny). Z Luck 6, może zużyć szczęście.
-                  <br><b>Opcja B — Klucz zapasowy:</b> W gabinecie na 2. piętrze, w biurku. Zamek biurka: <span class="gm-test">Zdolność + Precyzja, Zwykły</span> (Hulietta trivial). W biurku są też: odłamek Marceyli, <b>dokument dziedzictwa Rastlina</b> (jedyny dowód, że jest benkartem Lorda Morrigana).
+                  <br><b>Opcja B — Klucz zapasowy:</b> W gabinecie na 2. piętrze, w biurku. Zamek biurka: <span class="gm-test">Zdolność + Precyzja, Zwykły</span> (Hulietta trivial). W biurku są też: odłamek Marceyli, <b>dokument dziedzictwa</b> (Hrabia go schował — dowodzi, że Wherk'ha to dziedziczka pierwszej krwi, Madziok bękart ze Szczurakiem; oboje mają więcej praw niż Hrabia).
                   <br><b>Opcja C — Kubol wyważa drzwi skarbca:</b> <span class="gm-test">Ciało + Budowa, Trudny</span> — drzwi solidne. HAŁAS, alarmuje strażników.
                 </div>
               </div>
@@ -1645,7 +1738,7 @@ h2 {
         <div class="gm-section" style="border-left-color:#ffd700;">
           <div class="gm-section-title" style="color:#ffd700;">Skarbiec — Znalezienie Artefaktu</div>
           <div style="color:#ccc;font-size:14px;line-height:1.7;">
-            Skarbiec jest mały — 4x4 metry. Na piedestale w centrum stoi <b>Serce z Gliny</b>: posąg z brązu i obsydianu, wielkości ludzkiego torsu, przedstawiający skurczoną humanoidalną figurę z zamkniętymi oczami. Jest ciężki (~80 kg).
+            Skarbiec jest mały — 4x4 metry. Na piedestale w centrum stoi <b>Serce z Gliny</b>: posąg z brązu i obsydianu, wielkości ludzkiego torsu, przedstawiający skurczoną humanoidalną figurę z zamkniętymi oczami. Jest ciężki (~80 kg). Obok artefaktu leży też <b>stary dokument</b> — Rastlin ma ukrytą agendę, by go zabrać (→ Ukryta agenda).
           </div>
 
           <div class="gm-read">
@@ -1657,7 +1750,7 @@ h2 {
           <div class="gm-tip">
             <b style="color:#e0a040;">Marceyli i odłamek kamienia:</b> Marceyli odczuwa obecność swojego zgubionego odłamka — jest w biurku Hrabiego (Hrabia znalazł go lub kupił, nie wie że to jej). Może go odzyskać przed aktywacją golema. <b>Jeśli odzyska PRZED aktywacją</b> — może użyć do kontroli lub zatrzymania golema. <b>Jeśli golem połknie kamień</b> (np. Hrabia w desperacji wetknie go w golema próbując „kontrolować") — transmutuje wszystko w pozorne złoto, katastrofa mnoży się wielokrotnie.
             <br><br>
-            <b style="color:#e0a040;">Rastlin i dokument dziedzictwa:</b> W biurku leży jedyny dokument dowodzący, że Rastlin jest benkartem Lorda Morrigana — prawowitym dziedzicem posiadłości. Hrabia to kuzyn, który przejął majątek. Bez dokumentu Rastlin nie udowodni swoich praw.
+            <b style="color:#e0a040;">Wherk'ha i Madziok — dokument dziedzictwa:</b> W biurku leży dokument, który Hrabia umyślnie schował. Dowodzi, że Wherk'ha to dziedziczka pierwszej krwi, Madziok — bękart ze Szczurakiem. Oboje mają więcej powodu do władania pałacem niż Hrabia. Jak się dogadają — zostawiamy graczom. Albo kto pierwszy znajdzie dokument.
             <br><br>
             <b>Inskrypcja w głowie golema:</b> Jak w prawdziwej legendzie — w głowie jest inskrypcja. Ktoś z Wiedzą może znać ten fakt. Zetarcie inskrypcji zatrzymuje golema. <span class="gm-test">Rozum + Wiedza, Problemowy</span> — by odczytać ostrzeżenie na piedestale.
           </div>
@@ -1801,7 +1894,9 @@ h2 {
             <li><b>Ceremonia:</b> Odbywa się, ale bez zakopywania artefaktu. Zamiast tego — uroczyste ogłoszenie, że Ślepy Kruk był obrońcą miasta. Pomnik zamiast grobu.</li>
             <li><b>Marceyli:</b> Jeśli odzyskała i użyła odłamka — zyskuje go z powrotem. Jej prawdziwy motyw kradzieży pozostaje jej tajemnicą.</li>
             <li><b>Hrabia Morrigan:</b> Aresztowany, uciekł, lub zamieniony w złoto — zależnie od akcji graczy. Jego reputacja zniszczona.</li>
-            <li><b>Rastlin:</b> Jeśli zdobył dokument dziedzictwa — może dochodzić praw do posiadłości. Epilog: proces o zwrot majątku, albo cicha ugoda z władzami miasta. „Samozwańczy Kruk" staje się prawowitym dziedzicem.</li>
+            <li><b>Wherk'ha:</b> Jeśli zdobyła dokument — może dochodzić praw jako dziedziczka pierwszej krwi. Epilog: prawdziwy szlachcic.</li>
+            <li><b>Madziok:</b> Jeśli zdobył dokument — może dochodzić praw jako bękart. Epilog: pałac może być jego, mimo bękarciego pochodzenia.</li>
+            <li><b>Rastlin:</b> Jeśli zdobył stary dokument ze skarbca — jego ukryta agenda. Epilog zależny od treści dokumentu.</li>
           </ul>
         </div>
 
@@ -2037,8 +2132,8 @@ h2 {
       <div style="columns:2;column-gap:16px;">
         <div>
           <b>FABUŁA</b> Artefakt Ślepego Kruka skradziony przez Hrabiego. Za 2 dni ceremonia — bez artefaktu złodzieje stracą twarz. Gracze = delegaci na Misterium. <b>Twist:</b> Artefakt = uśpiony Golem. Ślepy Kruk go ukrył, by chronić miasto.
-          <br><br><b>NPC</b> <b>Hrabia Vex:</b> antagonista, biurko 2p. ma dokument Rastlina + odłamek Marceyli + klucz zapasowy. C12 Z14 P11 R13 Zm10. Rapier +2 Finezja. <b>Mistrz Kluczy:</b> zabity pierwszym bełtem. <b>Koty:</b> 5–8, dymne bomby, ikonografy FLASH (karykatury → listy gończe). C11 Z12 P8 R7 Zm10. <b>Golem:</b> C20 Z6 Zm5, pancerz 8. Słabości: woda, zetarcie inskrypcji w głowie, odłamek Marceyli. Kamień w golemie = transmutacja w złoto, katastrofa.
-          <br><br><b>GRACZE — KLUCZE</b> Wherk'ha: podsłuch przez ścianę / herb na kolacji. Madziok: mapa = ten sam architekt, zna pułapki. Kubol: klucz pasuje do starych drzwi / Babcia Piwonka. Marceyli: odłamek w biurku — odzyskać PRZED aktywacją! Rastlin: dokument dziedzictwa w biurku. Hulietta: zamek skarbca.
+          <br><br><b>NPC</b> <b>Hrabia Vex:</b> antagonista, biurko 2p. ma dokument dziedzictwa (Wherk'ha + Madziok) + odłamek Marceyli + klucz zapasowy. C12 Z14 P11 R13 Zm10. Rapier +2 Finezja. <b>Mistrz Kluczy:</b> zabity pierwszym bełtem. <b>Koty:</b> 5–8, dymne bomby, ikonografy FLASH (karykatury → listy gończe). C11 Z12 P8 R7 Zm10. <b>Golem:</b> C20 Z6 Zm5, pancerz 8. Słabości: woda, zetarcie inskrypcji w głowie, odłamek Marceyli. Kamień w golemie = transmutacja w złoto, katastrofa.
+          <br><br><b>GRACZE — KLUCZE</b> Wherk'ha, Madziok: dokument dziedzictwa w biurku (Hrabia schował — oboje dziedzice). Madziok: mapa = ten sam architekt. Kubol: klucz / Babcia Piwonka. Marceyli: odłamek w biurku — PRZED aktywacją! Rastlin: stary dokument w skarbcu. Hulietta: zamek skarbca.
         </div>
         <div>
           <b>AKT I</b> Polana → przemówienie → ATAK (Mistrz Kluczy ginie, FLASH, 6 Kotów). Unik FLASH: Zdol+Reakcja Problemowy. Przesłuchanie: Psycha+Influencja Problemowy.
@@ -2061,6 +2156,43 @@ h2 {
       <div style="margin-top:6px;font-size:7pt;">
         <b>Trudności:</b> Łatwy +2 · Zwykły 0 · Problemowy −2 · Trudny −5 · Złożony −8
         &nbsp;|&nbsp; <b>Timing:</b> I ~45min · II ~30min · III ~45min · IV ~60–90min · V ~45–60min · Epilog ~15min
+      </div>
+    </div>
+
+    <!-- KARTECZKI UKRYTA AGENDA (ukryte, widoczne tylko przy druku gm-agenda) -->
+    <div id="gm-agenda-cards-print" style="display:none;font-size:10pt;line-height:1.5;color:#333;padding:12px;">
+      <div class="print-header">Misterium Skarbów i Cieni — Karteczki Ukryta Agenda</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+        <div class="agenda-card" style="border:2px dashed #999;padding:12px;break-inside:avoid;">
+          <div style="font-weight:bold;font-size:12pt;margin-bottom:8px;color:#c0392b;">Wherk'ha „Sprytny Cień"</div>
+          <div style="font-size:9pt;">Jesteś dziedziczką pierwszej krwi Lorda Morrigana. Hrabia schował dokument w biurku. Zabierz go — zostaniesz prawdziwym szlachcicem. Jak się dogadacie z Madziokiem — wasza sprawa.</div>
+          <div style="font-size:8pt;color:#888;margin-top:8px;">→ Nie ujawniaj innym.</div>
+        </div>
+        <div class="agenda-card" style="border:2px dashed #999;padding:12px;break-inside:avoid;">
+          <div style="font-weight:bold;font-size:12pt;margin-bottom:8px;color:#c0392b;">Madziok „Szczurak"</div>
+          <div style="font-size:9pt;">Jesteś bękartem Lorda Morrigana (ze Szczurakiem). Dokument w biurku dowodzi też twojego dziedzictwa. Hrabia go schował. Zabierz go — oboje z Wherk'hą macie więcej praw niż on. Kto pierwszy znajdzie — albo jak się dogadacie.</div>
+          <div style="font-size:8pt;color:#888;margin-top:8px;">→ Nie ujawniaj innym.</div>
+        </div>
+        <div class="agenda-card" style="border:2px dashed #999;padding:12px;break-inside:avoid;">
+          <div style="font-weight:bold;font-size:12pt;margin-bottom:8px;color:#c0392b;">Kubol „Wspinacz"</div>
+          <div style="font-size:9pt;">Ambicja wspinacza. Udowodnij że wespniesz się na wszystko, nawet jeśli jest to 20-metrowy golem. Pojawia się dopiero po wzroście golema do dużych rozmiarów.</div>
+          <div style="font-size:8pt;color:#888;margin-top:8px;">→ Nie ujawniaj innym.</div>
+        </div>
+        <div class="agenda-card" style="border:2px dashed #999;padding:12px;break-inside:avoid;">
+          <div style="font-weight:bold;font-size:12pt;margin-bottom:8px;color:#c0392b;">Marceyli „Odłamek"</div>
+          <div style="font-size:9pt;">Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa.</div>
+          <div style="font-size:8pt;color:#888;margin-top:8px;">→ Nie ujawniaj innym.</div>
+        </div>
+        <div class="agenda-card" style="border:2px dashed #999;padding:12px;break-inside:avoid;">
+          <div style="font-weight:bold;font-size:12pt;margin-bottom:8px;color:#c0392b;">Rastlin „Księgarz"</div>
+          <div style="font-size:9pt;">W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie.</div>
+          <div style="font-size:8pt;color:#888;margin-top:8px;">→ Nie ujawniaj innym.</div>
+        </div>
+        <div class="agenda-card" style="border:2px dashed #999;padding:12px;break-inside:avoid;">
+          <div style="font-weight:bold;font-size:12pt;margin-bottom:8px;color:#c0392b;">Hulietta „Zegarmistrz"</div>
+          <div style="font-size:9pt;">Zbierz tyle złota ze skarbca ile uniesiesz by wesprzeć fundusz ratowania ginących zawodów ze wsparciem Gildii Złodzieji albo wesprzyj plan Hrabiego by stał się sponsorem zegarmistrzów.</div>
+          <div style="font-size:8pt;color:#888;margin-top:8px;">→ Nie ujawniaj innym.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2790,11 +2922,11 @@ function unlockGm() {
 }
 
 const SECRET_AGENDAS = [
-  { who: "Wherk'ha 'Sprytny Cień'", text: "Upewnij się, że Hrabia przeżyje — jest ci winien przysługę (dawny dług rodzinny). Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Madziok 'Inspektor Cudzych Kieszeni'", text: "W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie. Nie mów nikomu. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Wherk'ha 'Sprytny Cień'", text: "Jesteś dziedziczką pierwszej krwi Lorda Morrigana. Hrabia schował dokument w biurku (2. piętro). Zabierz go — zostaniesz prawdziwym szlachcicem. Jak się dogadacie z Madziokiem — wasza sprawa. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Madziok 'Inspektor Cudzych Kieszeni'", text: "Jesteś bękartem Lorda Morrigana (ze Szczurakiem). Dokument w biurku dowodzi też twojego dziedzictwa — Hrabia go schował. Zabierz go. Oboje z Wherk'hą macie więcej praw niż on. Kto pierwszy znajdzie — albo jak się dogadacie. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
   { who: "Kubol 'Otwarta Księga'", text: "Ambicja wspinacza. Udowodnij że wespniesz się na wszystko, nawet jeśli jest to 20-metrowy golem. Pojawia się dopiero po wzroście golema do dużych rozmiarów. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
   { who: "Marceyli 'Zawieszona Zagadka'", text: "Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Rastlin 'Samozwańczy Kruk'", text: "Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku na 2. piętrze). Zabierz go, zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Rastlin 'Samozwańczy Kruk'", text: "W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie. Nie mów nikomu. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
   { who: "Hulietta Królik 'Technik ds. Mechanizmów Zamykających'", text: "Zbierz tyle złota ze skarbca ile uniesiesz by wesprzeć fundusz ratowania ginących zawodów ze wsparciem Gildii Złodzieji albo wesprzyj plan Hrabiego by stał się sponsorem zegarmistrzów." }
 ];
 function rollSecretAgenda() {
