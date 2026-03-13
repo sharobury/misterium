@@ -374,6 +374,8 @@ h2 {
 .player-map-title { font-weight: bold; font-size: 16px; color: #7ec87e; margin-bottom: 8px; }
 .player-map-desc { color: #aaa; font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
 .player-map-ascii { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; padding: 16px; font-family: monospace; font-size: 11px; line-height: 1.35; color: #7ec87e; white-space: pre; overflow-x: auto; }
+.player-map-img { max-width: 100%; width: 400px; height: auto; border-radius: 6px; border: 1px solid #333; display: block; }
+.player-map-img-wrap { margin: 12px 0; }
 .player-map-unlock { display: flex; gap: 10px; align-items: center; margin: 16px 0; flex-wrap: wrap; }
 .player-map-unlock input { max-width: 180px; text-transform: uppercase; letter-spacing: 2px; font-size: 16px; text-align: center; font-family: monospace; margin: 0; }
 .player-map-unlock button { margin: 0; }
@@ -666,7 +668,9 @@ h2 {
     <div id="player-map-1" class="player-map-card">
       <div class="player-map-title">Polana Misterium</div>
       <div class="player-map-desc">Tajna polana w Lesie Cichych Dębów. Tu zwołano Misterium — zgromadzenie przedstawicieli gildii złodziejskich. Kamienny stół, latarnie ze świetlikami, zapach wilgoci i spisku.</div>
-      <div class="player-map-ascii">        🌲  🌲
+      <div class="player-map-img-wrap">
+        <img class="player-map-img" src="images/maps/map-1-polana.png" alt="Polana Misterium" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+        <div class="player-map-ascii" style="display:none;">        🌲  🌲
      🌲      ⬡      🌲
     🌲   POLANA   🌲
      🌲  MISTERIUM  🌲
@@ -675,6 +679,7 @@ h2 {
         🌲🌲🌲🌲
          ścieżki
           w las</div>
+      </div>
     </div>
 
     <!-- Unlock input -->
@@ -688,7 +693,9 @@ h2 {
     <div id="player-map-2" class="player-map-card hidden">
       <div class="player-map-title">Las Cichych Dębów</div>
       <div class="player-map-desc">Ścieżka przez gęsty las nocą. Dęby, korzenie, ciemność. Droga prowadzi w stronę murów Tantalos.</div>
-      <div class="player-map-ascii">  🌲🌲🌲
+      <div class="player-map-img-wrap">
+        <img class="player-map-img" src="images/maps/map-2-las-i-brama.png" alt="Las Cichych Dębów" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+        <div class="player-map-ascii" style="display:none;">  🌲🌲🌲
  🌲  ·····  🌲
 🌲  ścieżka  🌲
  🌲  do miasta  🌲
@@ -697,13 +704,16 @@ h2 {
     │
     ▼
   MURY TANTALOS</div>
+      </div>
     </div>
 
     <!-- MAPA 3: Miasto (hasło: MIASTO) -->
     <div id="player-map-3" class="player-map-card hidden">
       <div class="player-map-title">Tantalos — wejście do miasta</div>
       <div class="player-map-desc">Mury miasta. Brama główna, stare pęknięcia w murze przy Dzielnicy Rybaków, kanały pod rzeką. Straż na bramach.</div>
-      <div class="player-map-ascii">  ═══ MURY ═══
+      <div class="player-map-img-wrap">
+        <img class="player-map-img" src="images/maps/map-3-tantalos.png" alt="Tantalos" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+        <div class="player-map-ascii" style="display:none;">  ═══ MURY ═══
  ║  BRAMA  ║  pęknięcie  ║ kanały
  ║ główna  ║  w murze    ║ (pod rzeką)
  ╠═════════╩════════════╣
@@ -712,13 +722,17 @@ h2 {
  ║   ulice, straże     ║
  ║   listy gończe?     ║
  ╚═════════════════════╝</div>
+      </div>
     </div>
 
     <!-- MAPA 4: Rezydencja (hasło: REZYDENCJA) -->
     <div id="player-map-4" class="player-map-card hidden">
       <div class="player-map-title">Posiadłość Hrabiego Morrigana</div>
       <div class="player-map-desc">Dzielnica Brązowa. Trzypiętrowa rezydencja z ogrodami i murem. Brama, wejście boczne od kuchni. Kolacja w toku — chaos i kelnerzy.</div>
-      <div class="player-map-ascii">    BRAMA
+      <div class="player-map-img-wrap">
+        <img class="player-map-img" src="images/maps/map-4-rezydencja.png" alt="Posiadłość Hrabiego — zewnątrz" onerror="this.style.display='none'; var n=this.nextElementSibling; if(n&&n.tagName==='IMG')n.style.display='none'; var a=this.parentElement.querySelector('.player-map-ascii'); if(a)a.style.display='block';">
+        <img class="player-map-img" src="images/maps/map-5-interior.png" alt="Posiadłość Hrabiego — wnętrze" style="margin-top:8px;" onerror="this.style.display='none';">
+        <div class="player-map-ascii" style="display:none;">    BRAMA
        │
   ┌────┴────┐
   │ DZIEDZ. │  powozy, goście
@@ -729,13 +743,16 @@ h2 {
   │  piwnica: skarbiec
   └─────────┘
    wejście boczne (kuchnia)</div>
+      </div>
     </div>
 
     <!-- MAPA 5: Skarbiec (hasło: SKARBIEC) -->
     <div id="player-map-5" class="player-map-card hidden">
       <div class="player-map-title">Skarbiec</div>
       <div class="player-map-desc">Podziemna komnata pod rezydencją. Na piedestale — Serce z Gliny. Posąg z brązu i obsydianu. Ciężki, emanuje czymś dziwnym.</div>
-      <div class="player-map-ascii">  ┌─────────────┐
+      <div class="player-map-img-wrap">
+        <img class="player-map-img" src="images/maps/map-6-vault.png" alt="Skarbiec" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+        <div class="player-map-ascii" style="display:none;">  ┌─────────────┐
   │   SKARBIEC   │
   │             │
   │    [    ]   │
@@ -747,6 +764,7 @@ h2 {
   └─────────────┘
   drzwi z zamkiem
   (klucz u Hrabiego)</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1026,10 +1044,10 @@ h2 {
         </div>
 
         <div class="gm-npc">
-          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Mistrzyni Zehla <span style="color:#888;font-weight:normal;">(przewodnicząca Misterium)</span></div>
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Mistrz Kluczy <span style="color:#888;font-weight:normal;">(przewodniczący Misterium)</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
-            Starsza elfka, głowa Rady Gildii. Zwołała Misterium. Mówi cicho, ale każde słowo waży jak cegła. Daje graczom poszlakę i misję. Po ataku znika — ma własne problemy.
-            <br><span style="color:#888;">Nie walczy. Ucieka, jeśli trzeba. Ma kontakty w mieście — jeśli gracze jej pomogą, odwdzięczy się informacją.</span>
+            Zwołał Misterium. Mówi cicho, ale każde słowo waży jak cegła. Daje graczom poszlakę i misję.
+            <br><span style="color:#e07070;">Na początku ataku Kotów zostaje zabity bełtem z kuszy — zanim zrobią wam zdjęcie z flashem.</span> Pierwszy cel. Nie doczeka ucieczki.
           </div>
         </div>
 
@@ -1073,6 +1091,50 @@ h2 {
             <br><span style="color:#e07070;">Słabość: woda (powolnieje, rdzewieje), klątwa/magia (Arkana), kamień filozoficzny (kontrola/wyłączenie — jeśli Marceyli go użyje), zetarcie inskrypcji w głowie (Wiedza), fizyczne zakopanie (wymaga czasu).</span>
           </div>
         </div>
+
+        <div style="color:#9b8fb4;font-weight:bold;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px;padding-bottom:4px;border-bottom:1px solid #444;">Postacie poboczne — powiązane z bohaterami</div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Stara Cienista <span style="color:#888;font-weight:normal;">→ Wherk'ha</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Handlarka plotkami i „świadectwami". To ona załatwiała Wherk'ha alibi — za odpowiednią cenę potwierdzi, że była gdzie indziej. Zna jej pochodzenie. <b>Zwraca uwagę na herb</b> — szlacheckie korzenie Wherk'hi mogą się przydać przy przyjęciu szlachty w domu Hrabiego. Może ktoś z gości ją zna? Siedzi w tawernie „Zatopiony Klucz" w biedniejszej dzielnicy. Jeśli gracze potrzebują fałszywego świadka lub informacji o szlachcie — ona wie. Ale pamięta długi.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Ślepy Gregor <span style="color:#888;font-weight:normal;">→ Madziok</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Stary szczurok, „król kanałów". To z nim Madziok kiedyś planował skok na skarbiec — mapa nieistniejącego skarbca była pomysłem Gregora (albo jego mistrza). Gregor teraz handluje informacjami w podziemiach. Wie, które kanały prowadzą pod rezydencję. Może pomóc — za przysługę. Kusza Madzioka? Gregor twierdzi, że „ktoś" ją znalazł w kanałach. Może to on.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Babcia Piwonka <span style="color:#888;font-weight:normal;">→ Kubol</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Staruszka z chatki przy drodze do miasta (Akt II — ucieczka z lasu). Ma psa Burego i ogródek pełny ziół. <b>Była kiedyś właścicielką Kubola</b> — gdy był pieskiem (zamienił się na dłużej i zapomniał o byciu człowiekiem). Później wrócił do siebie, ale sentyment został. Dla niej Kubol to wciąż ten sam „Burek" — nie wie o przemianach. Może dać graczom schronienie na noc, jedzenie, albo wskazać skrót. Jej syn jest strażnikiem — nie wie, że matka gości złodziei. Komiczny potencjał: Kubol nie może odmówić sprawdzenia czy u niej wszystko OK.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Liriel Złotolistna <span style="color:#888;font-weight:normal;">→ Marceyli</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Elfa, dawna przyjaciółka Marceyli ze świątynnych czasów. Jedyna, która udzieliła jej schronienia w Tantalos po ucieczce. Zna jej sekret — i wie, że Marceyli zgubiła odłamek. Prowadzi małą zielarnię w Dzielnicy Brązowej, blisko rezydencji. Może przekazać plotkę: „słyszałam, że Hrabia kupował dziwne kryształy od handlarza". Nie wie o golemie. Jeśli Marceyli się z nią skontaktuje — ryzyko, że ktoś ją śledzi.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Rzeźnik Brom <span style="color:#888;font-weight:normal;">→ Rastlin</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            U niego Rastlin kiedyś pracował — tasak to „pożyczka na wieczność". Brom nie wie, że Rastlin jest złodziejem; myśli, że to nadal ten sam chłopak od porządków. Ma jatkę w targowej dzielnicy. Jeśli gracze potrzebują mięsa jako przynęty (dla psa, dla kogoś), Brom da „na kredyt" — bo Rastlin. Odznaka inspektora? Brom raz widział Rastlina w mundurze i był dumny. Nie pytał skąd.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Ojciec Szymon <span style="color:#888;font-weight:normal;">→ Hulietta</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Ksiądz, który przeklął Huliettę — nie wejdzie do świętych miejsc. <b>Za co:</b> Hulietta była zatrudniona przy inwentaryzacji archiwum kościelnego. Wykorzystała dostęp i ukradła teczkę „Poufne" (dokumenty — nie wiadomo po co, może dla gildii). Szymon odkrył kradzież i w gniewie rzucił klątwę: „niech nie stąpi nogą w świętym miejscu". Klątwa się przyjęła. Teraz żałuje — ale klątwa trwa. Może pojawić się w mieście podczas chaosu z golemem. Jeśli Hulietta go spotka: może oferować zdjęcie klątwy w zamian za zwrot dokumentów. Albo po prostu — niewygodne spotkanie.
+          </div>
+        </div>
       </div>
 
       <!-- ============================================================= -->
@@ -1092,8 +1154,8 @@ h2 {
           <span style="color:#e07070;">Wada: kichanie w najgłębszej ciszy.</span>
         </div>
         <div class="gm-pc">
-          <b style="color:#ffd700;">Kubol „Otwarta Księga"</b> <span style="color:#888;">· Pół Zwiesz · Ciało 14, Chyżość:3</span><br>
-          <span style="color:#aaa;">Wyważa zamki Poiko-Obuchem. Klucz do zamka, który może nie istnieje. Tank grupy.</span><br>
+          <b style="color:#ffd700;">Kubol „Otwarta Księga"</b> <span style="color:#888;">· Piesołak · Ciało 14, Chyżość:3</span><br>
+          <span style="color:#aaa;">Wyważa zamki Poiko-Obuchem. Klucz do zamka, który może nie istnieje. Tank grupy. Piesołak — zmienia się w pieska. Babcia Piwonka była kiedyś jego właścicielką gdy zamienił się na dłużej w psa i zapomniał o byciu człowiekiem. Dlatego ma do niej sentyment.</span><br>
           <span style="color:#e07070;">Wada: wyrzuty sumienia wobec psów i staruszek.</span>
         </div>
         <div class="gm-pc">
@@ -1130,7 +1192,7 @@ h2 {
           <div class="gm-read">
             Polana pachnie wilgocią i spiskiem. Między drzewami migoczą latarnie — nie ogień, lecz świetliki zamknięte w butelkach (nikt ich nie prosił, ale świetliki w tym lesie mają silne poczucie obowiązku). Wokół kamiennego stołu siedzą postacie, z których każda wygląda tak, jakby specjalnie starała się wyglądać nijakie — co w tej grupie stanowi swoistą sztukę.
             <br><br>
-            Mistrzyni Zehla, starsza elfka w płaszczu koloru „byłam tu zanim las wyrósł", unosi rękę. Zapada cisza — a przynajmniej coś, co złodzieje uznaliby za ciszę, gdyby nie szelest odruchowo sprawdzanych kieszeni sąsiadów.
+            Mistrz Kluczy unosi rękę. Zapada cisza — a przynajmniej coś, co złodzieje uznaliby za ciszę, gdyby nie szelest odruchowo sprawdzanych kieszeni sąsiadów.
           </div>
 
           <div class="gm-tip">
@@ -1139,11 +1201,11 @@ h2 {
         </div>
 
         <div class="gm-section" style="border-left-color:#ffd700;">
-          <div class="gm-section-title" style="color:#ffd700;">Scena 2: Przemówienie Zehli i Poszlaka</div>
+          <div class="gm-section-title" style="color:#ffd700;">Scena 2: Przemówienie Mistrza Kluczy i Poszlaka</div>
           <div class="gm-read">
             „Dziękuję, że przybyliście. Wiem, że połowa z was okradła drugą połowę w drodze tutaj — poproszę o zwrot zegarków po spotkaniu."
             <br><br>
-            Zehla kładzie na kamiennym stole starą, pożółkłą mapę.
+            Mistrz Kluczy kładzie na kamiennym stole starą, pożółkłą mapę.
             <br><br>
             „Artefakt Ślepego Kruka — Serce z Gliny, zapieczętowane trzydzieści lat temu — został skradziony. Nie przez nas. Nie przez żadną szanującą się gildię. Przez <i>nich</i>."
             <br><br>
@@ -1153,17 +1215,17 @@ h2 {
             <br><br>
             „Nasi informatorzy donoszą, że Hrabia trzyma artefakt w swojej rezydencji w mieście. Za dwa dni ceremonia. Bez artefaktu — żadnego pokoju ze skrytobójcami, a złodzieje z Tantalos staną się pośmiewiskiem kontynentu."
             <br><br>
-            Zehla patrzy na was.
+            Mistrz Kluczy patrzy na was.
             <br><br>
             „Odzyskajcie go. Jesteście najlepsi — albo przynajmniej jedyni, którzy odpowiedzieli na zaproszenie."
           </div>
 
           <div class="gm-tip">
-            <b style="color:#e0a040;">Tip MG:</b> Zehla daje do zrozumienia, że Hrabia nie przestrzega kodeksu złodziei — używa Kotów i przemocy. To „obrażenie profesji". Gracze powinni czuć, że to sprawa honoru, nie tylko misja.
+            <b style="color:#e0a040;">Tip MG:</b> Mistrz Kluczy daje do zrozumienia, że Hrabia nie przestrzega kodeksu złodziei — używa Kotów i przemocy. To „obrażenie profesji". Gracze powinni czuć, że to sprawa honoru, nie tylko misja.
           </div>
 
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
-            <b style="color:white;">Informacje od Zehli (na pytania):</b>
+            <b style="color:white;">Informacje od Mistrza Kluczy (na pytania):</b>
             <ul style="margin:6px 0;">
               <li>Rezydencja Hrabiego jest w <b>Dzielnicy Brązowej</b> — bogatej części miasta.</li>
               <li>Hrabia ma 10-15 Kotów — swoich najemników.</li>
@@ -1191,6 +1253,8 @@ h2 {
           </div>
 
           <div class="gm-read">
+            Pierwszy bełt — suchy trzask. Mistrz Kluczy osuwa się na kamienny stół, zanim ktokolwiek zdąży krzyknąć. Cel wyboru.
+            <br><br>
             BŁYSK.
             <br><br>
             Noc eksploduje białym światłem, jakby ktoś na chwilę otworzył pokrywę piekła z niewłaściwej strony. Ikonograf — drewniana skrzynia na trójnogu, z której wybiega dym i przekleństwa demona w środku — błyska po raz drugi, trzeci. Każdy błysk pozostawia plamę na siatkówce i karykaturalnie dokładny portret na pergaminie.
@@ -1201,10 +1265,10 @@ h2 {
           <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
             <b style="color:white;">Co się dzieje:</b>
             <ul style="margin:6px 0;">
+              <li><b>Mistrz Kluczy</b> — pierwszy bełt trafia w niego. Zabity zanim ikonografy zdążą zrobić zdjęcie.</li>
               <li><b>2 Ikonografy (aparaty FLASH)</b> — demony-rysownicy portretują wszystkich obecnych.</li>
               <li><b>4 bomby dymne</b> — polana tonie w dymie, widoczność 2m.</li>
               <li><b>6 Kotów</b> — nie atakują na zabój, ich cel to DOKUMENTACJA twarzy, nie zabijanie.</li>
-              <li>Zehla ucieka natychmiast (ma swoje sposoby).</li>
               <li>Inni delegaci gildii rozpierzchają się w las.</li>
             </ul>
           </div>
@@ -1262,7 +1326,7 @@ h2 {
             <b style="color:#e0a040;">Opcjonalne komplikacje (1-2 max):</b>
             <ul style="margin:6px 0;">
               <li><b>Patrol Kotów</b> na ścieżce — 3 ludzi z pochodniami. Ominięcie: <span class="gm-test">Zdolność + Gibkość, Zwykły</span>.</li>
-              <li><b>Kubol</b> ma wyrzuty sumienia, bo mijają chatkę ze staruszką/psem — nie może się powstrzymać i chce sprawdzić czy u niej wszystko OK. Komiczny moment.</li>
+              <li><b>Kubol</b> ma wyrzuty sumienia, bo mijają chatkę Babci Piwonki i psa Burego — nie może się powstrzymać i chce sprawdzić czy u niej wszystko OK. Komiczny moment. (→ NPC: Babcia Piwonka)</li>
               <li><b>Marceyli omdlewa</b> — ktoś się skaleczył o gałąź (Marceyli widzi krew → test Psycha Problemowy lub omdlenie). Grupa musi ją nieść/budzić.</li>
             </ul>
           </div>
@@ -1296,7 +1360,7 @@ h2 {
             <div style="background:#1a1a1a;border:1px solid #444;border-radius:4px;padding:10px 14px;margin:6px 0;">
               <b style="color:#aaa;">C) Kanały</b> <span style="color:#888;">(pewne, ale obrzydliwe)</span>
               <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
-                System ściekowy pod murami. Wejście przez rzekę. Smród, ciemność, szczury (koleżanki Madziok?).
+                System ściekowy pod murami. Wejście przez rzekę. Smród, ciemność, szczury. Ślepy Gregor zna te kanały — Madziok może go szukać. (→ NPC: Ślepy Gregor)
                 <br><span class="gm-test">Ciało + Hart, Zwykły</span> (by nie zwymiotować)
                 <br>Marceyli ma mapę kanałów z adnotacjami „tu śmierdzi bardziej" — idealna!
                 <br>Rastlin z Przetrwanie:1 prowadzi grupę.
@@ -1327,6 +1391,7 @@ h2 {
             <br><br>
             Poruszanie się po mieście wymaga teraz ostrożności:
             <br><span class="gm-test">Zdolność + Gibkość, Problemowy</span> (prześlizgnięcie obok patrolu) lub przebranie/kaptury.
+            <br>Wherk'ha może szukać Starej Cienistej — fałszywe alibi, ale ona pamięta długi. (→ NPC: Stara Cienista)
             <br><br>
             <b>Jeśli gracze uniknęli FLASH:</b> Listy gończe są, ale portrety to chaotyczne bazgroły demona (demon malował we mgle). Nikt ich nie rozpozna. Mogą chodzić swobodnie, ale nadal jest „alarm" w mieście.
           </div>
@@ -1346,6 +1411,9 @@ h2 {
               <li><b>Hulietta ogląda zamki</b> — <span class="gm-test">Rozum + Wiedza, Zwykły</span> (rozpoznaje typ zamków: standardowe kluczykowe, nic magicznego, mechaniczne pułapki).</li>
               <li><b>Rastlin z odznaką inspektora</b> — może udać inspektora i wejść na teren (test Influencja Trudny, ale z odznaką Problemowy).</li>
               <li><b>Marceyli z przepustką na teren, który nie istnieje</b> — paradoksalnie może zadziałać, bo rezydencja stoi na terenie starego budynku, który formalnie nie figuruje w rejestrach (Rozum + Wiedza, Problemowy, by się zorientować).</li>
+              <li><b>Stara Cienista</b> (→ Wherk'ha) — w tawernie „Zatopiony Klucz". Fałszywe alibi, plotki o szlachcie. Pamięta długi.</li>
+              <li><b>Liriel Złotolistna</b> (→ Marceyli) — zielarnia w Dzielnicy Brązowej. Plotka: „Hrabia kupował dziwne kryształy". Ryzyko: ktoś może śledzić.</li>
+              <li><b>Rzeźnik Brom</b> (→ Rastlin) — jatka w targowej dzielnicy. Mięso na przynętę „na kredyt". Nie pyta o odznakę.</li>
             </ul>
           </div>
 
@@ -1370,7 +1438,7 @@ h2 {
           <div class="gm-tip">
             <b style="color:#e0a040;">Sugerowane role (podpowiedz jeśli trzeba):</b>
             <ul style="margin:6px 0;">
-              <li><b>Dywersja/rozproszenie</b> — Wherk'ha (Influencja:2, alibi) lub Rastlin (aura, odznaka)</li>
+              <li><b>Dywersja/rozproszenie</b> — Wherk'ha (Influencja:2, alibi, <b>herb i szlacheckie pochodzenie</b> — może wejść na przyjęcie jako „gość", ktoś ze szlachty może ją znać) lub Rastlin (aura, odznaka)</li>
               <li><b>Włamanie do zamka skarbca</b> — Hulietta (Precyzja:3, Finezja:2) — stworzona do tego</li>
               <li><b>Wejście przez kanały/kratę</b> — Kubol (Ciało 14, Poiko-Obuch) z Marceyli (mapa kanałów)</li>
               <li><b>Obserwator/czujka</b> — Rastlin (Percepcja:2) lub Wherk'ha (Zmysł 15)</li>
@@ -1408,6 +1476,7 @@ h2 {
               <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
                 Przebranie się za kelnerów lub gości. Kelnerskie stroje do zdobycia w pralni za rogiem.
                 <br><span class="gm-test">Psycha + Influencja, Problemowy</span> (przekonanie szefa kuchni) lub <span class="gm-test">Zdolność + Gibkość, Zwykły</span> (ukraść stroje).
+                <br><b>Wherk'ha z herbem</b> — może wejść jako „gość" (szlacheckie pochodzenie). Stara Cienista podpowiedziała. Uwaga: ktoś ze szlachty na kolacji może ją znać — dramatyczne rozpoznanie lub sojusznik?
                 <br>Daje wolny ruch po parterze. Schody na górę i do piwnicy wymagają ostrożności.
               </div>
             </div>
@@ -1883,6 +1952,7 @@ PIĘTRO 2 — gabinet Hrabiego
             <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
               <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">1</td><td>Uliczny sprzedawca rozpoznaje kogoś z listy gończej i zaczyna krzyczeć.</td></tr>
               <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">2</td><td>Pijany szlachcic na kolacji Hrabiego zaczyna opowiadać o „tych złodziejach" i pokazywać portret.</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">2b</td><td>Ktoś ze szlachty rozpoznaje Wherk'hę — „Czy to nie młoda hrabianka z…?" Sojusznik (zatai) czy zagrożenie (zawoła straż)?</td></tr>
               <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">3</td><td>Kot wchodzi do skarbca i zaczyna mruczeć do Golema, co go częściowo aktywuje.</td></tr>
               <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">4</td><td>Klątwa Hulietty — na drodze do skarbca jest mała kapliczka. Musi ją ominąć inną drogą.</td></tr>
               <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">5</td><td>Madziok kicha w najgorszym momencie. Strażnik się odwraca.</td></tr>
