@@ -456,10 +456,12 @@ h2 {
   .dynamic-item { margin-bottom: 1px !important; }
   .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 2px 5px !important; }
   #view-card span[style*="font-size:18px"] { font-size: 10pt !important; }
-  .print-difficulty-cheat { font-size: 7pt !important; padding: 4px !important; flex-wrap: nowrap !important; background: #f5f5f5 !important; border-color: #ccc !important; }
+  .print-difficulty-cheat { font-size: 7pt !important; padding: 4px !important; flex-wrap: nowrap !important; background: transparent !important; border-color: #ccc !important; }
   .print-difficulty-cheat > div { min-width: 0 !important; flex: 1 !important; font-size: 6pt !important; }
-  .stat-test-box { width: 18px !important; height: 14px !important; font-size: 7pt !important; line-height: 12px !important; }
-  .stat-test-box.base { font-weight: bold !important; font-size: 8pt !important; }
+  .diff-cheat-base span { color: #000 !important; }
+  .diff-cheat-item:not(.diff-cheat-base) span { color: #555 !important; }
+  .stat-test-box { width: 18px !important; height: 14px !important; font-size: 7pt !important; line-height: 12px !important; background: transparent !important; color: #555 !important; }
+  .stat-test-box.base { font-weight: bold !important; font-size: 8pt !important; color: #000 !important; border-width: 2px !important; }
   .print-gear-weapons { border-color: #ccc !important; background: #f9f9f9 !important; }
   .print-portrait-area { border-color: #ccc !important; display: flex !important; flex-direction: column !important; }
   #view-bio { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 6px !important; overflow: visible !important; }
@@ -3110,25 +3112,17 @@ function resetSkills() {
 // SKILLS (VIEW MODE - READ-ONLY)
 // =====================================================================
 const DIFFICULTY_MODIFIERS = [2, 0, -2, -5, -8, -11, -15]; // łatwy +2, zwykły 0, problem. -2, ... (fartowny -15 najtrudniejszy)
-// Kolory czytelne na białym: łatwe=zielone, zwykłe=czarne bold (główny stat), reszta zróżnicowana
-const DIFFICULTY_STYLES = [
-  { color: '#157515', bg: '#d4edda', border: '#157515' },   // łat.
-  { color: '#000', bg: '#fff', border: '#000', bold: true }, // zwy. - główny stat
-  { color: '#c45a00', bg: '#fff3e0', border: '#c45a00' },   // pro.
-  { color: '#a03000', bg: '#ffebe0', border: '#a03000' },   // tru.
-  { color: '#8b0000', bg: '#ffcdd2', border: '#8b0000' },   // zło.
-  { color: '#6a0a0a', bg: '#f8bbd0', border: '#6a0a0a' },   // kry.
-  { color: '#4a148c', bg: '#e1bee7', border: '#4a148c' }    // far.
-];
+const DIFFICULTY_BORDER_COLORS = ['#5a9', '#ffd700', '#e8a020', '#cc3333', '#a01040', '#7b2d8e', '#d05090'];
 function statTestBoxes(baseVal) {
   const base = parseInt(baseVal) || 0;
   const vals = DIFFICULTY_MODIFIERS.map(m => base + m);
   let html = '<span class="stat-test-boxes">';
   vals.forEach((v, i) => {
     const isZwykly = i === 1;
-    const s = DIFFICULTY_STYLES[i] || { color: '#555', bg: '#eee', border: '#888' };
+    const bc = DIFFICULTY_BORDER_COLORS[i] || '#888';
     const borderW = isZwykly ? '2px' : '1px';
-    const style = 'background:' + s.bg + ';color:' + s.color + ';border:' + borderW + ' solid ' + s.border + ';font-weight:' + (s.bold ? 'bold' : 'bold') + ';';
+    const textColor = isZwykly ? '#ffd700' : bc;
+    const style = 'background:transparent;color:' + textColor + ';border:' + borderW + ' solid ' + bc + ';font-weight:bold;';
     html += '<span class="stat-test-box' + (isZwykly ? ' base' : '') + '" style="display:inline-block;width:22px;height:18px;border-radius:2px;margin:0 1px;text-align:center;line-height:16px;font-size:10px;' + style + '">' + v + '</span>';
   });
   return html + '</span>';
@@ -3664,9 +3658,9 @@ function renderViewCard(data) {
   h += '<div class="print-col print-col-right">';
   h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:nowrap;gap:2px;margin:0 0 12px;padding:6px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
   [['+2','łat.'],['0','zwy.'],['−2','pro.'],['−5','tru.'],['−8','zło.'],['−11','kry.'],['−15','far.']].forEach(([mod,label], i) => {
-    const s = DIFFICULTY_STYLES[i] || { color: '#555', bg: '#eee', border: '#888' };
+    const bc = DIFFICULTY_BORDER_COLORS[i] || '#888';
     const borderW = i === 1 ? '2px' : '1px';
-    h += '<div style="flex:1;min-width:0;text-align:center;padding:2px 4px;border:' + borderW + ' solid ' + s.border + ';border-radius:4px;font-size:10px;background:' + s.bg + ';"><span style="font-weight:bold;color:' + s.color + ';">' + mod + '</span><br><span style="color:' + s.color + ';font-size:9px;">' + label + '</span></div>';
+    h += '<div class="diff-cheat-item' + (i === 1 ? ' diff-cheat-base' : '') + '" style="flex:1;min-width:0;text-align:center;padding:2px 4px;border:' + borderW + ' solid ' + bc + ';border-radius:4px;font-size:10px;background:transparent;"><span style="font-weight:bold;color:' + bc + ';">' + mod + '</span><br><span style="color:' + bc + ';font-size:9px;">' + label + '</span></div>';
   });
   h += '</div>';
   h += '<div id="view-skills-container" style="margin-top:0;"></div>';
