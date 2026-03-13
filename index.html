@@ -341,27 +341,60 @@ h2 {
   text-align: center;
 }
 
+.print-header { display: none; }
+
+@page { size: A4; margin: 10mm 12mm; }
+
 @media print {
-  body { background: white !important; color: black !important; padding: 10mm !important; font-size: 12pt; }
+  body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-size: 11pt; }
   .page { display: none !important; }
-  #page-view { display: block !important; }
-  .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; }
-  .back-link, #save-btn, #print-btn, .dynamic-add, .dynamic-remove, #view-login { display: none !important; }
-  .view-field { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; }
-  input, textarea, select { border-color: #ccc !important; background: white !important; color: black !important; }
+  body[data-print-page="view"] #page-view { display: block !important; }
+  body[data-print-page="mechanics"] #page-mechanics { display: block !important; }
+  .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login { display: none !important; }
+  .print-header { display: block !important; text-align: center; font-size: 10pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 6px; border-bottom: 1px solid #ccc; margin-bottom: 10px; }
+  .print-page-2 { break-before: page; }
+  .view-field { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; padding: 4px 6px !important; font-size: 10pt !important; }
+  input, textarea, select { border-color: #ccc !important; background: white !important; color: black !important; font-size: 10pt !important; padding: 4px 6px !important; }
+  textarea { min-height: 0 !important; }
   .stat-val { color: #333 !important; font-weight: bold !important; }
-  .stat-row { border-color: #ddd !important; }
-  hr { border-color: #ddd !important; }
-  label { color: #555 !important; }
-  h2 { color: black !important; }
-  .wound-check { accent-color: #c00 !important; }
-  .skill-tag { background: #f0f0f0 !important; border-color: #ccc !important; color: #333 !important; }
+  .stat-row { border-color: #ddd !important; padding: 2px 0 !important; font-size: 11pt !important; }
+  hr { border-color: #ddd !important; margin: 8px 0 !important; }
+  label { color: #555 !important; margin-top: 8px !important; font-size: 9pt !important; }
+  h2 { color: black !important; font-size: 14pt !important; margin-bottom: 2px !important; }
+  .wound-check { accent-color: #c00 !important; width: 16px !important; height: 16px !important; }
+  .wound-label { font-size: 10pt !important; }
+  .wound-row { margin-bottom: 2px !important; }
+  .skill-tag { background: #f0f0f0 !important; border-color: #ccc !important; color: #333 !important; font-size: 9pt !important; }
+  .skills-grid { grid-template-columns: repeat(3, 1fr) !important; width: 100% !important; gap: 6px !important; }
   .magic-card { background: #f8f8ff !important; border-color: #ccc !important; }
-  .magic-card-title { color: #444 !important; }
+  .magic-card-title { color: #444 !important; font-size: 11pt !important; }
   .magic-skill-tag { background: #f0f0f8 !important; border-color: #ccc !important; color: #444 !important; }
   .magic-level-btn { display: none !important; }
   .magic-level-val { color: black !important; }
-  .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; }
+  .magic-grid { gap: 6px !important; }
+  .dynamic-item { margin-bottom: 2px !important; }
+  .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 10pt !important; }
+
+  /* Mechanics page print: compact single A4 */
+  #page-mechanics .card { padding: 0 !important; }
+  #page-mechanics h2 { font-size: 13pt !important; margin-bottom: 4px !important; }
+  #page-mechanics p { font-size: 8pt !important; margin-bottom: 6px !important; }
+  #page-mechanics button { display: none !important; }
+  #page-mechanics > .card > div[style*="background:#1a1a1a"] {
+    padding: 6px 10px !important; margin-bottom: 6px !important; border-radius: 0 !important;
+    background: white !important; border-left: 2px solid #888 !important;
+  }
+  #page-mechanics div[style*="font-weight:bold"][style*="font-size:15px"] { font-size: 10pt !important; margin-bottom: 3px !important; color: #333 !important; }
+  #page-mechanics div[style*="font-size:14px"] { font-size: 9pt !important; line-height: 1.4 !important; color: black !important; }
+  #page-mechanics div[style*="font-size:13px"] { font-size: 8pt !important; line-height: 1.4 !important; color: black !important; }
+  #page-mechanics span[style*="font-size:12px"] { font-size: 7pt !important; color: #555 !important; }
+  #page-mechanics table { font-size: 9pt !important; color: black !important; }
+  #page-mechanics table td { padding: 1px 0 !important; border-color: #ddd !important; color: black !important; }
+  #page-mechanics table b { color: black !important; }
+  #page-mechanics b[style*="color:white"] { color: black !important; }
+  #page-mechanics b[style*="color:#7ec87e"] { color: black !important; }
+  #page-mechanics b[style*="color:#e0a040"] { color: black !important; }
 }
   </style>
 </head>
@@ -754,6 +787,8 @@ h2 {
       <div style="color:#eea65f;font-weight:bold;font-size:15px;margin-bottom:8px;">📋 Staty i Pakiety — szybka ściąga</div>
       <div style="color:#ccc;font-size:13px;line-height:1.8;" id="mechanics-skills-ref"></div>
     </div>
+
+    <button onclick="printPage('mechanics')" style="background:#333;font-size:15px;padding:12px;width:100%;box-sizing:border-box;">🖨️ Drukuj zasłonkę MG (A4)</button>
 
   </div>
 </div>
@@ -1198,7 +1233,7 @@ const skillGroups = [
   { stat: "Zdolność", name: "Finezja",      icon: "💫", skills: ["Zwinne dłonie", "Celowanie", "Koordynacja"] },
   { stat: "Zdolność", name: "Reakcja",      icon: "⚡", skills: ["Fechtunek", "Refleks", "Sterowanie"] },
   { stat: "Zdolność", name: "Precyzja",     icon: "🗝️", skills: ["Kradzież", "Operowanie", "Manualność"] },
-  { stat: "Psycha",   name: "Hart",         icon: "💀", skills: ["Autorytet", "Zastraszanie", "Niezłomność"] },
+  { stat: "Psycha",   name: "Hart",         icon: "🛡️", skills: ["Autorytet", "Zastraszanie", "Niezłomność"] },
   { stat: "Psycha",   name: "Influencja",   icon: "🎭", skills: ["Empatia", "Aktorstwo", "Perswazja"] },
   { stat: "Psycha",   name: "Wola",         icon: "🕯️", skills: ["Odporność", "Skupienie", "Odwaga"] },
   { stat: "Rozum",    name: "Teoria",       icon: "📜", skills: ["Dedukcja", "Rachowanie", "Pojętność"] },
@@ -1585,10 +1620,15 @@ function renderSkillsView(skillsStr, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
   const viewLevels = {};
+  const viewCustom = {};
   if (skillsStr && skillsStr !== 'brak') {
-    skillsStr.split(',').forEach(part => {
-      const [name, lvl] = part.trim().split(':');
-      if (name && lvl) viewLevels[name.trim()] = parseInt(lvl);
+    skillsStr.split(/,(?![^()]*\))/).forEach(part => {
+      const match = part.trim().match(/^(.+?):(\d+)(?:\s*\((.+)\))?$/);
+      if (match) {
+        const name = match[1].trim();
+        viewLevels[name] = parseInt(match[2]);
+        if (match[3]) viewCustom[name] = match[3].split(';').map(s => s.trim()).filter(Boolean);
+      }
     });
   }
   const byGroup = {};
@@ -1602,9 +1642,17 @@ function renderSkillsView(skillsStr, containerId) {
     html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;">' + statName + '</div><div class="skills-grid">';
     groups.forEach(g => {
       const level = viewLevels[g.name] || 0;
-      const skillsHtml = g.skills.length > 0
-        ? g.skills.map(s => '<span class="skill-tag">' + s + '</span>').join('')
-        : '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
+      const customs = viewCustom[g.name] || [];
+      const allSkills = [...g.skills, ...customs];
+      let skillsHtml;
+      if (allSkills.length > 0) {
+        skillsHtml = allSkills.map((s, i) => {
+          const isCustom = i >= g.skills.length;
+          return '<span class="skill-tag"' + (isCustom ? ' style="color:#b0a0e0;border-color:#4a4a6a;"' : '') + '>' + s + '</span>';
+        }).join('');
+      } else {
+        skillsHtml = '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
+      }
       html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
         (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
         '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
@@ -1811,7 +1859,12 @@ function collectFormData(password) {
   const sv = [...statEls].map(el => el.textContent.replace(/\/\d+/, '').trim());
   const luckEls = document.querySelectorAll('#luck .stat-val');
   const lv = [...luckEls].map(el => el.textContent.replace('/6','').replace('/20','').trim());
-  const skillLines = skillGroups.map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? g.name + ':' + lvl : null; }).filter(Boolean).join(', ') || 'brak';
+  const skillLines = skillGroups.map(g => {
+    const lvl = skillLevels[g.name] || 0;
+    if (lvl === 0) return null;
+    const cs = g.custom ? (customEntries[g.name] || []) : [];
+    return cs.length > 0 ? g.name + ':' + lvl + ' (' + cs.join('; ') + ')' : g.name + ':' + lvl;
+  }).filter(Boolean).join(', ') || 'brak';
 
   Object.assign(data, {
     name: document.getElementById('name').value.trim() || '—',
@@ -1911,16 +1964,25 @@ function renderViewCard(data) {
   c.style.display = 'block';
   const isRPG = data.attendance === 'RPG';
 
-  let h = '<h2 style="margin-bottom:4px;">Karta Postaci</h2>' +
-    '<p style="color:#666;font-size:12px;margin-top:0;">Hasło: ' + esc(viewPassword) + '</p>';
-
-  h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
+  let h = '';
 
   if (!isRPG) {
+    h += '<h2 style="margin-bottom:4px;">Karta Postaci</h2>';
+    h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
     h += '<div class="view-field" style="margin-top:16px;color:#888;">☀️ Pochilluje — brak karty RPG</div>';
     c.innerHTML = h;
     return;
   }
+
+  // ===== PRINT PAGE 1: personal data, flaw, wounds, tricks, gear, weapons, notes =====
+  h += '<div class="print-page print-page-1">';
+
+  h += '<div class="print-header">Misterium Skarbów i Cieni — Karta Postaci</div>';
+
+  h += '<h2 style="margin-bottom:4px;">Karta Postaci</h2>' +
+    '<p style="color:#666;font-size:12px;margin-top:0;">Hasło: ' + esc(viewPassword) + '</p>';
+
+  h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
 
   h += '<label>Imię postaci</label>' +
     '<textarea id="view-name" rows="2" oninput="autoGrow(this);markUnsaved()">' + esc(data.name) + '</textarea>';
@@ -1937,15 +1999,6 @@ function renderViewCard(data) {
   const repNum = parseInt(data.reputation) || 0;
   const repColor = repNum > 5 ? '#7ec87e' : repNum < -5 ? '#e07070' : '#aaa';
   h += '<div class="stat-row"><span>Reputacja</span><span class="stat-val" style="color:' + repColor + ';">' + esc(data.reputation) + '<span style="color:#555;font-size:13px;">/20</span></span></div>';
-  h += '</div>';
-
-  h += '<hr>';
-
-  // Stats
-  h += '<div style="font-size:18px;line-height:1.8;">';
-  [['Ciało', data.stat_cialo], ['Zdolność', data.stat_zdolnosc], ['Psycha', data.stat_psycha], ['Rozum', data.stat_rozum], ['Zmysł', data.stat_zmysl]].forEach(([name, val]) => {
-    h += '<div class="stat-row"><span>' + name + '</span><span class="stat-val">' + esc(val) + '</span></div>';
-  });
   h += '</div>';
 
   h += '<hr>';
@@ -1971,24 +2024,6 @@ function renderViewCard(data) {
 
   h += '<hr>';
 
-  h += '<span style="font-size:18px;">Umiejętności</span><div id="view-skills-container" style="margin-top:8px;"></div>';
-
-  h += '<hr>';
-
-  // Magic toggle
-  const magicEnabled = data.magic_enabled === 'Tak';
-  h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
-    '<span style="font-size:18px;color:#b0a0e0;">🔮 Umagicznienie</span>' +
-    '<select id="view-magic-toggle" onchange="toggleViewMagic();markUnsaved()" style="width:auto;padding:4px 8px;font-size:14px;background:#2a2a3a;border-color:#4a4a6a;color:#b0a0e0;">' +
-    '<option value="Nie"' + (!magicEnabled ? ' selected' : '') + '>Nie</option>' +
-    '<option value="Tak"' + (magicEnabled ? ' selected' : '') + '>Tak</option>' +
-    '</select></div>';
-  h += '<div id="view-magic-panel" style="display:' + (magicEnabled ? 'block' : 'none') + ';">';
-  h += '<div class="magic-grid" id="view-magic-grid"></div>';
-  h += '</div>';
-
-  h += '<hr>';
-
   h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
     '<span style="font-size:18px;">Sztuczki</span>' +
     '<a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a></div>' +
@@ -2004,19 +2039,62 @@ function renderViewCard(data) {
 
   h += '<hr>';
 
+  h += '<label>Notatki własne</label><div id="view-notes" style="margin-top:6px;"></div>';
+
+  h += '</div>'; // end print-page-1
+
+  // ===== PRINT PAGE 2: stats, skills, magic =====
+  h += '<div class="print-page print-page-2">';
+
+  h += '<div class="print-header">Misterium Skarbów i Cieni — Umiejętności</div>';
+
+  // Stats
+  h += '<div style="font-size:18px;line-height:1.8;">';
+  [['Ciało', data.stat_cialo], ['Zdolność', data.stat_zdolnosc], ['Psycha', data.stat_psycha], ['Rozum', data.stat_rozum], ['Zmysł', data.stat_zmysl]].forEach(([name, val]) => {
+    h += '<div class="stat-row"><span>' + name + '</span><span class="stat-val">' + esc(val) + '</span></div>';
+  });
+  h += '</div>';
+
+  h += '<hr>';
+
+  h += '<span style="font-size:18px;">Umiejętności</span><div id="view-skills-container" style="margin-top:8px;"></div>';
+
+  h += '<hr>';
+
+  // Magic toggle (read-only, controlled by GM via spreadsheet)
+  const magicEnabled = data.magic_enabled === 'Tak';
+  h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
+    '<span style="font-size:18px;color:#b0a0e0;">🔮 Umagicznienie</span>';
+  if (magicEnabled) {
+    h += '<span style="color:#b0a0e0;font-size:14px;background:#2a2a3a;padding:4px 10px;border-radius:6px;border:1px solid #4a4a6a;">Tak</span>';
+  } else {
+    h += '<span style="color:#555;font-size:14px;background:#1a1a1a;padding:4px 10px;border-radius:6px;border:1px solid #333;">Nie</span>' +
+      '<span style="color:#444;font-size:11px;font-style:italic;">— aktywuje Mistrz Kluczy</span>';
+  }
+  h += '<input type="hidden" id="view-magic-toggle" value="' + (magicEnabled ? 'Tak' : 'Nie') + '">';
+  h += '</div>';
+  h += '<div id="view-magic-panel" style="display:' + (magicEnabled ? 'block' : 'none') + ';">';
+  h += '<div class="magic-grid" id="view-magic-grid"></div>';
+  h += '</div>';
+
+  h += '</div>'; // end print-page-2
+
+  // ===== NO-PRINT: bio, buttons =====
+  h += '<div class="no-print">';
+
+  h += '<hr>';
+
   h += '<label>Krótkie Bio</label>' +
     '<textarea id="view-bio" oninput="autoGrow(this);markUnsaved()" style="min-height:60px;">' + esc(data.bio) + '</textarea>';
 
   h += '<hr>';
 
-  h += '<label>Notatki własne</label><div id="view-notes" style="margin-top:6px;"></div>';
-
-  h += '<hr>';
-
   h += '<div style="display:flex;gap:10px;">' +
     '<button id="save-btn" onclick="saveCard()" style="background:#7a5c10;font-size:17px;padding:14px;flex:1;box-sizing:border-box;">💾 Zapisz zmiany</button>' +
-    '<button id="print-btn" onclick="window.print()" style="background:#333;font-size:17px;padding:14px;box-sizing:border-box;">🖨️</button>' +
+    '<button id="print-btn" onclick="printPage(\'view\')" style="background:#333;font-size:17px;padding:14px;box-sizing:border-box;">🖨️</button>' +
     '</div>';
+
+  h += '</div>'; // end no-print
 
   c.innerHTML = h;
 
@@ -2162,6 +2240,15 @@ function renderTricksPage() {
     html += '</div>';
   });
   container.innerHTML = html;
+}
+
+// =====================================================================
+// PRINT
+// =====================================================================
+function printPage(pageId) {
+  document.body.dataset.printPage = pageId;
+  window.print();
+  delete document.body.dataset.printPage;
 }
 
 // =====================================================================
