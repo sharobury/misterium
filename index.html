@@ -25,6 +25,7 @@ body {
 }
 
 .page { display: none; }
+#page-home { display: block; } /* fallback gdy JS się nie załaduje */
 
 label {
   display: block;
@@ -2721,40 +2722,54 @@ function markUnsaved() { hasUnsavedChanges = true; }
 // ROUTING
 // =====================================================================
 function navigate() {
-  const hash = (location.hash || '#home').slice(1);
-  ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
+  try {
+    const hash = (location.hash || '#home').slice(1);
+    ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
 
-  if (hash === 'home' || hash === '') {
-    document.getElementById('page-home').style.display = 'block';
-  } else if (hash === 'create') {
-    document.getElementById('page-create').style.display = 'block';
-    initCreatePage();
-  } else if (hash.startsWith('view')) {
-    document.getElementById('page-view').style.display = 'block';
-    const parts = hash.split('/');
-    if (parts[1]) {
-      document.getElementById('view-password-input').value = parts[1];
-      loadCard();
+    if (hash === 'home' || hash === '') {
+      const home = document.getElementById('page-home');
+      if (home) home.style.display = 'block';
+    } else if (hash === 'create') {
+      const el = document.getElementById('page-create');
+      if (el) { el.style.display = 'block'; initCreatePage(); }
+    } else if (hash.startsWith('view')) {
+      const el = document.getElementById('page-view');
+      if (el) {
+        el.style.display = 'block';
+        const parts = hash.split('/');
+        if (parts[1]) {
+          const inp = document.getElementById('view-password-input');
+          if (inp) { inp.value = parts[1]; loadCard(); }
+        } else {
+          const login = document.getElementById('view-login');
+          const card = document.getElementById('view-card');
+          if (login) login.style.display = 'block';
+          if (card) card.style.display = 'none';
+        }
+      }
+    } else if (hash === 'tricks') {
+      const el = document.getElementById('page-tricks');
+      if (el) { el.style.display = 'block'; renderTricksPage(); }
+    } else if (hash === 'maps') {
+      const el = document.getElementById('page-maps');
+      if (el) { el.style.display = 'block'; restorePlayerMaps(); }
+    } else if (hash === 'mechanics') {
+      const el = document.getElementById('page-mechanics');
+      if (el) { el.style.display = 'block'; renderMechanicsSkills(); }
+    } else if (hash === 'gm') {
+      const el = document.getElementById('page-gm');
+      if (el) el.style.display = 'block';
     } else {
-      document.getElementById('view-login').style.display = 'block';
-      document.getElementById('view-card').style.display = 'none';
+      const home = document.getElementById('page-home');
+      if (home) home.style.display = 'block';
     }
-  } else if (hash === 'tricks') {
-    document.getElementById('page-tricks').style.display = 'block';
-    renderTricksPage();
-  } else if (hash === 'maps') {
-    document.getElementById('page-maps').style.display = 'block';
-    restorePlayerMaps();
-  } else if (hash === 'mechanics') {
-    document.getElementById('page-mechanics').style.display = 'block';
-    renderMechanicsSkills();
-  } else if (hash === 'gm') {
-    document.getElementById('page-gm').style.display = 'block';
-  } else {
-    document.getElementById('page-home').style.display = 'block';
+  } catch (err) {
+    const home = document.getElementById('page-home');
+    if (home) home.style.display = 'block';
+    console.error('navigate error:', err);
   }
 }
 
