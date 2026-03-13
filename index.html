@@ -345,11 +345,35 @@ h2 {
 
 @page { size: A4; margin: 8mm 10mm; }
 
+/* GM Scenario page */
+.gm-login { text-align: center; padding: 40px 20px; }
+.gm-login input { max-width: 200px; text-transform: uppercase; letter-spacing: 4px; font-size: 22px; text-align: center; font-family: monospace; }
+.gm-content { display: none; }
+.gm-act { background: #1a1a1a; border-left: 3px solid #e0a040; padding: 14px 16px; border-radius: 6px; margin-bottom: 16px; }
+.gm-act-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+.gm-section { background: #181818; border-left: 3px solid #444; padding: 12px 14px; border-radius: 4px; margin: 10px 0; }
+.gm-section-title { font-weight: bold; font-size: 14px; margin-bottom: 6px; }
+.gm-npc { background: #1a1a2a; border-left: 3px solid #6c5b7b; padding: 10px 14px; border-radius: 4px; margin: 8px 0; }
+.gm-test { display: inline-block; background: #2a2a1a; border: 1px solid #555; border-radius: 4px; padding: 2px 8px; font-size: 13px; margin: 2px 0; }
+.gm-read { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 14px 16px; margin: 10px 0; font-style: italic; color: #ccc; line-height: 1.7; }
+.gm-map { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; padding: 16px; margin: 12px 0; font-family: monospace; font-size: 12px; line-height: 1.4; color: #7ec87e; white-space: pre; overflow-x: auto; }
+.gm-tip { background: #1a1a0a; border-left: 3px solid #e0a040; padding: 10px 14px; border-radius: 4px; margin: 8px 0; font-size: 13px; color: #ccc; }
+.gm-danger { background: #1a0a0a; border-left: 3px solid #c0392b; padding: 10px 14px; border-radius: 4px; margin: 8px 0; }
+.gm-loot { background: #1a1a0a; border-left: 3px solid #7ec87e; padding: 10px 14px; border-radius: 4px; margin: 8px 0; }
+.gm-pc { background: #1a1a2a; border: 1px solid #333; border-radius: 4px; padding: 8px 12px; margin: 4px 0; font-size: 13px; }
+.gm-toc { margin: 16px 0; }
+.gm-toc a { display: block; padding: 6px 12px; color: #e0a040; text-decoration: none; border-bottom: 1px solid #222; font-size: 15px; cursor: pointer; }
+.gm-toc a:hover { background: #1a1a1a; }
+.gm-divider { border: none; border-top: 1px solid #333; margin: 20px 0; }
+.gm-stat { color: #ffd700; font-weight: bold; }
+#page-gm .card { max-width: 800px; }
+
 @media print {
   body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-size: 9pt; }
   .page { display: none !important; }
   body[data-print-page="view"] #page-view { display: block !important; }
   body[data-print-page="mechanics"] #page-mechanics { display: block !important; }
+  body[data-print-page="gm"] #page-gm { display: block !important; }
   .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; border-radius: 0 !important; }
   .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login { display: none !important; }
   .print-header { display: block !important; text-align: center; font-size: 8pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid #ccc; margin-bottom: 6px; }
@@ -806,6 +830,945 @@ h2 {
 
     <button onclick="printPage('mechanics')" style="background:#333;font-size:15px;padding:12px;width:100%;box-sizing:border-box;">🖨️ Drukuj zasłonkę MG (A4)</button>
 
+  </div>
+</div>
+
+<!-- ===== PAGE: GM SCENARIO ===== -->
+<div id="page-gm" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+
+    <!-- LOGIN GATE -->
+    <div id="gm-login" class="gm-login">
+      <h2>Scenariusz Mistrza Gry</h2>
+      <p style="color:#888;font-size:14px;margin-bottom:20px;">Podaj hasło, by otworzyć scenariusz sesji.</p>
+      <input id="gm-password-input" placeholder="HASŁO" onkeydown="if(event.key==='Enter')unlockGm()">
+      <br>
+      <button onclick="unlockGm()" style="background:#7a5c10;margin-top:12px;padding:10px 30px;font-size:16px;">Otwórz</button>
+      <div id="gm-login-error" style="display:none;color:#e07070;font-size:13px;margin-top:10px;">Nieprawidłowe hasło.</div>
+    </div>
+
+    <!-- SCENARIO CONTENT (hidden until password) -->
+    <div id="gm-content" class="gm-content">
+      <h2 style="text-align:center;margin-bottom:4px;">Misterium Skarbów i Cieni</h2>
+      <p style="text-align:center;color:#888;font-size:13px;margin-top:0;">Scenariusz one-shot · 6 graczy · ~5-6 godzin · MG: Mistrz Kluczy</p>
+
+      <hr class="gm-divider">
+
+      <!-- SPIS TREŚCI -->
+      <div style="color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Spis treści</div>
+      <div class="gm-toc">
+        <a onclick="document.getElementById('gm-overview').scrollIntoView({behavior:'smooth'})">Zarys fabularny</a>
+        <a onclick="document.getElementById('gm-npcs').scrollIntoView({behavior:'smooth'})">NPC i Frakcje</a>
+        <a onclick="document.getElementById('gm-pcs').scrollIntoView({behavior:'smooth'})">Gracze — ściąga</a>
+        <a onclick="document.getElementById('gm-act1').scrollIntoView({behavior:'smooth'})">Akt I — Spotkanie w Lesie</a>
+        <a onclick="document.getElementById('gm-act2').scrollIntoView({behavior:'smooth'})">Akt II — Ucieczka i Droga do Miasta</a>
+        <a onclick="document.getElementById('gm-act3').scrollIntoView({behavior:'smooth'})">Akt III — Miasto na Alarm</a>
+        <a onclick="document.getElementById('gm-act4').scrollIntoView({behavior:'smooth'})">Akt IV — Skok na Posiadłość Hrabiego</a>
+        <a onclick="document.getElementById('gm-act5').scrollIntoView({behavior:'smooth'})">Akt V — Golem</a>
+        <a onclick="document.getElementById('gm-epilogue').scrollIntoView({behavior:'smooth'})">Epilog</a>
+        <a onclick="document.getElementById('gm-maps').scrollIntoView({behavior:'smooth'})">Mapy</a>
+        <a onclick="document.getElementById('gm-cheatsheet').scrollIntoView({behavior:'smooth'})">Ściąga MG — testy i trudności</a>
+      </div>
+
+      <hr class="gm-divider">
+
+      <!-- ============================================================= -->
+      <!-- ZARYS FABULARNY -->
+      <!-- ============================================================= -->
+      <div id="gm-overview" class="gm-act" style="border-left-color:#ffd700;">
+        <div class="gm-act-title" style="color:#ffd700;">Zarys fabularny</div>
+        <div style="color:#ccc;font-size:14px;line-height:1.8;">
+          <b style="color:white;">Kontekst:</b> Dekady temu <b style="color:#ffd700;">Ślepy Kruk</b> — legendarny założyciel pierwszej Gildii Złodziejskiej w Tantalos — ukradł cenny artefakt z rąk Gildii Skrytobójców. Artefakt przeszedł do historii jako symbol supremacji złodziei nad skrytobójcami. Niedawno ktoś ukradł go ponownie.
+          <br><br>
+          <b style="color:white;">Problem:</b> Za dwa dni odbywa się wielka ceremonia, podczas której artefakt miał zostać ceremonialnie zakopany — akt pokoju kończący wieczny spór złodziei i skrytobójców. Bez artefaktu — ceremonia niemożliwa, a złodzieje stracą twarz.
+          <br><br>
+          <b style="color:white;">Misterium:</b> Zwołano tajne zgromadzenie przedstawicieli wszystkich gildii złodziejskich. Mimo wzajemnej niechęci, wszyscy traktują kradzież skradzionego artefaktu jako świętokradztwo. Nasi gracze to delegaci wysłani na Misterium.
+          <br><br>
+          <b style="color:white;">Twist:</b> Artefakt to w rzeczywistości uśpiony <b style="color:#e07070;">Golem</b> — starożytna maszyna, która po aktywacji transmutuje wszystko wokół i sieje zniszczenie. Ślepy Kruk nie był złodziejem — był bohaterem, który ukrył golema, by chronić miasto.
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- NPC I FRAKCJE -->
+      <!-- ============================================================= -->
+      <div id="gm-npcs" class="gm-act" style="border-left-color:#6c5b7b;">
+        <div class="gm-act-title" style="color:#9b8fb4;">NPC i Frakcje</div>
+
+        <div class="gm-npc">
+          <div style="color:#ffd700;font-weight:bold;font-size:14px;">Ślepy Kruk <span style="color:#888;font-weight:normal;">(zmarły)</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Założyciel pierwszej Gildii Złodziejskiej w Tantalos. Legendarny złodziej, który „ukradł" artefakt ze skarbca skrytobójców. W rzeczywistości odkrył, że artefakt to golem i ukrył go, by chronić miasto. Zmarł zabierając sekret do grobu. Teraz uważany za bohatera lub zdrajcę — zależy kogo się spyta.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#e07070;font-weight:bold;font-size:14px;">Hrabia Vex Morrigan <span style="color:#888;font-weight:normal;">(antagonista)</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Syn <b>Lorda Morrigan</b> — wiecznego rywala Ślepego Kruka. Po śmierci ojca przejął jego obsesję na punkcie zhańbienia pamięci Kruka. Arystokrata z gildii skrytobójców, który nie przestrzega kodeksu złodziei. Odnalazł artefakt i planuje użyć go, by publicznie upokorzyć złodziei, nie wiedząc (a może wiedząc?) że budzi golema.
+            <br>
+            <span class="gm-stat">Ciało: 12 · Zdolność: 14 · Psycha: 11 · Rozum: 13 · Zmysł: 10</span>
+            <br><span style="color:#888;">Umiejętności: Finezja:2, Influencja:2, Wiedza:1, Reakcja:1</span>
+            <br><span style="color:#888;">Broń: Rapier „Kłamstwo" (+2 do Finezji w walce). Zbroja lekka pod płaszczem.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#e0a040;font-weight:bold;font-size:14px;">Mistrzyni Zehla <span style="color:#888;font-weight:normal;">(przewodnicząca Misterium)</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Starsza elfka, głowa Rady Gildii. Zwołała Misterium. Mówi cicho, ale każde słowo waży jak cegła. Daje graczom poszlakę i misję. Po ataku znika — ma własne problemy.
+            <br><span style="color:#888;">Nie walczy. Ucieka, jeśli trzeba. Ma kontakty w mieście — jeśli gracze jej pomogą, odwdzięczy się informacją.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#888;font-weight:bold;font-size:14px;">Najemnicy Hrabiego <span style="color:#888;font-weight:normal;">(„Kruki Nocy")</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            5-8 najemników w ciemnych kapturach. Mają dymne bomby, aparaty FLASH (ikonografy — pudła z demonem rysownikiem w środku, jak u Pratchetta) i kusze. Jeden z nich nosi „Listę" — spis twarzy do identyfikacji.
+            <br>
+            <span class="gm-stat">Ciało: 11 · Zdolność: 12 · Psycha: 8 · Rozum: 7 · Zmysł: 10</span>
+            <br><span style="color:#888;">Umiejętności: Reakcja:1, Hart:1, Percepcja:1 · Broń: kusza (+4 dmg) lub krótki miecz.</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#2980b9;font-weight:bold;font-size:14px;">Ikonograf <span style="color:#888;font-weight:normal;">(demon w pudełku)</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Aparat fotograficzny w stylu Pratchetta: drewniana skrzynia na trójnogu, w środku mały demon, który obsesyjnie szybko maluje portrety na papierze. FLASH — demon otwiera na chwilę otchłań, co daje oślepiający błysk. Wynikowe „zdjęcia" są karykaturami, ale na tyle dokładnymi, by trafiły na listy gończe.
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#7ec87e;font-weight:bold;font-size:14px;">Straż Miejska Tantalos</div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Skorumpowani, leniwi, ale liczni. Gdy mają listy gończe, stają się motywowani nagrodą. Patrole po 3-4 strażników. Kapitan Rorke — gruby, wąsaty, marzący o emeryturze — da się przekonać łapówką (Influencja, Trudny).
+            <br>
+            <span class="gm-stat">Ciało: 12 · Zdolność: 9 · Psycha: 10 · Rozum: 8 · Zmysł: 9</span>
+            <br><span style="color:#888;">Broń: halabarda lub miecz. Najemnicy Hrabiego mają z nimi „porozumienie".</span>
+          </div>
+        </div>
+
+        <div class="gm-npc">
+          <div style="color:#b0a0e0;font-weight:bold;font-size:14px;">Golem <span style="color:#888;font-weight:normal;">(akt V)</span></div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            Starożytny konstrukt z brązu i obsydianu, 3 metry wzrostu. Gdy się budzi, zaczyna transmutować otoczenie — dotknięte przedmioty i ściany zmieniają się w złoto, a potem pękają i rozpadają. To nie skarb — to zniszczenie. Powolny ale niezniszczalny konwencjonalną bronią.
+            <br>
+            <span class="gm-stat">Ciało: 20 · Zdolność: 6 · Psycha: — · Rozum: — · Zmysł: 5</span>
+            <br><span style="color:#888;">Pancerz: pochłania 8 punktów obrażeń. Odporny na broń zwykłą (maks. draśnięcie).</span>
+            <br><span style="color:#888;">Atak: uderzenie pięścią (ciężka rana) lub dotyk transmutacji (test Zdolności Trudny, by uniknąć).</span>
+            <br><span style="color:#e07070;">Słabość: woda (powolnieje, rdzewieje), klątwa/magia (Arkana), kamień filozoficzny (kontrola/wyłączenie), fizyczne zakopanie (wymaga czasu).</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- GRACZE — ŚCIĄGA -->
+      <!-- ============================================================= -->
+      <div id="gm-pcs" class="gm-act" style="border-left-color:#2980b9;">
+        <div class="gm-act-title" style="color:#2980b9;">Gracze — ściąga</div>
+
+        <div class="gm-pc">
+          <b style="color:#ffd700;">Wherk'ha „Sprytny Cień"</b> <span style="color:#888;">· Pół elf · Zmysł 15, Psycha 14</span><br>
+          <span style="color:#aaa;">Influencja:2. Alibi zawsze gotowe. Miecz z prawdziwym herbem. Słyszy przez ściany.</span><br>
+          <span style="color:#e07070;">Wada: tłumaczy alibi zanim ktoś spyta.</span>
+        </div>
+        <div class="gm-pc">
+          <b style="color:#ffd700;">Madziok „Inspektor Cudzych Kieszeni"</b> <span style="color:#888;">· Szczurok · Zdolność 14, Luck 6</span><br>
+          <span style="color:#aaa;">Mega szybkie palce. Mapa nieistniejącego skarbca. Kusza zaginiona, bełt jako sztylet.</span><br>
+          <span style="color:#e07070;">Wada: kichanie w najgłębszej ciszy.</span>
+        </div>
+        <div class="gm-pc">
+          <b style="color:#ffd700;">Kubol „Otwarta Księga"</b> <span style="color:#888;">· Pół Zwiesz · Ciało 14, Chyżość:3</span><br>
+          <span style="color:#aaa;">Wyważa zamki Poiko-Obuchem. Klucz do zamka, który może nie istnieje. Tank grupy.</span><br>
+          <span style="color:#e07070;">Wada: wyrzuty sumienia wobec psów i staruszek.</span>
+        </div>
+        <div class="gm-pc">
+          <b style="color:#ffd700;">Marceyli „Zawieszona Zagadka"</b> <span style="color:#888;">· Elf · Wiedza:2, Chaos:3, Rep -18</span><br>
+          <span style="color:#aaa;">Magiczka. Zgubiła kamień filozoficzny! Przepustka na teren, który nie istnieje.</span><br>
+          <span style="color:#e07070;">Wada: omdlewa na widok krwi. MAGIA: Chaos 3.</span><br>
+          <span style="color:#b0a0e0;">KLUCZ: Jej kamień filozoficzny może kontrolować Golema w Akcie V!</span>
+        </div>
+        <div class="gm-pc">
+          <b style="color:#ffd700;">Rastlin „Samozwańczy Kruk"</b> <span style="color:#888;">· Pół Łylf · Percepcja:2, Luck 6</span><br>
+          <span style="color:#aaa;">Odznaka inspektora nieznanej służby. Tasak rzeźnika. Niemiła aura, drzwi się zatrzaskują.</span><br>
+          <span style="color:#e07070;">Wada: drzwi same się zatrzaskują (niemiła aura).</span>
+        </div>
+        <div class="gm-pc">
+          <b style="color:#ffd700;">Hulietta Królik „Technik ds. Mechanizmów Zamykających"</b> <span style="color:#888;">· Pół Reptilianin · Finezja:2, Precyzja:3</span><br>
+          <span style="color:#aaa;">Mistrzyni zamków. Kindżał z pytajnikiem. Teczka „Poufne" (pusta).</span><br>
+          <span style="color:#e07070;">Wada: przeklęta przez księdza — nie wejdzie do świętych miejsc.</span>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- AKT I -->
+      <!-- ============================================================= -->
+      <div id="gm-act1" class="gm-act" style="border-left-color:#27ae60;">
+        <div class="gm-act-title" style="color:#27ae60;">Akt I — Spotkanie w Tajemnym Lesie</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">~45 min · Intro, narracja, poszlaka, atak</div>
+
+        <div class="gm-section" style="border-left-color:#27ae60;">
+          <div class="gm-section-title" style="color:#27ae60;">Scena 1: Polana Misterium</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Gracze przybywają na polanę w Lesie Cichych Dębów, miejsce na tyle ukryte, że nawet sarny gubią tu drogę. Każdy gracz dostał zaproszenie — kartkę papieru, która po przeczytaniu zjadła samą siebie (produkt Gildii Alchemików, wymagał polizania).
+          </div>
+
+          <div class="gm-read">
+            Polana pachnie wilgocią i spiskiem. Między drzewami migoczą latarnie — nie ogień, lecz świetliki zamknięte w butelkach (nikt ich nie prosił, ale świetliki w tym lesie mają silne poczucie obowiązku). Wokół kamiennego stołu siedzą postacie, z których każda wygląda tak, jakby specjalnie starała się wyglądać nijakie — co w tej grupie stanowi swoistą sztukę.
+            <br><br>
+            Mistrzyni Zehla, starsza elfka w płaszczu koloru „byłam tu zanim las wyrósł", unosi rękę. Zapada cisza — a przynajmniej coś, co złodzieje uznaliby za ciszę, gdyby nie szelest odruchowo sprawdzanych kieszeni sąsiadów.
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Tip MG:</b> Pozwól graczom się krótko przedstawić. To dobry moment, by każdy odegrał swój pseudonim i „wejście" na polanę. Zachęć do krótkich gagów — to wprowadzenie ich postaci.
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#ffd700;">
+          <div class="gm-section-title" style="color:#ffd700;">Scena 2: Przemówienie Zehli i Poszlaka</div>
+          <div class="gm-read">
+            „Dziękuję, że przybyliście. Wiem, że połowa z was okradła drugą połowę w drodze tutaj — poproszę o zwrot zegarków po spotkaniu."
+            <br><br>
+            Zehla kładzie na kamiennym stole starą, pożółkłą mapę.
+            <br><br>
+            „Artefakt Ślepego Kruka — Serce Króla, zapieczętowane trzydzieści lat temu — został skradziony. Nie przez nas. Nie przez żadną szanującą się gildię. Przez <i>nich</i>."
+            <br><br>
+            Puka palcem w herb na mapie: dwa skrzyżowane sztylety na tle kruka z wydłubanymi oczami.
+            <br><br>
+            „Hrabia Vex Morrigan. Syn Lorda Morrigan — tego samego, który przegrał z Kruka trzydzieści lat temu i do śmierci twierdził, że został oszukany. Jego syn najwyraźniej odziedziczył urazę i słaby gust."
+            <br><br>
+            „Nasi informatorzy donoszą, że Hrabia trzyma artefakt w swojej rezydencji w mieście. Za dwa dni ceremonia. Bez artefaktu — żadnego pokoju ze skrytobójcami, a złodzieje z Tantalos staną się pośmiewiskiem kontynentu."
+            <br><br>
+            Zehla patrzy na was.
+            <br><br>
+            „Odzyskajcie go. Jesteście najlepsi — albo przynajmniej jedyni, którzy odpowiedzieli na zaproszenie."
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Tip MG:</b> Zehla daje do zrozumienia, że Hrabia nie przestrzega kodeksu złodziei — używa najemników i przemocy. To „obrażenie profesji". Gracze powinni czuć, że to sprawa honoru, nie tylko misja.
+          </div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Informacje od Zehli (na pytania):</b>
+            <ul style="margin:6px 0;">
+              <li>Rezydencja Hrabiego jest w <b>Dzielnicy Brązowej</b> — bogatej części miasta.</li>
+              <li>Hrabia ma 10-15 najemników, „Kruki Nocy".</li>
+              <li>Artefakt najprawdopodobniej w podziemnym skarbcu rezydencji.</li>
+              <li>Ceremonia jest za 2 dni — czas ucieka.</li>
+              <li>Nie wie, jak Hrabia go odnalazł. Ślepy Kruk ukrył artefakt 30 lat temu i zabrał sekret do grobu.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#e07070;">
+          <div class="gm-section-title" style="color:#e07070;">Scena 3: Atak! FLASH i bomby dymne</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            <b style="color:white;">W trakcie dyskusji</b> — gdy gracze zaczynają planować — nadchodzi atak najemników Hrabiego. Spotkanie było pułapką. Ktoś zdradził lokalizację Misterium (kto — zagadka na inny dzień).
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Szansa na wykrycie:</b> Gracze o wysokim Zmyśle mogą wyczuć coś przed atakiem.
+            <br><span class="gm-test">Zmysł + Percepcja, Zwykły (≤ wartość)</span> → słyszą trzask gałęzi i szept.
+            <br><span class="gm-test">Wherk'ha ma Zmysł 15</span> → automatycznie słyszy „bo słyszy przez ściany" — czuje wibracje kroków przez ziemię.
+            <br><span class="gm-test">Rastlin ma Percepcja:2</span> → +2 do testu, więc dobra szansa.
+            <br><br>
+            <b>Jeśli ktoś wykryje:</b> 1 runda ostrzeżenia — gracze mogą się ukryć, przygotować, albo zmienić pozycje. Mogą też spróbować odciąć ikonografa z aparatem.
+            <br><b>Jeśli nikt nie wykryje:</b> Atak jest zaskoczeniem.
+          </div>
+
+          <div class="gm-read">
+            BŁYSK.
+            <br><br>
+            Noc eksploduje białym światłem, jakby ktoś na chwilę otworzył pokrywę piekła z niewłaściwej strony. Ikonograf — drewniana skrzynia na trójnogu, z której wybiega dym i przekleństwa demona w środku — błyska po raz drugi, trzeci. Każdy błysk pozostawia plamę na siatkówce i karykaturalnie dokładny portret na pergaminie.
+            <br><br>
+            Bomby dymne spadają między was jak knedle na wrzącą wodę — tyle że zamiast rosołu jest kaszel, chaos i huk.
+          </div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Co się dzieje:</b>
+            <ul style="margin:6px 0;">
+              <li><b>2 Ikonografy (aparaty FLASH)</b> — demony-rysownicy portretują wszystkich obecnych.</li>
+              <li><b>4 bomby dymne</b> — polana tonie w dymie, widoczność 2m.</li>
+              <li><b>6 najemników</b> — nie atakują na zabój, ich cel to DOKUMENTACJA twarzy, nie zabijanie.</li>
+              <li>Zehla ucieka natychmiast (ma swoje sposoby).</li>
+              <li>Inni delegaci gildii rozpierzchają się w las.</li>
+            </ul>
+          </div>
+
+          <div class="gm-danger">
+            <b style="color:#e07070;">Konsekwencja FLASH:</b> Każdy gracz, którego sfotografowano, rano pojawi się na listach gończych w mieście. Nie jako „złodziej" — ale jako „poszukiwany w sprawie zaginięcia artefaktu Serca Króla". Hrabia obrócił sytuację — teraz to GRACZE są podejrzani o kradzież!
+            <br><br>
+            <b>Mechanicznie:</b> Sława +1, Reputacja −10. Gracze dowiedzą się dopiero w mieście (Akt III), chyba że złapią jednego z najemników.
+          </div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Jak gracze mogą uniknąć FLASH:</b>
+            <ul style="margin:6px 0;">
+              <li><b>Zasłonięcie twarzy</b> przed błyskiem — <span class="gm-test">Zdolność + Reakcja, Problemowy</span></li>
+              <li><b>Zniszczenie ikonografa</b> — <span class="gm-test">Zdolność + dowolna broń, Zwykły</span> (skrzynia jest krucha, ale demon w środku gryzie)</li>
+              <li><b>Wystraszenie demona w ikonografie</b> — <span class="gm-test">Psycha + Wola, Trudny</span> (demon robi strajk i odmawia dalszego malowania)</li>
+              <li><b>Sprytny manewr</b> — Madziok mógłby kichnąć celowo, by odwrócić uwagę (ironia losu).</li>
+              <li><b>Wherk'ha</b> — jej lusterko na kijku mogłoby odbić flash z powrotem, oślepiając fotografa.</li>
+            </ul>
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Tip MG:</b> Nie rób z tego pełnej walki. To chaos — gracze powinni decydować: walczyć (ryzykując dłuższą ekspozycję), uciekać (bezpiecznie, ale sfotografowani), albo coś kreatywnego. 2-3 rundy max.
+          </div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Jeśli gracze schwytają najemnika:</b>
+            <br>
+            <span class="gm-test">Psycha + Influencja, Problemowy</span> — przesłuchanie.
+            <br>Najemnik się boi Hrabiego, ale wyda informacje:
+            <ul style="margin:6px 0;">
+              <li>Hrabia opłacił straż miejską — rano rozwieszą portrety.</li>
+              <li>Artefakt jest w rezydencji, w podziemnym skarbcu.</li>
+              <li>Hrabia planuje „ceremonię alternatywną" — sam przedstawi artefakt i oskarży gildie złodziejskie o ukrywanie niebezpiecznej broni.</li>
+              <li>Jeśli test bardzo dobry (5+ PS): najemnik wspomina, że „Hrabia mówił coś o budzeniu" — nie wie o co chodzi.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- AKT II -->
+      <!-- ============================================================= -->
+      <div id="gm-act2" class="gm-act" style="border-left-color:#2980b9;">
+        <div class="gm-act-title" style="color:#2980b9;">Akt II — Ucieczka i Droga do Miasta</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">~30 min · Las, podróż, wybór drogi do miasta</div>
+
+        <div class="gm-section" style="border-left-color:#2980b9;">
+          <div class="gm-section-title" style="color:#2980b9;">Przez las</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Gracze muszą przemierzyć Las Cichych Dębów nocą i dotrzeć do murów Tantalos przed świtem. Las nie jest groźny, ale jest ciemny i pełen korzeni, które wyglądają jak nogi.
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Opcjonalne komplikacje (1-2 max):</b>
+            <ul style="margin:6px 0;">
+              <li><b>Patrol najemników</b> na ścieżce — 3 ludzi z pochodniami. Ominięcie: <span class="gm-test">Zdolność + Gibkość, Zwykły</span>.</li>
+              <li><b>Kubol</b> ma wyrzuty sumienia, bo mijają chatkę ze staruszką/psem — nie może się powstrzymać i chce sprawdzić czy u niej wszystko OK. Komiczny moment.</li>
+              <li><b>Marceyli omdlewa</b> — ktoś się skaleczył o gałąź (Marceyli widzi krew → test Psycha Problemowy lub omdlenie). Grupa musi ją nieść/budzić.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#e0a040;">
+          <div class="gm-section-title" style="color:#e0a040;">Trzy drogi do miasta</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Gracze docierają nad ranem do murów Tantalos. Muszą wybrać jak wejść:
+          </div>
+
+          <div style="margin-top:10px;">
+            <div style="background:#1a2a1a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#7ec87e;">A) Brama główna</b> <span style="color:#888;">(najłatwiej, ale ryzyko)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Rano bramy otwarte, ale straż sprawdza. Jeśli listy gończe już wiszą, potrzeba przebrania lub przekonania strażników.
+                <br><span class="gm-test">Psycha + Influencja, Trudny</span> (przekonanie strażnika) lub <span class="gm-test">Zdolność + Gibkość, Problemowy</span> (wmieszanie w tłum).
+                <br>Wherk'ha z Influencja:2 i papierem z urzędowym nagłówkiem może tu zabłysnąć.
+                <br>Hulietta z teczką „Poufne" — jeśli ją pokaże ze spokojem, strażnicy mogą się speszyć.
+              </div>
+            </div>
+            <div style="background:#1a1a2a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#8eb4e0;">B) Mury</b> <span style="color:#888;">(trudniej, ale bezpiecznie)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Mur wysoki na 8 metrów. Stara sekcja przy Dzielnicy Rybaków ma pęknięcia i pnącza.
+                <br><span class="gm-test">Ciało + Chyżość, Problemowy</span> (wspinaczka) — Kubol z Chyżość:3 ma tu łatwo.
+                <br>Porażka = zjazd z hukiem, <span class="gm-test">Zmysł + Percepcja patrolu, Łatwy</span> — mogą usłyszeć.
+                <br>Madziok jako szczurok ma naturalną gibkość — test Łatwy zamiast Problemowy.
+              </div>
+            </div>
+            <div style="background:#1a1a1a;border:1px solid #444;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#aaa;">C) Kanały</b> <span style="color:#888;">(pewne, ale obrzydliwe)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                System ściekowy pod murami. Wejście przez rzekę. Smród, ciemność, szczury (koleżanki Madziok?).
+                <br><span class="gm-test">Ciało + Hart, Zwykły</span> (by nie zwymiotować)
+                <br>Marceyli ma mapę kanałów z adnotacjami „tu śmierdzi bardziej" — idealna!
+                <br>Rastlin z Przetrwanie:1 prowadzi grupę.
+                <br>Brak strażników, brak ryzyka wykrycia. Ale wszyscy cuchną do końca sesji (modyfikator −2 do Influencji dopóki się nie umyją).
+              </div>
+            </div>
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Tip MG:</b> Gracze mogą się podzielić — część bramą, część kanałami itd. Niech sami zdecydują. Nie karać za kreatywność. Jeśli wymyślą inny sposób (np. transport kupieckim wozem, przebranie za straż) — daj im szansę!
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- AKT III -->
+      <!-- ============================================================= -->
+      <div id="gm-act3" class="gm-act" style="border-left-color:#8e44ad;">
+        <div class="gm-act-title" style="color:#8e44ad;">Akt III — Miasto na Alarm</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">~45 min · Listy gończe, rekonesans, planowanie skoku</div>
+
+        <div class="gm-section" style="border-left-color:#e07070;">
+          <div class="gm-section-title" style="color:#e07070;">Listy gończe</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            <b>Jeśli gracze NIE uniknęli FLASH:</b> Na każdym rogu wiszą świeże portrety — karykaturalne, ale rozpoznawalne. Pod nimi: „POSZUKIWANI w sprawie kradzieży Serca Króla. Nagroda: 50 złotych monet za informację."
+            <br><br>
+            <b>Efekt mechaniczny:</b> Sława +1 (sławni!), Reputacja −10 (ale nie wśród złodziei — wśród uczciwych ludzi i straży).
+            <br><br>
+            Poruszanie się po mieście wymaga teraz ostrożności:
+            <br><span class="gm-test">Zdolność + Gibkość, Problemowy</span> (prześlizgnięcie obok patrolu) lub przebranie/kaptury.
+            <br><br>
+            <b>Jeśli gracze uniknęli FLASH:</b> Listy gończe są, ale portrety to chaotyczne bazgroły demona (demon malował we mgle). Nikt ich nie rozpozna. Mogą chodzić swobodnie, ale nadal jest „alarm" w mieście.
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#ffd700;">
+          <div class="gm-section-title" style="color:#ffd700;">Rekonesans Rezydencji Hrabiego</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Rezydencja Hrabiego Morrigana stoi w Dzielnicy Brązowej — kwartale bogaczy i notabli. Trzypiętrowy budynek z kamienia, ogrodami i murem.
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Jak gracze mogą zdobyć informacje:</b>
+            <ul style="margin:6px 0;">
+              <li><b>Obserwacja</b> — <span class="gm-test">Zmysł + Percepcja, Zwykły</span> → zauważają patrol (2 strażników co 15 min), jedno wejście główne, jedno boczne (kuchnia).</li>
+              <li><b>Gadanie z lokalnymi złodziejami/żebrakami</b> — <span class="gm-test">Psycha + Influencja, Problemowy</span> → wiadomo, że pod rezydencją są stare piwnice, a kanały przechodzą w pobliżu.</li>
+              <li><b>Hulietta ogląda zamki</b> — <span class="gm-test">Rozum + Wiedza, Zwykły</span> (rozpoznaje typ zamków: standardowe kluczykowe, nic magicznego, mechaniczne pułapki).</li>
+              <li><b>Rastlin z odznaką inspektora</b> — może udać inspektora i wejść na teren (test Influencja Trudny, ale z odznaką Problemowy).</li>
+              <li><b>Marceyli z przepustką na teren, który nie istnieje</b> — paradoksalnie może zadziałać, bo rezydencja stoi na terenie starego budynku, który formalnie nie figuruje w rejestrach (Rozum + Wiedza, Problemowy, by się zorientować).</li>
+            </ul>
+          </div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Co ustalą:</b>
+            <ul style="margin:6px 0;">
+              <li>Artefakt w <b>podziemnym skarbcu</b>, pod głównym budynkiem.</li>
+              <li>Drzwi do skarbca: zamek mechaniczny (Hulietta!) + klucz, który Hrabia nosi na szyi.</li>
+              <li>W rezydencji: Hrabia + 8 najemników (4 na patrolu, 4 wewnątrz).</li>
+              <li>Hrabia wieczorem urządza kolację dla szlachty — chaos i kelnerzy = okazja.</li>
+              <li>Kanały biegnące pod rezydencją łączą się z piwnicą — ale przejście zablokowane kratą.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#27ae60;">
+          <div class="gm-section-title" style="color:#27ae60;">Planowanie Skoku</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Tu gracze planują skok. Niech dyskutują — ale jeśli się grzęzną, MG podpowiada: „Wieczorna kolacja to najlepszy moment."
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Sugerowane role (podpowiedz jeśli trzeba):</b>
+            <ul style="margin:6px 0;">
+              <li><b>Dywersja/rozproszenie</b> — Wherk'ha (Influencja:2, alibi) lub Rastlin (aura, odznaka)</li>
+              <li><b>Włamanie do zamka skarbca</b> — Hulietta (Precyzja:3, Finezja:2) — stworzona do tego</li>
+              <li><b>Wejście przez kanały/kratę</b> — Kubol (Ciało 14, Poiko-Obuch) z Marceyli (mapa kanałów)</li>
+              <li><b>Obserwator/czujka</b> — Rastlin (Percepcja:2) lub Wherk'ha (Zmysł 15)</li>
+              <li><b>Kradzież klucza</b> — Madziok (Zdolność 14, Finezja:1) — „inspektor cudzych kieszeni"</li>
+              <li><b>Magia/wsparcie</b> — Marceyli (Chaos:3 — jeśli trzeba, może coś zniszczyć magicznie)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- AKT IV -->
+      <!-- ============================================================= -->
+      <div id="gm-act4" class="gm-act" style="border-left-color:#c0392b;">
+        <div class="gm-act-title" style="color:#c0392b;">Akt IV — Skok na Posiadłość Hrabiego</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">~60-90 min · Infiltracja, skok, skarbiec</div>
+
+        <div class="gm-section" style="border-left-color:#e0a040;">
+          <div class="gm-section-title" style="color:#e0a040;">Kolacja Hrabiego — okazja</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Wieczorem rezydencja tętni życiem. Hrabia urządza kolację dla 20+ arystokratów. Kelnerzy biegają, kuchnia produkuje talerze jak mały atak artylerii, muzycy grają — idealny chaos.
+          </div>
+
+          <div class="gm-read">
+            Rezydencja Morriganów z zewnątrz wygląda jak monument do złego gustu, który poślubił fortecę. Brązowe ściany, wieżyczki zbyt małe na cokolwiek poza dekoracją, i brama z herbem — dwa skrzyżowane sztylety pod krukiem z wydłubanymi oczami. Na dziedzińcu powóz za powozem wyrzuca z siebie szlachtę w jedwabiach i szlachtę udającą szlachtę w jedwabiach. Z kuchni bocznej sączy się dym i zapach czegoś, co mogłoby być pieczenią lub małym pożarem.
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#ffd700;">
+          <div class="gm-section-title" style="color:#ffd700;">Wejścia do rezydencji (wybór graczy)</div>
+
+          <div style="margin-top:8px;">
+            <div style="background:#1a2a1a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#7ec87e;">Wejście A: Jako goście/kelnerzy</b>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Przebranie się za kelnerów lub gości. Kelnerskie stroje do zdobycia w pralni za rogiem.
+                <br><span class="gm-test">Psycha + Influencja, Problemowy</span> (przekonanie szefa kuchni) lub <span class="gm-test">Zdolność + Gibkość, Zwykły</span> (ukraść stroje).
+                <br>Daje wolny ruch po parterze. Schody na górę i do piwnicy wymagają ostrożności.
+              </div>
+            </div>
+            <div style="background:#1a1a2a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#8eb4e0;">Wejście B: Przez kanały</b>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Kanały prowadzą do piwnicy — ale krata blokuje przejście.
+                <br>Kubol z Poiko-Obuchem: <span class="gm-test">Ciało + Budowa, Zwykły</span> → wyważa kratę. HAŁAS — patrol może usłyszeć.
+                <br>Hulietta: <span class="gm-test">Zdolność + Precyzja, Problemowy</span> → cicho rozmontowuje zawiasy.
+                <br>Bezpośrednio do piwnicy, blisko skarbca!
+              </div>
+            </div>
+            <div style="background:#1a1a1a;border:1px solid #444;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#aaa;">Wejście C: Przez dach</b>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Sąsiedni budynek ma dach na tym samym poziomie. Skok 2m.
+                <br><span class="gm-test">Ciało + Chyżość, Problemowy</span> (skok) + <span class="gm-test">Zdolność + Gibkość, Zwykły</span> (wejście przez okno na 3 piętrze).
+                <br>Ryzyko: na 3 piętrze gabinet Hrabiego — mogą natrafić na coś ciekawego (patrz: bonus).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#c0392b;">
+          <div class="gm-section-title" style="color:#c0392b;">Wewnątrz rezydencji</div>
+
+          <div class="gm-map">
+REZYDENCJA HRABIEGO MORRIGANA — schemat pięter
+═══════════════════════════════════════════════
+
+PIWNICA / SKARBIEC                     
+┌──────────────────────────────────────┐
+│  [KANAŁY]──krata──►[PIWNICA]        │
+│              │     magazyn win  │    │
+│              │         │        │    │
+│              └────►[KORYTARZ]───┘    │
+│                       │              │
+│              [DRZWI SKARBCA]         │
+│                 zamek mech.          │
+│                 + klucz              │
+│                    │                 │
+│              [===SKARBIEC===]        │
+│              [ ARTEFAKT/GOLEM ]      │
+│              [==================]    │
+└──────────────────────────────────────┘
+
+PARTER                                 
+┌──────────────────────────────────────┐
+│ [BRAMA]──►[DZIEDZINIEC]──►[DRZWI]   │
+│                               │      │
+│  [KUCHNIA]◄──[KORYTARZ]──►[SALA]    │
+│  boczne                  kolacja     │
+│  wejście    [SCHODY ↓↑]   bankiet   │
+│              piwnica/góra            │
+│                                      │
+│  [POSTERUNEK STRAŻY] ── 2 najemn.    │
+└──────────────────────────────────────┘
+
+PIĘTRO 1 — pokoje gościnne            
+┌──────────────────────────────────────┐
+│ [POKOJE]──[KORYTARZ]──[POKOJE]       │
+│            [SCHODY ↑↓]               │
+│            1 najemnik patrol         │
+└──────────────────────────────────────┘
+
+PIĘTRO 2 — gabinet Hrabiego            
+┌──────────────────────────────────────┐
+│ [GABINET]──[SYPIALNIA]               │
+│  biurko z    [BALKON ── sąsiedni     │
+│  dokumentami           budynek]      │
+│  → KLUCZ zapasowy w biurku!          │
+│  [SCHODY ↑↓]                         │
+│  1 najemnik pod drzwiami gabinetu    │
+└──────────────────────────────────────┘</div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Kluczowe przeszkody:</b>
+
+            <div style="margin-top:8px;">
+              <div style="background:#2a1a1a;border-left:2px solid #e07070;padding:8px 12px;margin:6px 0;border-radius:4px;">
+                <b style="color:#e07070;">1. Klucz do skarbca</b>
+                <div style="color:#ccc;font-size:13px;">
+                  Hrabia nosi klucz na łańcuszku pod koszulą. Jest na kolacji w sali bankietowej.
+                  <br><b>Opcja A — Madziok kradnie klucz:</b> <span class="gm-test">Zdolność + Finezja, Trudny</span> (bo Hrabia jest czujny). Z Luck 6, może zużyć szczęście.
+                  <br><b>Opcja B — Klucz zapasowy:</b> W gabinecie na 2. piętrze, w biurku. Zamek biurka: <span class="gm-test">Zdolność + Precyzja, Zwykły</span> (Hulietta trivial).
+                  <br><b>Opcja C — Kubol wyważa drzwi skarbca:</b> <span class="gm-test">Ciało + Budowa, Trudny</span> — drzwi solidne. HAŁAS, alarmuje strażników.
+                </div>
+              </div>
+
+              <div style="background:#2a1a1a;border-left:2px solid #e07070;padding:8px 12px;margin:6px 0;border-radius:4px;">
+                <b style="color:#e07070;">2. Patrol najemników</b>
+                <div style="color:#ccc;font-size:13px;">
+                  4 najemników wewnątrz: 2 przy bramie (parter), 1 patrol na piętrze 1, 1 pod gabinetem (piętro 2).
+                  <br><b>Obejście:</b> <span class="gm-test">Zdolność + Gibkość, Problemowy</span> lub dywersja (Wherk'ha wciąga strażnika w rozmowę — Influencja:2).
+                  <br><b>Neutralizacja:</b> <span class="gm-test">Zdolność + Reakcja, Zwykły</span> (ogłuszenie od tyłu, ciało ukryć).
+                  <br>Rastlin z tasakiem: jeśli podejdzie — strażnik automatycznie czuje niepokój (niemiła aura) i odwraca się. Walka trudniejsza, ale Rastlin ma element zaskoczenia bo strażnik odwraca się w złą stronę.
+                </div>
+              </div>
+
+              <div style="background:#2a1a1a;border-left:2px solid #e07070;padding:8px 12px;margin:6px 0;border-radius:4px;">
+                <b style="color:#e07070;">3. Zamek skarbca</b>
+                <div style="color:#ccc;font-size:13px;">
+                  Podwójny zamek mechaniczny z pułapką igłową (trucizna — test Ciało + Hart Trudny, by nie zemdleć na godzinę).
+                  <br><b>Hulietta (Precyzja:3, Finezja:2):</b> <span class="gm-test">Zdolność + Precyzja, Problemowy</span> → otwiera. Z Finezja:2 dodatkowo: +2 = Łatwy. Pułapkę igłową: <span class="gm-test">Zmysł + Percepcja, Problemowy</span> → wykrywa i rozbriaja.
+                  <br>Bez Hulietty: test Trudny + brak wykrycia pułapki.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Tip MG — „Ocean's 11":</b> Postaraj się, by każdy gracz miał „swój moment":
+            <br>• Madziok kradnie klucz lub rozpoznaje
+            <br>• Hulietta otwiera zamek skarbca
+            <br>• Kubol wyważa kratę/drzwi
+            <br>• Wherk'ha dywersjuje i gada
+            <br>• Rastlin obserwuje i neutralizuje strażników
+            <br>• Marceyli prowadzi kanałami i/lub magicznie wspomaga
+            <br>Jeśli ktoś nie ma roli — wymyśl mu komplikację do rozwiązania!
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#ffd700;">
+          <div class="gm-section-title" style="color:#ffd700;">Skarbiec — Znalezienie Artefaktu</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            Skarbiec jest mały — 4x4 metry. Na piedestale w centrum stoi <b>Serce Króla</b>: posąg z brązu i obsydianu, wielkości ludzkiego torsu, przedstawiający skurczoną humanoidalną figurę z zamkniętymi oczami. Jest ciężki (~80 kg).
+          </div>
+
+          <div class="gm-read">
+            Skarbiec pachnie miedzią i starym złotem. Na kamiennym piedestale spoczywa… to. Nie jest piękne. Nie jest nawet ładne. Wygląda jak ktoś próbował ulepić człowieka z brązu, a potem stracił cierpliwość w połowie i po prostu ścisnął. Ale emanuje z tego — czymś. Powietrze wokół gęstnieje jak miód, a światło latarek załamuje się pod dziwnymi kątami.
+            <br><br>
+            Na piedestale wyryta jest inskrypcja w starym języku. Kto zna język lub ma dobrą wiedzę, może odczytać: „Kto mnie obudzi, ten żałować będzie. Kto mnie uśpi, ten zbawcą będzie."
+          </div>
+
+          <div class="gm-tip">
+            <b style="color:#e0a040;">Marceyli i Kamień Filozoficzny:</b> Jeśli Marceyli zbliży się do artefaktu, poczuje dziwne ciepło. Jej utracony Kamień Filozoficzny rezonuje z Golemem — to ten sam materiał. Marceyli może poczuć, że „gdzieś tu, niedaleko, jest coś, co kiedyś do niej należało". W biurku Hrabiego lub w samym golemie jest mały kryształ — kawałek (lub cały) Kamień Filozoficzny, który Hrabia użył do aktywacji golema.
+            <br><br>
+            <b>Jeśli ktoś wykryje inskrypcję</b> — <span class="gm-test">Rozum + Wiedza, Problemowy</span> — odczytują ostrzeżenie. Marceyli z Wiedza:2 ma tu premię.
+          </div>
+
+          <div class="gm-danger">
+            <b style="color:#e07070;">Aktywacja Golema:</b> Golem aktywuje się gdy:
+            <br>• Ktoś próbuje go wynieść siłą (ruch fizyczny budzi mechanizm) — nieuniknione
+            <br>• Hrabia aktywuje go zdalnie (jeśli alarm w rezydencji)
+            <br>• Ktoś dotknie „oczu" posągu
+            <br><br>
+            Gracze NIE mogą tego uniknąć — Golem się obudzi. Pytanie to KIEDY i W JAKICH okolicznościach.
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- AKT V -->
+      <!-- ============================================================= -->
+      <div id="gm-act5" class="gm-act" style="border-left-color:#e07070;">
+        <div class="gm-act-title" style="color:#e07070;">Akt V — Golem</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">~45-60 min · Boss fight / kreatywne rozwiązanie</div>
+
+        <div class="gm-section" style="border-left-color:#e07070;">
+          <div class="gm-section-title" style="color:#e07070;">Przebudzenie</div>
+          <div class="gm-read">
+            Oczy posągu otwierają się. Nie są to oczy w normalnym tego słowa znaczeniu — to dwa wirujące dyski z obsydianu, za którymi płonie coś starszego niż ogień. Brąz skrzypi, pęka, wyciąga się. Kolana. Łokcie. Coś, co mogłoby być palcami, gdyby palce były wielkości bananów i twardsze od żelaza.
+            <br><br>
+            Golem prostuje się do pełnych trzech metrów. Sufit skarbca pęka. Gruz leci. Pierwszą rzeczą, którą dotyka, jest piedestał — który w ciągu pięciu sekund zmienia kolor na złoty, lśni jak nowo wybita moneta, a potem pęka na kawałki z cichym, żałosnym dźwiękiem, jakby złoto było ceramiką.
+            <br><br>
+            Golem transmutuje. Wszystko, czego dotyka, zamienia się w złoto. A potem złoto się rozpada. To nie skarb — to zniszczenie w bardzo drogim opakowaniu.
+          </div>
+
+          <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+            <b style="color:white;">Zachowanie Golema:</b>
+            <ul style="margin:6px 0;">
+              <li>Powolny (Zdolność 6) — gracze mogą uciekać i manewrować.</li>
+              <li>Idzie prosto — niszczy ściany, schody, meble. Kierunek: w górę, na zewnątrz.</li>
+              <li>Nie celuje w konkretne osoby — niszczy WSZYSTKO na drodze.</li>
+              <li>Kolacja Hrabiego eksploduje paniką gdy Golem przebija się przez podłogę sali bankietowej.</li>
+              <li>Hrabia ucieka — albo zostaje i próbuje kontrolować Golema (bezskutecznie).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#7ec87e;">
+          <div class="gm-section-title" style="color:#7ec87e;">Sposoby pokonania Golema</div>
+
+          <div style="margin-top:8px;">
+            <div style="background:#1a2a1a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#7ec87e;">1. Utopienie</b> <span style="color:#888;">(najbardziej prawdopodobne)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Zwabić Golema do rzeki lub kanałów. Woda powoduje rdzewienie — Golem powolnieje, a potem zatrzymuje się.
+                <br><b>Plan:</b> Wyprowadzić Golema z rezydencji → poprowadzić ulicami do rzeki Tantalos → zepchnąć/zwabić do wody.
+                <br><span class="gm-test">Seria testów Zdolność + Chyżość/Gibkość, Problemowe</span> — by uciekać przed nim prowadząc go we właściwym kierunku.
+                <br>Kubol z Chyżość:3 może być „przynętą".
+                <br><b>Rezultat:</b> Artefakt utracony na zawsze — zapieczętowany pod wodą. Ceremonia niemożliwa, ale Golem zneutralizowany.
+              </div>
+            </div>
+
+            <div style="background:#1a1a2a;border:1px solid #333;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#b0a0e0;">2. Kamień Filozoficzny (Marceyli)</b> <span style="color:#888;">(najlepsze zakończenie)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Jeśli Marceyli znalazła swój kamień (lub kawałek), może go użyć, by przejąć kontrolę nad Golemem lub go wyłączyć.
+                <br><span class="gm-test">Psycha + Uduchowienie, Trudny</span> — Marceyli musi skoncentrować się (KREW w pobliżu → test na omdlenie!).
+                <br>Sukces: Golem zatrzymuje się. Transmutacja odwraca się — wszystko złote wraca do normy.
+                <br><b>Efekt finałowy:</b> Golem zamienia się ponownie w posąg — ale tym razem złoty. Wszystkie okoliczne przedmioty, które dotknął, zamieniły się w złoto NA STAŁE. Deszcz złota na ulicach Tantalos. Ludzie zbierają złote cegły, złote szczury, złote kapelusze.
+                <br><b>Bonus:</b> Marceyli „odzyskuje" kamień filozoficzny — znalazła go tam, gdzie go zgubiła: w sobie samej (cheesy ale satysfakcjonujące).
+              </div>
+            </div>
+
+            <div style="background:#1a1a1a;border:1px solid #444;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#e0a040;">3. Zakopanie żywcem</b>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Zwabić z powrotem do piwnicy/skarbca i zawalić budynek na niego.
+                <br><span class="gm-test">Ciało + Budowa, Trudny</span> (Kubol podważa filary) + <span class="gm-test">Zdolność + Chyżość, Problemowy</span> (uciec przed zawaleniem).
+                <br><b>Rezultat:</b> Golem uwięziony pod gruzami. Nie zniszczony, ale uwięziony. Pytanie na przyszłość.
+              </div>
+            </div>
+
+            <div style="background:#2a1a1a;border:1px solid #444;border-radius:4px;padding:10px 14px;margin:6px 0;">
+              <b style="color:#e07070;">4. Pokonanie siłą</b> <span style="color:#888;">(prawie niemożliwe)</span>
+              <div style="color:#ccc;font-size:13px;line-height:1.6;margin-top:4px;">
+                Golem ma Ciało 20 i pancerz pochłaniający 8 obrażeń. Broń zwykła zadaje maks. draśnięcie.
+                <br>Jedyne szanse: magia (Marceyli, Chaos), pułapki, kwas, ogień długotrwały.
+                <br>Wymagałoby 10+ ciężkich ran — praktycznie niemożliwe dla 6 złodziei.
+                <br><b>Nie blokuj tej opcji</b> — ale niech gracze widzą, że to nie działa. Niech szukają alternatyw.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#c0392b;">
+          <div class="gm-section-title" style="color:#c0392b;">Hrabia Morrigan — konfrontacja</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.7;">
+            W trakcie chaosu Hrabia może:
+            <ul style="margin:6px 0;">
+              <li><b>Uciekać</b> — gracze mogą go ścigać. <span class="gm-test">Zdolność + Chyżość, Problemowy</span>.</li>
+              <li><b>Stanąć do walki</b> — rapier „Kłamstwo". Wyzwanie dla 1-2 graczy.</li>
+              <li><b>Próbować kontrolować Golema</b> — nieudolnie krzyczy komendy po starożytnym. Nie działa. Golem go ignoruje.</li>
+              <li><b>Błagać o pomoc</b> — jeśli Golem poszedł w jego stronę, nagle „złodzieje" stają się „bohaterami". Ironia.</li>
+            </ul>
+            Nie jest konieczne, by gracze go pokonali — Hrabia jest drugorzędny wobec Golema. Może uciec, zostać złapany przez straż, albo zostać zmieniony w złoto przez Golema (dramatyczne!).
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- EPILOG -->
+      <!-- ============================================================= -->
+      <div id="gm-epilogue" class="gm-act" style="border-left-color:#ffd700;">
+        <div class="gm-act-title" style="color:#ffd700;">Epilog</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">~15 min · Narracja zamykająca</div>
+
+        <div class="gm-read">
+          Niezależnie od tego, jak gracze poradzili sobie z Golemem, jedno jest pewne: Tantalos przetrwał. Może z kilkoma złotymi budynkami więcej, może z jednym hrabią mniej, ale przetrwał.
+          <br><br>
+          Narracja, która rozprzestrzenia się po mieście jak plotka na targu — a więc z prędkością światła — jest taka: Ślepy Kruk nie ukradł artefaktu trzydzieści lat temu z chciwości. Ukradł go, bo wiedział, czym jest. Wiedział, że Serce Króla to nie skarb — to broń. I schował ją, żeby miasto nie spłonęło. Żeby nikt nie zginął.
+          <br><br>
+          Ślepy Kruk nie był złodziejem. Był bohaterem.
+          <br><br>
+          A wy? Wy jesteście złodziejami. Ale dzisiaj — wyjątkowo — to wystarczyło.
+        </div>
+
+        <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:10px;">
+          <b style="color:white;">Konsekwencje dla postaci:</b>
+          <ul style="margin:6px 0;">
+            <li><b>Reputacja:</b> Jeśli mieli listy gończe → listy znikają. Reputacja wraca (+10 zamiast −10). „Bohaterowie mimo woli."</li>
+            <li><b>Sława:</b> +2 dla wszystkich. Opowieść o nocy, gdy złodzieje uratowali miasto, będzie opowiadana w każdej tawernie.</li>
+            <li><b>Ceremonia:</b> Odbywa się, ale bez zakopywania artefaktu. Zamiast tego — uroczyste ogłoszenie, że Ślepy Kruk był obrońcą miasta. Pomnik zamiast grobu.</li>
+            <li><b>Marceyli:</b> Jeśli użyła kamienia — zyskuje trwałą więź z magią transmutacji. Kamień wraca do niej.</li>
+            <li><b>Hrabia Morrigan:</b> Aresztowany, uciekł, lub zamieniony w złoto — zależnie od akcji graczy. Jego reputacja zniszczona.</li>
+          </ul>
+        </div>
+
+        <div class="gm-tip">
+          <b style="color:#e0a040;">Tip MG — zamknięcie sesji:</b> Poproś każdego gracza, by powiedział jednym zdaniem, co jego postać robi następnego dnia po Misterium. To miły sposób na zamknięcie one-shota i danie graczom ostatniego momentu z ich postacią.
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- MAPY -->
+      <!-- ============================================================= -->
+      <div id="gm-maps" class="gm-act" style="border-left-color:#2980b9;">
+        <div class="gm-act-title" style="color:#2980b9;">Mapy</div>
+
+        <div class="gm-section" style="border-left-color:#27ae60;">
+          <div class="gm-section-title" style="color:#27ae60;">Mapa 1: Las Cichych Dębów i okolice Tantalos</div>
+          <div class="gm-map">
+                    LAS CICHYCH DĘBÓW
+                    ~~~~~~~~~~~~~~~~~~
+   🌲🌲🌲            🌲🌲
+  🌲  ⬡ POLANA  🌲🌲🌲      
+ 🌲🌲 MISTERIUM 🌲     🌲    
+  🌲🌲🌲  │  🌲🌲🌲🌲🌲      
+     🌲   │    🌲🌲           
+      🌲  │   🌲              
+       ···│····               ·· = ścieżka
+          │   ╲               │  = droga 
+          │    ╲ patrol       ╲  = patrol
+          │                   
+    ══════╪═════════════ MURY TANTALOS ═══
+    ║     │              ║          ║
+    ║  [BRAMA]      [pęknięcie  [kanały
+    ║  główna        w murze]    pod
+    ║     │              ║      rzeką]
+    ║     │              ║        ║
+    ╠═════╪══════════════╩════════╩═══╗
+    ║                                 ║
+    ║        TANTALOS                 ║
+    ║     ┌──────────────┐            ║
+    ║     │  DZIELNICA   │            ║
+    ║     │  BRĄZOWA     │ ← Hrabia   ║
+    ║     │  [REZYDENCJA]│            ║
+    ║     └──────────────┘            ║
+    ║            │                    ║
+    ║     ═══════╪═══ RZEKA ══════    ║
+    ╚═════════════════════════════════╝</div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#c0392b;">
+          <div class="gm-section-title" style="color:#c0392b;">Mapa 2: Rezydencja Hrabiego — parter</div>
+          <div class="gm-map">
+          BRAMA  (2 strażników)
+            │
+    ════════╪════════════════════
+    ║    DZIEDZINIEC             ║
+    ║    (powozy, goście)        ║
+    ║         │                  ║
+    ╠═════════╪══════════════════╣
+    ║         │                  ║
+    ║  ┌──────┴──────┐  ┌─────┐ ║
+    ║  │  PRZEDSIONEK│  │KUCH-│ ║
+    ║  │      │      │  │NIA  │◄── boczne wejście
+    ║  │      │      │  └──┬──┘ ║
+    ║  │  ┌───┴───┐  │    │    ║
+    ║  │  │SCHODY │  │  KORYTARZ║
+    ║  │  │↑piętra│  │    │    ║
+    ║  │  │↓piwnic│  │    │    ║
+    ║  │  └───────┘  │    │    ║
+    ║  │             │    │    ║
+    ║  ╠═════════════╩════╪════╣
+    ║  ║   SALA BANKIETOWA     ║
+    ║  ║   (kolacja, 20+ osób) ║
+    ║  ║   stoły, muzyka       ║
+    ║  ║   Hrabia tu jest!     ║
+    ║  ╚═══════════════════════╝
+    ╚════════════════════════════</div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#e0a040;">
+          <div class="gm-section-title" style="color:#e0a040;">Mapa 3: Piwnica i Skarbiec</div>
+          <div class="gm-map">
+    KANAŁY ═══► [KRATA] ═══► PIWNICA
+    (pod                   magazyn win
+     rzeką)                    │
+                          KORYTARZ ──► schody ↑ parter
+                               │
+                        ╔══════╧══════╗
+                        ║   DRZWI     ║
+                        ║  zamek mech ║
+                        ║  + pułapka  ║
+                        ╠═════════════╣
+                        ║             ║
+                        ║  SKARBIEC   ║
+                        ║             ║
+                        ║   [    ]    ║
+                        ║   [GOLEM]   ║ ← na piedestale
+                        ║   [    ]    ║
+                        ║             ║
+                        ╚═════════════╝</div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- ŚCIĄGA MG -->
+      <!-- ============================================================= -->
+      <div id="gm-cheatsheet" class="gm-act" style="border-left-color:#eea65f;">
+        <div class="gm-act-title" style="color:#eea65f;">Ściąga MG — testy i trudności</div>
+
+        <div class="gm-section" style="border-left-color:#e0a040;">
+          <div class="gm-section-title" style="color:#e0a040;">Skrócone trudności</div>
+          <table style="width:100%;color:#ccc;font-size:14px;border-collapse:collapse;margin-top:6px;">
+            <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Łatwy</td><td style="text-align:right;color:#7ec87e;font-weight:bold;">+2</td><td style="text-align:right;color:#888;font-size:12px;">nic nie może pójść nie tak</td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Zwykły</td><td style="text-align:right;color:white;font-weight:bold;">0</td><td style="text-align:right;color:#888;font-size:12px;">standardowe wyzwanie</td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Problemowy</td><td style="text-align:right;color:#e0a040;font-weight:bold;">−2</td><td style="text-align:right;color:#888;font-size:12px;">wymaga wysiłku</td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Trudny</td><td style="text-align:right;color:#e07070;font-weight:bold;">−5</td><td style="text-align:right;color:#888;font-size:12px;">poważne wyzwanie</td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Złożony</td><td style="text-align:right;color:#c0392b;font-weight:bold;">−8</td><td style="text-align:right;color:#888;font-size:12px;">na granicy możliwości</td></tr>
+            <tr><td style="padding:4px 0;">Fartowny</td><td style="text-align:right;color:#888;font-weight:bold;">−15</td><td style="text-align:right;color:#888;font-size:12px;">potrzebujesz cudu</td></tr>
+          </table>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#ffd700;">
+          <div class="gm-section-title" style="color:#ffd700;">Kluczowe testy scenariusza</div>
+          <div style="color:#ccc;font-size:13px;line-height:1.8;">
+            <b style="color:white;">AKT I</b><br>
+            Wykrycie zasadzki: <span class="gm-test">Zmysł + Percepcja, Zwykły</span><br>
+            Uniknięcie FLASH: <span class="gm-test">Zdolność + Reakcja, Problemowy</span><br>
+            Zniszczenie ikonografa: <span class="gm-test">Zdolność + broń, Zwykły</span><br>
+            Przesłuchanie najemnika: <span class="gm-test">Psycha + Influencja, Problemowy</span><br>
+            <br>
+            <b style="color:white;">AKT II</b><br>
+            Ominięcie patrolu w lesie: <span class="gm-test">Zdolność + Gibkość, Zwykły</span><br>
+            Brama (przekonanie straży): <span class="gm-test">Psycha + Influencja, Trudny</span><br>
+            Mury (wspinaczka): <span class="gm-test">Ciało + Chyżość, Problemowy</span><br>
+            Kanały (nie zwymiotować): <span class="gm-test">Ciało + Hart, Zwykły</span><br>
+            <br>
+            <b style="color:white;">AKT III</b><br>
+            Unikanie patroli w mieście: <span class="gm-test">Zdolność + Gibkość, Problemowy</span><br>
+            Rekonesans rezydencji: <span class="gm-test">Zmysł + Percepcja, Zwykły</span><br>
+            Informacje od złodziei/żebraków: <span class="gm-test">Psycha + Influencja, Problemowy</span><br>
+            <br>
+            <b style="color:white;">AKT IV</b><br>
+            Kradzież klucza od Hrabiego: <span class="gm-test">Zdolność + Finezja, Trudny</span><br>
+            Otwarcie zamka biurka: <span class="gm-test">Zdolność + Precyzja, Zwykły</span><br>
+            Wyważenie kraty kanałowej: <span class="gm-test">Ciało + Budowa, Zwykły</span><br>
+            Zamek skarbca (Hulietta): <span class="gm-test">Zdolność + Precyzja, Problemowy (→Łatwy z Finezja)</span><br>
+            Wykrycie pułapki: <span class="gm-test">Zmysł + Percepcja, Problemowy</span><br>
+            Neutralizacja strażnika: <span class="gm-test">Zdolność + Reakcja, Zwykły</span><br>
+            <br>
+            <b style="color:white;">AKT V</b><br>
+            Ucieczka przed Golemem: <span class="gm-test">Zdolność + Chyżość, Problemowy</span><br>
+            Marceyli — kontrola Golema: <span class="gm-test">Psycha + Uduchowienie, Trudny</span><br>
+            Zawalenie budynku: <span class="gm-test">Ciało + Budowa, Trudny</span><br>
+            Konfrontacja z Hrabią: <span class="gm-test">walka wręcz — testy przeciwstawne</span><br>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#7ec87e;">
+          <div class="gm-section-title" style="color:#7ec87e;">Timing sesji (sugerowany)</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.8;">
+            <table style="width:100%;color:#ccc;font-size:14px;border-collapse:collapse;">
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Akt I — Las, Misterium, Atak</td><td style="text-align:right;color:#e0a040;">~45 min</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Akt II — Ucieczka, droga do miasta</td><td style="text-align:right;color:#e0a040;">~30 min</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Przerwa / jedzenie</td><td style="text-align:right;color:#888;">~30 min</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Akt III — Miasto, rekonesans, plan</td><td style="text-align:right;color:#e0a040;">~45 min</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Akt IV — Skok na rezydencję</td><td style="text-align:right;color:#e0a040;">~60-90 min</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Akt V — Golem</td><td style="text-align:right;color:#e0a040;">~45-60 min</td></tr>
+              <tr><td style="padding:4px 0;">Epilog</td><td style="text-align:right;color:#e0a040;">~15 min</td></tr>
+            </table>
+            <div style="color:#888;font-size:13px;margin-top:8px;">Razem: ~4.5-5.5h gry. Zostaw bufor na improwizację i RP momenty.</div>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#8e44ad;">
+          <div class="gm-section-title" style="color:#8e44ad;">Złote zasady MG na tę sesję</div>
+          <div style="color:#ccc;font-size:14px;line-height:1.8;">
+            <ol style="margin:6px 0;padding-left:20px;">
+              <li><b>Nie blokuj kreatywności</b> — jeśli gracz wymyśli coś sprytnego, a ty nie masz na to reguły, wymyśl trudność na poczekaniu i daj szansę.</li>
+              <li><b>Każdy gracz musi mieć „moment chwały"</b> — jeśli ktoś jest cichy, daj mu sytuację, w której jego umiejętność jest kluczowa.</li>
+              <li><b>Nie pozwól, by walka zdominowała</b> — to sesja złodziejska, nie wojenna. Spryt > siła.</li>
+              <li><b>Golem MUSI się obudzić</b> — to kluczowy twist. Nie pozwól graczom go ominąć. Ale daj im kontrolę nad TYM, JAK sobie z nim radzą.</li>
+              <li><b>Humor w stylu Pratchetta</b> — świat jest absurdalny, demony w aparatach, złote szczury. Nie bój się żartów. Poważne momenty brzmią lepiej na tle absurdu.</li>
+              <li><b>Tempo</b> — jeśli gracze się grzęzną w planowaniu, niech coś się stanie (patrol, hałas, ktoś ich zauważy). Napędzaj akcję.</li>
+              <li><b>Wady postaci</b> — aktywnie wykorzystuj wady graczy (kichanie Madziok, omdlenia Marceyli, wyrzuty Kubola). To najśmieszniejsze momenty sesji.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#ffd700;">
+          <div class="gm-section-title" style="color:#ffd700;">Losowe komplikacje (jeśli sesja potrzebuje przyprawy)</div>
+          <div style="color:#ccc;font-size:13px;line-height:1.7;">
+            <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">1</td><td>Uliczny sprzedawca rozpoznaje kogoś z listy gończej i zaczyna krzyczeć.</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">2</td><td>Pijany szlachcic na kolacji Hrabiego zaczyna opowiadać o „tych złodziejach" i pokazywać portret.</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">3</td><td>Kot wchodzi do skarbca i zaczyna mruczeć do Golema, co go częściowo aktywuje.</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">4</td><td>Klątwa Hulietty — na drodze do skarbca jest mała kapliczka. Musi ją ominąć inną drogą.</td></tr>
+              <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;color:#e0a040;">5</td><td>Madziok kicha w najgorszym momencie. Strażnik się odwraca.</td></tr>
+              <tr><td style="padding:4px 0;color:#e0a040;">6</td><td>Kubol widzi staruszka ze starym psem na ulicy i chce mu pomóc z zakupami. TERAZ.</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <hr class="gm-divider">
+      <p style="text-align:center;color:#555;font-size:12px;">Misterium Skarbów i Cieni · Scenariusz MG v1.0<br>„Kto mnie obudzi, ten żałować będzie."</p>
+
+      <button onclick="printPage('gm')" style="background:#333;font-size:15px;padding:12px;width:100%;box-sizing:border-box;margin-top:10px;">🖨️ Drukuj scenariusz</button>
+
+    </div><!-- /gm-content -->
   </div>
 </div>
 
@@ -1472,7 +2435,7 @@ function markUnsaved() { hasUnsavedChanges = true; }
 // =====================================================================
 function navigate() {
   const hash = (location.hash || '#home').slice(1);
-  ['page-home','page-create','page-view','page-tricks','page-mechanics'].forEach(id => {
+  ['page-home','page-create','page-view','page-tricks','page-mechanics','page-gm'].forEach(id => {
     document.getElementById(id).style.display = 'none';
   });
 
@@ -1497,8 +2460,21 @@ function navigate() {
   } else if (hash === 'mechanics') {
     document.getElementById('page-mechanics').style.display = 'block';
     renderMechanicsSkills();
+  } else if (hash === 'gm') {
+    document.getElementById('page-gm').style.display = 'block';
   } else {
     document.getElementById('page-home').style.display = 'block';
+  }
+}
+
+function unlockGm() {
+  const input = document.getElementById('gm-password-input').value.trim().toUpperCase();
+  if (input === 'GOLEM') {
+    document.getElementById('gm-login').style.display = 'none';
+    document.getElementById('gm-content').style.display = 'block';
+    document.getElementById('gm-login-error').style.display = 'none';
+  } else {
+    document.getElementById('gm-login-error').style.display = 'block';
   }
 }
 
