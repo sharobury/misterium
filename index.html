@@ -462,7 +462,7 @@ h2 {
   .stat-test-box.base { font-weight: bold !important; }
   .print-gear-weapons { border-color: #ccc !important; background: #f9f9f9 !important; }
   .print-portrait-area { border-color: #ccc !important; display: flex !important; flex-direction: column !important; }
-  #view-bio { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 6px !important; min-height: 960px !important; height: auto !important; }
+  #view-bio { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 6px !important; overflow: visible !important; }
   .print-no-frame { border: none !important; background: transparent !important; }
 
   /* Mechanics page print */
@@ -2964,6 +2964,24 @@ window.addEventListener('hashchange', navigate);
 window.addEventListener('beforeunload', function(e) {
   if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; }
 });
+window.addEventListener('beforeprint', function() {
+  var bio = document.getElementById('view-bio');
+  if (bio) {
+    bio.style.overflow = 'hidden';
+    bio.style.height = '1px';
+    var h = Math.max(bio.scrollHeight, 300);
+    bio.style.setProperty('height', h + 'px', 'important');
+    bio.style.setProperty('min-height', h + 'px', 'important');
+  }
+});
+window.addEventListener('afterprint', function() {
+  var bio = document.getElementById('view-bio');
+  if (bio) {
+    bio.style.removeProperty('min-height');
+    bio.style.minHeight = '300px';
+    autoGrow(bio);
+  }
+});
 
 // =====================================================================
 // CREATE PAGE INIT
@@ -3612,7 +3630,7 @@ function renderViewCard(data) {
     '</div>';
   h += '<div class="print-notes-area print-no-frame" style="margin-top:12px;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Bio postaci</div>' +
-    '<textarea id="view-bio" oninput="autoGrow(this);markUnsaved()" style="width:100%;min-height:960px;margin-top:6px;box-sizing:border-box;resize:vertical;overflow:hidden;background:transparent;border:none;border-bottom:1px solid #444;color:#ccc;font-family:serif;font-size:13px;line-height:1.5;">' + esc(data.bio) + '</textarea>' +
+    '<textarea id="view-bio" oninput="autoGrow(this);markUnsaved()" style="width:100%;min-height:300px;margin-top:6px;box-sizing:border-box;resize:vertical;overflow:hidden;background:transparent;border:none;border-bottom:1px solid #444;color:#ccc;font-family:serif;font-size:13px;line-height:1.5;">' + esc(data.bio) + '</textarea>' +
     '</div>';
   h += '<div class="print-notes-area print-no-frame" style="margin-top:12px;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Notatki</div>' +
