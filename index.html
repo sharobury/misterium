@@ -390,6 +390,11 @@ h2 {
   body[data-print-page="view"] #page-view { display: block !important; }
   body[data-print-page="mechanics"] #page-mechanics { display: block !important; }
   body[data-print-page="gm"] #page-gm { display: block !important; }
+  body[data-print-page="gm-cheatsheet"] #page-gm { display: block !important; }
+  body[data-print-page="gm-cheatsheet"] #gm-content { display: none !important; }
+  body[data-print-page="gm-cheatsheet"] #gm-login { display: none !important; }
+  body[data-print-page="gm-cheatsheet"] #gm-cheatsheet-print { display: block !important; padding: 8px !important; font-size: 7pt !important; }
+  body[data-print-page="gm-cheatsheet"] #gm-cheatsheet-print .print-header { font-size: 7pt !important; }
   .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; border-radius: 0 !important; }
   .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login, .print-hide-gracz, .print-hide-empty { display: none !important; }
   .print-header { display: block !important; text-align: center; font-size: 8pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid #ccc; margin-bottom: 6px; }
@@ -927,45 +932,71 @@ h2 {
       </div>
     </div>
 
-    <!-- ── LOKACJE TRAFIEŃ ── -->
+    <!-- ── MODYFIKATORY WALKI (skrót) ── -->
     <div style="background:#1a1a1a;border-left:3px solid #888;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
-      <div style="color:#aaa;font-weight:bold;font-size:15px;margin-bottom:8px;">🎯 Lokacje Trafień</div>
-      <div style="color:#888;font-size:12px;margin-bottom:6px;">Wynik na kości ataku określa lokację:</div>
+      <div style="color:#aaa;font-weight:bold;font-size:15px;margin-bottom:8px;">🎯 Modyfikatory walki</div>
+      <div style="color:#888;font-size:12px;margin-bottom:6px;">Lokacja: 1–2 głowa (+1 lvl obrażeń) · 3–6 ręce · 7–15 tułów · 16–19 nogi</div>
       <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">1–2</td><td>Głowa <span style="color:#e07070;font-size:11px;">(obrażenia +1 lvl)</span></td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">3–4</td><td>Prawa ręka</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">5–6</td><td>Lewa ręka</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">7–15</td><td>Tułów</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">16–17</td><td>Prawa noga</td></tr>
-        <tr><td style="padding:3px 0;">18–19</td><td>Lewa noga</td></tr>
+        <tr style="color:#888;border-bottom:1px solid #333;font-size:11px;"><td>SYTUACJA</td><td style="text-align:right;">MOD.</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Za pół-osłoną / cel biegnie</td><td style="text-align:right;color:#e0a040;">−4</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Głowa+broń widoczne / cel pędzi</td><td style="text-align:right;color:#e07070;">−8</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Rzut nożem 10–20m / łuk 20–30m</td><td style="text-align:right;color:#e0a040;">−4</td></tr>
+        <tr><td style="padding:3px 0;">Rzut nożem 20–30m / łuk 30m+</td><td style="text-align:right;color:#e07070;">−8</td></tr>
       </table>
+      <div style="color:#888;font-size:12px;margin-top:6px;">Brak broni palnej. Do 10m bez modyfikatora.</div>
     </div>
 
-    <!-- ── OSŁONA I RUCH ── -->
-    <div style="background:#1a1a1a;border-left:3px solid #2c3e50;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
-      <div style="color:#5d7d9a;font-weight:bold;font-size:15px;margin-bottom:8px;">🛡️ Osłona i Ruch</div>
+    <!-- ── ZŁODZIEJSKIE RZEMIOSŁO ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #7ec87e;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#7ec87e;font-weight:bold;font-size:15px;margin-bottom:8px;">🗝️ Złodziejskie Rzemiosło</div>
       <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Widoczny w 2/3</td><td style="text-align:right;color:#e0a040;">+20%</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Widoczny w 1/2 (klęczy)</td><td style="text-align:right;color:#e0a040;">+40%</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Widoczny w 1/3 (leży)</td><td style="text-align:right;color:#e07070;">+60%</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Wystaje łeb i broń</td><td style="text-align:right;color:#c0392b;">+80%</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:3px 0;">Cel biegnący</td><td style="text-align:right;color:#e0a040;">+20%</td></tr>
-        <tr><td style="padding:3px 0;">Cel pędzący (sam nie strzela)</td><td style="text-align:right;color:#e07070;">+40%</td></tr>
+        <tr style="color:#888;border-bottom:1px solid #333;font-size:11px;"><td>AKCJA</td><td style="text-align:center;">TEST</td><td style="text-align:right;">TRUDNOŚĆ</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Skradanie (ciemność)</td><td style="text-align:center;font-size:11px;">Ciało+Gibkość</td><td style="text-align:right;color:#7ec87e;">Łatwy</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Skradanie (straż czujna)</td><td style="text-align:center;font-size:11px;">Ciało+Gibkość</td><td style="text-align:right;color:#e0a040;">Problemowy</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Zamek prosty / kłódka</td><td style="text-align:center;font-size:11px;">Zdolność+Precyzja</td><td style="text-align:right;color:#7ec87e;">Łatwy</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Zamek solidny / gildiowy</td><td style="text-align:center;font-size:11px;">Zdolność+Precyzja</td><td style="text-align:right;color:#e0a040;">Problemowy</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Zamek skarbca / z pułapką</td><td style="text-align:center;font-size:11px;">Zdolność+Precyzja</td><td style="text-align:right;color:#e07070;">Trudny</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Wspinaczka (mur, uchwyty)</td><td style="text-align:center;font-size:11px;">Ciało+Chyżość</td><td style="text-align:right;color:white;">Zwykły</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Wspinaczka (gładki / mokry)</td><td style="text-align:center;font-size:11px;">Ciało+Chyżość</td><td style="text-align:right;color:#e07070;">Trudny</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Dywersja / blef</td><td style="text-align:center;font-size:11px;">Psycha+Influencja</td><td style="text-align:right;font-size:11px;">vs Percepcja</td></tr>
+        <tr><td style="padding:3px 0;">Kradzież kieszonkowa</td><td style="text-align:center;font-size:11px;">Zdolność+Precyzja</td><td style="text-align:right;font-size:11px;">vs Percepcja</td></tr>
       </table>
-      <div style="color:#888;font-size:12px;margin-top:6px;">Utrudnienia do strzału konwertuj na modyfikator: +20% ≈ −4 do testu, +40% ≈ −8, itd.</div>
+      <div style="color:#888;font-size:12px;margin-top:8px;line-height:1.5;">
+        Bez wytrychów: −2. Porażka o 1–3 = hałas/utknięcie · 4–6 = ktoś podejrzewa · 7+ = wykrycie/złamany wytrych.
+      </div>
     </div>
 
-    <!-- ── ODLEGŁOŚĆ (uproszczone) ── -->
-    <div style="background:#1a1a1a;border-left:3px solid #6c5b7b;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
-      <div style="color:#9b8fb4;font-weight:bold;font-size:15px;margin-bottom:8px;">📏 Odległość (strzał)</div>
+    <!-- ── POŚCIGI ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #3498db;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#3498db;font-weight:bold;font-size:15px;margin-bottom:8px;">🏃 Pościgi</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b>3 rundy</b> testów przeciwstawnych. Między rundami uciekający <b>wybiera trasę</b> — to zmienia test.<br>
+        <span style="color:#888;font-size:12px;">Ulice: Ciało+Chyżość · Dachy: Ciało+Gibkość · Tłum: Zmysł+Percepcja · Kanały: Ciało+Gibkość</span><br>
+        Sumuj PP z 3 rund. Uciekający wygrywa jeśli łączne PP > 0.
+      </div>
+    </div>
+
+    <!-- ── ALARM ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #e74c3c;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#e74c3c;font-weight:bold;font-size:15px;margin-bottom:8px;">🔔 Alarm (0–5)</div>
       <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
-        <tr style="color:#888;border-bottom:1px solid #333;font-size:11px;"><td style="padding:3px 0;">ZASIĘG</td><td style="text-align:center;">Rzut/Krótka</td><td style="text-align:right;">Łuk/Kusza</td></tr>
-        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Do 10m</td><td style="text-align:center;color:#7ec87e;">0</td><td style="text-align:right;color:#7ec87e;">0</td></tr>
-        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Do 20m</td><td style="text-align:center;color:#e0a040;">−4</td><td style="text-align:right;color:#7ec87e;">0</td></tr>
-        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;">Do 30m</td><td style="text-align:center;color:#e07070;">−8</td><td style="text-align:right;color:#e0a040;">−2</td></tr>
-        <tr><td style="padding:3px 0;">Powyżej 30m</td><td style="text-align:center;color:#888;">—</td><td style="text-align:right;color:#e07070;">−4 do −8</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;color:#7ec87e;font-weight:bold;width:20px;">0</td><td>Cisza. Nikt nic nie podejrzewa.</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;color:#aaa;font-weight:bold;">1</td><td>Strażnik zmarszczył brwi.</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;color:#e0a040;font-weight:bold;">2</td><td>Coś nie gra. Dodatkowy patrol.</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;color:#e07070;font-weight:bold;">3</td><td>Czujność. Podwojona straż, boczne wejścia zamknięte.</td></tr>
+        <tr style="border-bottom:1px solid #282828;"><td style="padding:3px 0;color:#c0392b;font-weight:bold;">4</td><td>Alarm. Aktywnie szukają intruza.</td></tr>
+        <tr><td style="padding:3px 0;color:#8b2020;font-weight:bold;">5</td><td>Pełny alarm. Zbrojni wszędzie, ucieczka konieczna.</td></tr>
       </table>
-      <div style="color:#888;font-size:12px;margin-top:6px;">W Misterium walka na dystansie to głównie rzut nożem, kusza i łuk. Brak broni palnej.</div>
+      <div style="color:#888;font-size:12px;margin-top:6px;line-height:1.5;">Porażka testu: +1 alarm. Porażka o 7+: +2. Udana dywersja: −1.</div>
+    </div>
+
+    <!-- ── PRACA ZESPOŁOWA ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #9b59b6;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#9b59b6;font-weight:bold;font-size:15px;margin-bottom:8px;">🤝 Praca zespołowa</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b style="color:white;">Asysta:</b> Pomocnik zdaje test. Sukces = <b style="color:#7ec87e;">+2</b> do testu głównego gracza. Porażka = alarm +1.<br>
+        <b style="color:white;">Dywersja + akcja:</b> Jeden odwraca uwagę — sukces = drugi robi akcję o <b style="color:#7ec87e;">1 poziom trudności łatwiej</b>.
+      </div>
     </div>
 
     <!-- ── STATY → UMIEJĘTNOŚCI ── -->
@@ -1007,6 +1038,7 @@ h2 {
         <a onclick="document.getElementById('gm-overview').scrollIntoView({behavior:'smooth'})">Zarys fabularny</a>
         <a onclick="document.getElementById('gm-npcs').scrollIntoView({behavior:'smooth'})">NPC i Frakcje</a>
         <a onclick="document.getElementById('gm-pcs').scrollIntoView({behavior:'smooth'})">Gracze — ściąga</a>
+        <a onclick="document.getElementById('gm-agenda').scrollIntoView({behavior:'smooth'})">Ukryta agenda</a>
         <a onclick="document.getElementById('gm-act1').scrollIntoView({behavior:'smooth'})">Akt I — Spotkanie w Lesie</a>
         <a onclick="document.getElementById('gm-act2').scrollIntoView({behavior:'smooth'})">Akt II — Ucieczka i Droga do Miasta</a>
         <a onclick="document.getElementById('gm-act3').scrollIntoView({behavior:'smooth'})">Akt III — Miasto na Alarm</a>
@@ -1051,7 +1083,7 @@ h2 {
         <div class="gm-npc">
           <div style="color:#e07070;font-weight:bold;font-size:14px;">Hrabia Vex Morrigan <span style="color:#888;font-weight:normal;">(antagonista)</span></div>
           <div style="color:#ccc;font-size:13px;line-height:1.7;">
-            Syn <b>Lorda Morrigan</b> — wiecznego rywala Ślepego Kruka. Po śmierci ojca przejął jego obsesję na punkcie zhańbienia pamięci Kruka. Arystokrata z gildii skrytobójców, który nie przestrzega kodeksu złodziei. Odnalazł artefakt i planuje użyć go, by publicznie upokorzyć złodziei, nie wiedząc (a może wiedząc?) że budzi golema.
+            <b>Kuzyn syna Lorda Morrigan</b> — nie bezpośredni spadkobierca. Po śmierci prawowitego dziedzica przejął posiadłość i obsesję na punkcie zhańbienia pamięci Ślepego Kruka. Arystokrata z gildii skrytobójców, który nie przestrzega kodeksu złodziei. Odnalazł artefakt i planuje użyć go, by publicznie upokorzyć złodziei, nie wiedząc (a może wiedząc?) że budzi golema. <b>W biurku ma jedyny dokument</b> dowodzący, że prawowitym dziedzicem Lorda Morrigana jest ktoś inny — Rastlin.
             <br>
             <span class="gm-stat">Ciało: 12 · Zdolność: 14 · Psycha: 11 · Rozum: 13 · Zmysł: 10</span>
             <br><span style="color:#888;">Umiejętności: Finezja:2, Influencja:2, Wiedza:1, Reakcja:1</span>
@@ -1162,20 +1194,20 @@ h2 {
         <div class="gm-pc">
           <b style="color:#ffd700;">Wherk'ha „Sprytny Cień"</b> <span style="color:#888;">· Pół elf · Zmysł 15, Psycha 14</span><br>
           <span style="color:#aaa;">Influencja:2. Alibi zawsze gotowe. Miecz z prawdziwym herbem. Słyszy przez ściany.</span><br>
-          <span style="color:#e07070;">Wada: tłumaczy alibi zanim ktoś spyta.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: xxx</span>
+          <span style="color:#e07070;">Wada: nie potrafi kłamać — od razu po niej widać, że coś kręci. Tłumaczy alibi zanim ktoś spyta.</span><br>
+          <span style="color:#b0a0e0;">KLUCZ: Słysząc przez ścianę sali bankietowej — podsłuchuje rozmowę Hrabiego z dowódcą Kotów. Dowiaduje się czegoś krytycznego (gdzie klucz, plany ceremonii). Albo: miecz z herbem — przy kolacji może podszyć się pod szlachcica z gości, jeśli rozpozna herb i wykorzysta alibi.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Madziok „Inspektor Cudzych Kieszeni"</b> <span style="color:#888;">· Szczurok · Zdolność 14, Luck 6</span><br>
           <span style="color:#aaa;">Mega szybkie palce. Mapa nieistniejącego skarbca. Kusza zaginiona, bełt jako sztylet.</span><br>
           <span style="color:#e07070;">Wada: kichanie w najgłębszej ciszy.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: xxx</span>
+          <span style="color:#b0a0e0;">KLUCZ: Mapa „nieistniejącego skarbca" — w piwnicy rozpoznaje układ. To ten sam architekt, te same plany. Wie gdzie pułapki, ukryte przejście albo słaby punkt. „Znałem ten skarbiec zanim tu wszedłem."</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Kubol „Otwarta Księga"</b> <span style="color:#888;">· Piesołak · Ciało 14, Chyżość:3</span><br>
           <span style="color:#aaa;">Wyważa zamki Poiko-Obuchem. Klucz do zamka, który może nie istnieje. Tank grupy. Piesołak — zmienia się w pieska. Babcia Piwonka była kiedyś jego właścicielką gdy zamienił się na dłużej w psa i zapomniał o byciu człowiekiem. Dlatego ma do niej sentyment.</span><br>
-          <span style="color:#e07070;">Wada: wyrzuty sumienia wobec psów i staruszek.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: xxx</span>
+          <span style="color:#e07070;">Wada: gdy ktoś powie „zły chłopiec" — paraliżuje go na turę (wyrzuty sumienia). Chyba że wyrzuci <span class="gm-test">Psycha + Wola, Trudny</span>. Pozostałość po przemianie w Pieseła.</span><br>
+          <span style="color:#b0a0e0;">KLUCZ: Klucz do „zamka który może nie istnieć" — pasuje. Stare drzwi w kuchni lub służbówce, podziemne przejście z czasów gdy Babcia Piwonka mieszkała w mieście. Albo: przy Babci Piwonce i Burym — musi wejść. Spotkanie daje wskazówkę lub otwiera serce przed decydującym momentem.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Marceyli „Zawieszona Zagadka"</b> <span style="color:#888;">· Elf · Wiedza:2, Chaos:3, Rep -18</span><br>
@@ -1185,16 +1217,43 @@ h2 {
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Rastlin „Samozwańczy Kruk"</b> <span style="color:#888;">· Pół Łylf · Percepcja:2, Luck 6</span><br>
-          <span style="color:#aaa;">Odznaka inspektora nieznanej służby. Tasak rzeźnika. Niemiła aura, drzwi się zatrzaskują.</span><br>
-          <span style="color:#e07070;">Wada: drzwi same się zatrzaskują (niemiła aura).</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: xxx</span>
+          <span style="color:#aaa;">Benkart Lorda Morrigana — teoretycznie posiadłość powinna należeć do niego. Hrabia to tylko kuzyn syna Lorda, nie prawowity spadkobierca. Jedyny dokument dowodzący dziedzictwa Rastlina jest w biurku Hrabiego. Odznaka inspektora nieznanej służby. Tasak rzeźnika. Niemiła aura, drzwi się zatrzaskują.</span><br>
+          <span style="color:#e07070;">Wada: drzwi same się zatrzaskują (niemiła aura — ciężko go polubić).</span><br>
+          <span style="color:#b0a0e0;">KLUCZ: Dokument dziedzictwa — w biurku Hrabiego na 2. piętrze (obok klucza zapasowego i odłamka Marceyli). Bez niego Rastlin nie udowodni praw do posiadłości. Odznaka — gdy Koty lub straż zatrzymują grupę, bluff Psycha+Influencja.</span>
         </div>
         <div class="gm-pc">
           <b style="color:#ffd700;">Hulietta Królik „Technik ds. Mechanizmów Zamykających"</b> <span style="color:#888;">· Pół Reptilianin · Finezja:2, Precyzja:3</span><br>
           <span style="color:#aaa;">Mistrzyni zamków. Kindżał z pytajnikiem. Teczka „Poufne" (pusta).</span><br>
           <span style="color:#e07070;">Wada: przeklęta przez księdza — nie wejdzie do świętych miejsc.</span><br>
-          <span style="color:#b0a0e0;">KLUCZ: xxx</span>
+          <span style="color:#b0a0e0;">KLUCZ: Zamek do skarbca — jej główna scena. Albo: wchodzi z teczką „Poufne" przez bramę udając urzędniczkę z audytem — daje grupie wejście od frontu. Mechanizm golema — może go rozbroić, jeśli dojdzie do niego przed aktywacją?</span>
         </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- UKRYTA AGENDA (inspiracja BotC) -->
+      <!-- ============================================================= -->
+      <div id="gm-agenda" class="gm-act" style="border-left-color:#c0392b;">
+        <div class="gm-act-title" style="color:#c0392b;">Ukryta agenda</div>
+        <div style="color:#888;font-size:12px;margin-bottom:10px;">Jeden gracz ma sekretny cel. Nie jest zdrajcą — nie szkodzi drużynie. Ma osobisty motyw, który częściowo kłóci się z misją grupy. Jeśli go osiągnie → bonusowy epilog.</div>
+
+        <div style="margin-bottom:14px;">
+          <button onclick="rollSecretAgenda()" style="background:#c0392b;color:white;border:none;padding:10px 18px;border-radius:6px;font-size:15px;cursor:pointer;font-weight:bold;">🎲 Wylosuj gracza z ukrytą agendą</button>
+          <div id="gm-agenda-result" style="margin-top:12px;padding:12px;background:#2a1a1a;border-radius:6px;border-left:3px solid #c0392b;display:none;">
+            <div style="color:#ffd700;font-weight:bold;font-size:16px;margin-bottom:8px;" id="gm-agenda-who"></div>
+            <div style="color:#ccc;font-size:14px;line-height:1.7;margin-bottom:10px;" id="gm-agenda-text"></div>
+            <div style="color:#888;font-size:12px;">→ Daj graczowi karteczkę na początku sesji. Nie ujawniaj innym.</div>
+          </div>
+        </div>
+
+        <div style="color:#888;font-size:12px;margin-bottom:8px;">Wszystkie agendy (do wyboru ręcznego, jeśli nie losujesz):</div>
+        <table style="width:100%;color:#ccc;font-size:13px;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;width:140px;">Wherk'ha</td><td>Upewnij się, że Hrabia przeżyje — jest ci winien przysługę (dawny dług rodzinny).</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Madziok</td><td>W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie.</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Kubol</td><td>Syn Babci Piwonki jest strażnikiem. Upewnij się, że nie zostanie wplątany w sprawę ani nie ucierpi z powodu twojej misji.</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Marceyli</td><td>Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa.</td></tr>
+          <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#ffd700;">Rastlin</td><td>Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku). Zabierz go, zanim rezydencja stanie się gruzem.</td></tr>
+          <tr><td style="padding:6px 0;color:#ffd700;">Hulietta</td><td>Ksiądz który cię przeklął jest w mieście. Hrabia go zna. Pozyskaj informację gdzie go znaleźć — zanim rezydencja stanie się gruzem.</td></tr>
+        </table>
       </div>
 
       <!-- ============================================================= -->
@@ -1232,7 +1291,7 @@ h2 {
             <br><br>
             Puka palcem w herb na mapie: kot z zielonymi oczami.
             <br><br>
-            „Hrabia Vex Morrigan. Syn Lorda Morrigan — tego samego, który przegrał z Krukiem trzydzieści lat temu i do śmierci twierdził, że został oszukany. Jego syn najwyraźniej odziedziczył urazę i słaby gust."
+            „Hrabia Vex Morrigan. Kuzyn syna Lorda Morrigan — tego samego, który przegrał z Krukiem trzydzieści lat temu i do śmierci twierdził, że został oszukany. Nie prawowity spadkobierca, ale przejął posiadłość. Odziedziczył urazę i słaby gust."
             <br><br>
             „Nasi informatorzy donoszą, że Hrabia trzyma artefakt w swojej rezydencji w mieście. Za dwa dni ceremonia. Bez artefaktu — żadnego pokoju ze skrytobójcami, a złodzieje z Tantalos staną się pośmiewiskiem kontynentu."
             <br><br>
@@ -1533,7 +1592,7 @@ h2 {
                 <div style="color:#ccc;font-size:13px;">
                   Hrabia nosi klucz na łańcuszku pod koszulą. Jest na kolacji w sali bankietowej.
                   <br><b>Opcja A — Madziok kradnie klucz:</b> <span class="gm-test">Zdolność + Finezja, Trudny</span> (bo Hrabia jest czujny). Z Luck 6, może zużyć szczęście.
-                  <br><b>Opcja B — Klucz zapasowy:</b> W gabinecie na 2. piętrze, w biurku. Zamek biurka: <span class="gm-test">Zdolność + Precyzja, Zwykły</span> (Hulietta trivial).
+                  <br><b>Opcja B — Klucz zapasowy:</b> W gabinecie na 2. piętrze, w biurku. Zamek biurka: <span class="gm-test">Zdolność + Precyzja, Zwykły</span> (Hulietta trivial). W biurku są też: odłamek Marceyli, <b>dokument dziedzictwa Rastlina</b> (jedyny dowód, że jest benkartem Lorda Morrigana).
                   <br><b>Opcja C — Kubol wyważa drzwi skarbca:</b> <span class="gm-test">Ciało + Budowa, Trudny</span> — drzwi solidne. HAŁAS, alarmuje strażników.
                 </div>
               </div>
@@ -1585,6 +1644,8 @@ h2 {
 
           <div class="gm-tip">
             <b style="color:#e0a040;">Marceyli i odłamek kamienia:</b> Marceyli odczuwa obecność swojego zgubionego odłamka — jest w biurku Hrabiego (Hrabia znalazł go lub kupił, nie wie że to jej). Może go odzyskać przed aktywacją golema. <b>Jeśli odzyska PRZED aktywacją</b> — może użyć do kontroli lub zatrzymania golema. <b>Jeśli golem połknie kamień</b> (np. Hrabia w desperacji wetknie go w golema próbując „kontrolować") — transmutuje wszystko w pozorne złoto, katastrofa mnoży się wielokrotnie.
+            <br><br>
+            <b style="color:#e0a040;">Rastlin i dokument dziedzictwa:</b> W biurku leży jedyny dokument dowodzący, że Rastlin jest benkartem Lorda Morrigana — prawowitym dziedzicem posiadłości. Hrabia to kuzyn, który przejął majątek. Bez dokumentu Rastlin nie udowodni swoich praw.
             <br><br>
             <b>Inskrypcja w głowie golema:</b> Jak w prawdziwej legendzie — w głowie jest inskrypcja. Ktoś z Wiedzą może znać ten fakt. Zetarcie inskrypcji zatrzymuje golema. <span class="gm-test">Rozum + Wiedza, Problemowy</span> — by odczytać ostrzeżenie na piedestale.
           </div>
@@ -1727,6 +1788,7 @@ h2 {
             <li><b>Ceremonia:</b> Odbywa się, ale bez zakopywania artefaktu. Zamiast tego — uroczyste ogłoszenie, że Ślepy Kruk był obrońcą miasta. Pomnik zamiast grobu.</li>
             <li><b>Marceyli:</b> Jeśli odzyskała i użyła odłamka — zyskuje go z powrotem. Jej prawdziwy motyw kradzieży pozostaje jej tajemnicą.</li>
             <li><b>Hrabia Morrigan:</b> Aresztowany, uciekł, lub zamieniony w złoto — zależnie od akcji graczy. Jego reputacja zniszczona.</li>
+            <li><b>Rastlin:</b> Jeśli zdobył dokument dziedzictwa — może dochodzić praw do posiadłości. Epilog: proces o zwrot majątku, albo cicha ugoda z władzami miasta. „Samozwańczy Kruk" staje się prawowitym dziedzicem.</li>
           </ul>
         </div>
 
@@ -1949,9 +2011,45 @@ h2 {
       <hr class="gm-divider">
       <p style="text-align:center;color:#555;font-size:12px;">Misterium Skarbów i Cieni · Scenariusz MG v1.0<br>„Kto mnie obudzi, ten żałować będzie."</p>
 
-      <button onclick="printPage('gm')" style="background:#333;font-size:15px;padding:12px;width:100%;box-sizing:border-box;margin-top:10px;">🖨️ Drukuj scenariusz</button>
+      <div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <button onclick="printPage('gm-cheatsheet')" style="background:#7a5c10;font-size:15px;padding:12px;flex:1;min-width:200px;box-sizing:border-box;">🖨️ Drukuj ściągę MG (1–2 strony)</button>
+        <button onclick="printPage('gm')" style="background:#333;font-size:15px;padding:12px;flex:1;min-width:200px;box-sizing:border-box;">🖨️ Drukuj pełny scenariusz</button>
+      </div>
 
     </div><!-- /gm-content -->
+
+    <!-- ŚCIĄGA DO DRUKU (ukryta, widoczna tylko przy druku gm-cheatsheet) -->
+    <div id="gm-cheatsheet-print" style="display:none;font-size:8pt;line-height:1.35;color:#333;">
+      <div class="print-header">Misterium Skarbów i Cieni — Ściąga MG</div>
+      <div style="columns:2;column-gap:16px;">
+        <div>
+          <b>FABUŁA</b> Artefakt Ślepego Kruka skradziony przez Hrabiego. Za 2 dni ceremonia — bez artefaktu złodzieje stracą twarz. Gracze = delegaci na Misterium. <b>Twist:</b> Artefakt = uśpiony Golem. Ślepy Kruk go ukrył, by chronić miasto.
+          <br><br><b>NPC</b> <b>Hrabia Vex:</b> antagonista, biurko 2p. ma dokument Rastlina + odłamek Marceyli + klucz zapasowy. C12 Z14 P11 R13 Zm10. Rapier +2 Finezja. <b>Mistrz Kluczy:</b> zabity pierwszym bełtem. <b>Koty:</b> 5–8, dymne bomby, ikonografy FLASH (karykatury → listy gończe). C11 Z12 P8 R7 Zm10. <b>Golem:</b> C20 Z6 Zm5, pancerz 8. Słabości: woda, zetarcie inskrypcji w głowie, odłamek Marceyli. Kamień w golemie = transmutacja w złoto, katastrofa.
+          <br><br><b>GRACZE — KLUCZE</b> Wherk'ha: podsłuch przez ścianę / herb na kolacji. Madziok: mapa = ten sam architekt, zna pułapki. Kubol: klucz pasuje do starych drzwi / Babcia Piwonka. Marceyli: odłamek w biurku — odzyskać PRZED aktywacją! Rastlin: dokument dziedzictwa w biurku. Hulietta: zamek skarbca.
+        </div>
+        <div>
+          <b>AKT I</b> Polana → przemówienie → ATAK (Mistrz Kluczy ginie, FLASH, 6 Kotów). Unik FLASH: Zdol+Reakcja Problemowy. Przesłuchanie: Psycha+Influencja Problemowy.
+          <br><br><b>AKT II</b> Las → 3 drogi: Brama Psycha+Influencja Trudny; Mury Ciało+Chyżość Problemowy; Kanały Ciało+Hart Zwykły (−2 Influencja po).
+          <br><br><b>AKT III</b> Listy gończe jeśli FLASH. Rekonesans. Kolacja Hrabiego = okazja.
+          <br><br><b>AKT IV</b> Wejścia: goście/kelnerzy, kanały (Kubol kratę), dach. Klucz: Hrabia na szyi LUB biurko 2p. Zamek skarbca: Hulietta Zdol+Precyzja Problemowy. Golem aktywuje: wynoszenie/dotknięcie oczu/alarm.
+          <br><br><b>AKT V</b> Golem: 1) Utopienie (woda) 2) Odłamek Marceyli 3) Zetarcie inskrypcji 4) Zakopanie. Siłą prawie niemożliwe.
+        </div>
+      </div>
+      <hr style="margin:8px 0;border-color:#ccc;">
+      <table style="width:100%;font-size:7pt;border-collapse:collapse;">
+        <tr><td colspan="2"><b>HASŁA MAP</b></td><td colspan="4"><b>TESTY</b></td></tr>
+        <tr><td>Panel MG</td><td>GOLEM</td><td>Wykrycie zasadzki</td><td>Zmysł+Percepcja Zwykły</td><td>Kradzież klucza</td><td>Zdol+Finezja Trudny</td></tr>
+        <tr><td>Las</td><td>LAS</td><td>Unik FLASH</td><td>Zdol+Reakcja Problemowy</td><td>Zamek skarbca</td><td>Zdol+Precyzja Problemowy</td></tr>
+        <tr><td>Miasto</td><td>MIASTO</td><td>Brama</td><td>Psycha+Influencja Trudny</td><td>Marceyli kontrola</td><td>Psycha+Uduchowienie Trudny</td></tr>
+        <tr><td>Rezydencja</td><td>REZYDENCJA</td><td>Mury</td><td>Ciało+Chyżość Problemowy</td><td>Ucieczka przed golemem</td><td>Zdol+Chyżość Problemowy</td></tr>
+        <tr><td>Parter</td><td>PARTER</td><td>Kanały</td><td>Ciało+Hart Zwykły</td><td></td><td></td></tr>
+        <tr><td>Skarbiec</td><td>SKARBIEC</td><td></td><td></td><td></td><td></td></tr>
+      </table>
+      <div style="margin-top:6px;font-size:7pt;">
+        <b>Trudności:</b> Łatwy +2 · Zwykły 0 · Problemowy −2 · Trudny −5 · Złożony −8
+        &nbsp;|&nbsp; <b>Timing:</b> I ~45min · II ~30min · III ~45min · IV ~60–90min · V ~45–60min · Epilog ~15min
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2671,6 +2769,21 @@ function unlockGm() {
   }
 }
 
+const SECRET_AGENDAS = [
+  { who: "Wherk'ha „Sprytny Cień"", text: "Upewnij się, że Hrabia przeżyje — jest ci winien przysługę (dawny dług rodzinny). Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Madziok „Inspektor Cudzych Kieszeni"", text: "W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie. Nie mów nikomu. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Kubol „Otwarta Księga"", text: "Syn Babci Piwonki jest strażnikiem. Upewnij się, że nie zostanie wplątany w sprawę ani nie ucierpi z powodu twojej misji. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Marceyli „Zawieszona Zagadka"", text: "Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Rastlin „Samozwańczy Kruk"", text: "Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku na 2. piętrze). Zabierz go, zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Hulietta Królik „Technik ds. Mechanizmów Zamykających"", text: "Ksiądz który cię przeklął jest w mieście. Hrabia go zna. Pozyskaj informację gdzie go znaleźć — zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." }
+];
+function rollSecretAgenda() {
+  const pick = SECRET_AGENDAS[Math.floor(Math.random() * SECRET_AGENDAS.length)];
+  document.getElementById('gm-agenda-who').textContent = pick.who;
+  document.getElementById('gm-agenda-text').textContent = pick.text;
+  document.getElementById('gm-agenda-result').style.display = 'block';
+}
+
 const PLAYER_MAP_PASSWORDS = { 'LAS': 2, 'MIASTO': 3, 'REZYDENCJA': 4, 'PARTER': 5, 'SKARBIEC': 6 };
 const MAPS_STORAGE_KEY = 'misterium_maps_unlocked';
 function unlockPlayerMap() {
@@ -2842,22 +2955,30 @@ function statTestBoxes(baseVal) {
   });
   return html + '</span>';
 }
+function getMagicBaseLevel() {
+  return Math.max(0, ...magicGroups.map(g => magicLevels[g.name] || 0));
+}
+
+function getMagicHeaderHtml() {
+  const baseLvl = getMagicBaseLevel();
+  const boxesHtml = statTestBoxes(baseLvl);
+  const valColor = baseLvl === 0 ? '#555' : '#b0a0e0';
+  return 'Umagicznienie' + boxesHtml +
+    '<div class="magic-level-ctrl" style="display:flex;align-items:center;gap:6px;margin-left:8px;">' +
+    '<button class="magic-level-btn" onclick="changeMagicBase(-1)">−</button>' +
+    '<span class="magic-level-val" style="color:' + valColor + ';font-size:16px;font-weight:bold;">' + baseLvl + '</span>' +
+    '<button class="magic-level-btn" onclick="changeMagicBase(1)">+</button></div>';
+}
+
 function getMagicCardsHtml() {
   let html = '';
   magicGroups.forEach(g => {
-    const lvl = magicLevels[g.name] || 0;
-    const valColor = lvl === 0 ? '#555' : '#b0a0e0';
-    const boxesHtml = statTestBoxes(lvl);
     const skillsHtml = g.skills.map(s => '<span class="skill-tag" style="color:#8888bb;border-color:#4a4a6a;">' + s + '</span>').join('');
     html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
       (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
-      '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + g.name + boxesHtml + '</div>' +
+      '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
       '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
-      '<div class="magic-level-ctrl" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:6px;">' +
-      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',-1)">−</button>' +
-      '<span class="magic-level-val" style="color:' + valColor + ';font-size:16px;font-weight:bold;">' + lvl + '</span>' +
-      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',1)">+</button>' +
-      '</div></div>';
+      '</div>';
   });
   return html;
 }
@@ -2915,7 +3036,8 @@ function renderSkillsView(skillsStr, containerId, stats, opts) {
   }
   if (magicEnabled) {
     const color = statColors['Umagicznienie'] || '#b0a0e0';
-    html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;">Umagicznienie</div><div class="skills-grid" id="view-magic-grid">' + getMagicCardsHtml() + '</div></div>';
+    html += '<div style="margin-bottom:14px;"><div id="view-magic-header" style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + getMagicHeaderHtml() + '</div>' +
+      '<div class="skills-grid" id="view-magic-grid">' + getMagicCardsHtml() + '</div></div>';
   }
   container.innerHTML = html;
 }
@@ -3416,13 +3538,13 @@ function renderViewMagic(savedLevels) {
   magicGroups.forEach(g => { magicLevels[g.name] = savedLevels[g.name] || 0; });
 }
 
-function changeMagicLevel(name, delta) {
-  const current = magicLevels[name] || 0;
+function changeMagicBase(delta) {
+  const current = getMagicBaseLevel();
   const next = Math.max(0, Math.min(3, current + delta));
   if (next === current) return;
-  magicLevels[name] = next;
-  const grid = document.getElementById('view-magic-grid');
-  if (grid) grid.innerHTML = getMagicCardsHtml();
+  magicGroups.forEach(g => { magicLevels[g.name] = next; });
+  const header = document.getElementById('view-magic-header');
+  if (header) header.innerHTML = getMagicHeaderHtml();
   markUnsaved();
 }
 
@@ -3490,6 +3612,50 @@ function printPage(pageId) {
 function renderMechanicsSkills() {
   const el = document.getElementById('mechanics-skills-ref');
   if (!el || el.innerHTML) return;
+  const sd = {
+    "Kondycja":"Bieganie, sprint, wytrzymałość na dystansie",
+    "Pływanie":"Poruszanie się w wodzie, nurkowanie",
+    "Wspinaczka":"Wchodzenie po ścianach, dachach, drzewach",
+    "Mocarność":"Siła surowa — wyważanie drzwi, podnoszenie ciężarów",
+    "Wytrzymałość":"Odporność na ból, zmęczenie, truciznę",
+    "Rzucanie":"Jak daleko ciśniesz ciężkim obiektem",
+    "Równowaga":"Chodzenie po krawędzi, linie, mokrym dachu",
+    "Zwinność":"Uniki, akrobatyka, przeciskanie się",
+    "Skradanie się":"Ciche poruszanie, unikanie wykrycia",
+    "Zwinne dłonie":"Kradzież kieszonkowa, sztuczki karciane, prestidigitacja",
+    "Celowanie":"Precyzyjne trafienie w mały cel — jabłko na głowie",
+    "Koordynacja":"Złożone czynności ręczne — żeglarstwo, powożenie",
+    "Fechtunek":"Walka bronią białą — szpada, sztylet, miecz",
+    "Refleks":"Szybkość reakcji na niespodziewane zdarzenia",
+    "Sterowanie":"Prowadzenie pojazdów, łodzi, wozów",
+    "Kradzież":"Podkradanie przedmiotów — ze stołu, wystawy, sejfu",
+    "Operowanie":"Obsługa mechanizmów — zamki, pułapki, dźwignie",
+    "Manualność":"Drobna robota ręczna — węzły, szycie, naprawy",
+    "Autorytet":"Naturalne przywództwo, wydawanie rozkazów",
+    "Zastraszanie":"Wzbudzanie strachu słowem, miną, postawą",
+    "Niezłomność":"Odporność na tortury, przesłuchania, szantaż",
+    "Empatia":"Wyczuwanie emocji, intencji i kłamstw rozmówcy",
+    "Aktorstwo":"Udawanie kogoś innego, odgrywanie roli, blef",
+    "Perswazja":"Przekonywanie, negocjacje, manipulacja słowem",
+    "Odporność":"Opieranie się klątwie, strachowi, magii",
+    "Skupienie":"Koncentracja pod presją, ignorowanie rozpraszaczy",
+    "Odwaga":"Działanie mimo strachu — kontrola, nie brak lęku",
+    "Dedukcja":"Łączenie faktów, wnioskowanie z poszlak",
+    "Rachowanie":"Liczby, szacowanie wartości i odległości",
+    "Pojętność":"Szybkość uczenia się, rozumienie nowych koncepcji",
+    "Majsterkowanie":"Naprawy, drobne przeróbki, improwizowane narzędzia",
+    "Konstruowanie":"Budowanie mechanizmów, pułapek, urządzeń",
+    "Alchemia":"Mikstury, trucizny, substancje chemiczne",
+    "Nasłuchiwanie":"Kroki za ścianą, szept w tłumie, tykanie mechanizmu",
+    "Wypatrywanie":"Ukryte drzwi, podejrzane osoby, drobne detale",
+    "Powonienie":"Trucizna w winie, dym za rogiem, krew na podłodze",
+    "Dreszcze":"Złe przeczucie, szósty zmysł — coś jest nie tak",
+    "Wyczucie":"Zmiana aury, energii miejsca — czujesz magię w powietrzu",
+    "Kontakt":"Porozumienie ze zwierzętami i bytami — łatwiej cię lubią",
+    "Łowiectwo":"Tropienie, polowanie, znajdowanie śladów",
+    "Przyrządzanie":"Gotowanie, przetwarzanie surowców, zioła lecznicze",
+    "Orientacja":"Nawigacja w terenie — mech na drzewie = północ"
+  };
   const byGroup = {};
   skillGroups.forEach(g => {
     if (!byGroup[g.stat]) byGroup[g.stat] = [];
@@ -3498,12 +3664,27 @@ function renderMechanicsSkills() {
   let html = '';
   for (const [statName, groups] of Object.entries(byGroup)) {
     const color = statColors[statName] || '#888';
-    html += '<div style="margin-bottom:6px;"><span style="color:' + color + ';font-weight:bold;">' + statName + '</span> → ';
-    html += groups.map(g => g.icon + ' ' + g.name).join(' · ');
+    html += '<div style="margin-bottom:10px;"><span style="color:' + color + ';font-weight:bold;font-size:14px;">' + statName + '</span>';
+    groups.forEach(g => {
+      html += '<div style="margin-left:8px;margin-top:3px;"><span style="color:#ddd;font-size:13px;">' + g.icon + ' ' + g.name + '</span>';
+      if (g.custom) {
+        html += ' <span style="color:#666;font-style:italic;font-size:12px;">— gracz definiuje sam</span>';
+      } else {
+        g.skills.forEach(sk => {
+          const desc = sd[sk] || '';
+          html += '<div style="margin-left:16px;color:#777;font-size:11px;line-height:1.4;"><span style="color:#aaa;">' + sk + '</span> — ' + desc + '</div>';
+        });
+      }
+      html += '</div>';
+    });
     html += '</div>';
   }
-  html += '<div style="margin-bottom:6px;"><span style="color:#b0a0e0;font-weight:bold;">Umagicznienie</span> → ';
-  html += magicGroups.map(g => g.icon + ' ' + g.name).join(' · ');
+  html += '<div style="margin-bottom:10px;"><span style="color:#b0a0e0;font-weight:bold;font-size:14px;">Umagicznienie</span>';
+  magicGroups.forEach(g => {
+    html += '<div style="margin-left:8px;margin-top:3px;"><span style="color:#ddd;font-size:13px;">' + g.icon + ' ' + g.name + ':</span> ';
+    html += '<span style="color:#888;font-size:12px;">' + g.skills.join(', ') + '</span>';
+    html += '</div>';
+  });
   html += '</div>';
   el.innerHTML = html;
 }
