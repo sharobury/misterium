@@ -2823,6 +2823,7 @@ function initCreatePage() {
   const trickItems = dlState['create-tricks']?.items;
   dlInit('create-tricks', (trickItems?.length ? [trickItems[0]] : ['']), { placeholder: 'Nazwa sztuczki...', addLabel: '+ Dodaj sztuczkę', maxItems: 1 });
   renderSkills();
+  handleAttendance();
 }
 
 // =====================================================================
@@ -3283,7 +3284,9 @@ async function submitCard() {
   try {
     const url = SCRIPT_URL + '?action=create&payload=' + encodeURIComponent(JSON.stringify(payload));
     const response = await fetch(url);
-    const result = await response.json();
+    const text = await response.text();
+    let result;
+    try { result = JSON.parse(text); } catch (_) { throw new Error('Serwer zwrócił nieprawidłową odpowiedź'); }
     if (result.ok) {
       showPasswordResult(password);
     } else {
@@ -3325,7 +3328,9 @@ async function loadCard() {
 
   try {
     const response = await fetch(SCRIPT_URL + '?action=read&password=' + encodeURIComponent(pw));
-    const result = await response.json();
+    const text = await response.text();
+    let result;
+    try { result = JSON.parse(text); } catch (_) { throw new Error('Serwer zwrócił nieprawidłową odpowiedź'); }
     if (result.ok) {
       viewPassword = pw;
       renderViewCard(result.data);
@@ -3509,7 +3514,9 @@ async function saveCard() {
   try {
     const url = SCRIPT_URL + '?action=update&payload=' + encodeURIComponent(JSON.stringify(payload));
     const response = await fetch(url);
-    const result = await response.json();
+    const text = await response.text();
+    let result;
+    try { result = JSON.parse(text); } catch (_) { throw new Error('Serwer zwrócił nieprawidłową odpowiedź'); }
     if (result.ok) {
       btn.textContent = '✓ Zapisano';
       btn.style.background = '#2d6a2d';
