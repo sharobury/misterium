@@ -2407,11 +2407,12 @@ const skillGroups = [
 ];
 
 const statColors = {
-  "Ciało":    "#c0392b",
-  "Zdolność": "#8e44ad",
-  "Psycha":   "#2980b9",
-  "Rozum":    "#27ae60",
-  "Zmysł":    "#eea65f",
+  "Ciało":         "#c0392b",
+  "Zdolność":      "#8e44ad",
+  "Psycha":        "#2980b9",
+  "Rozum":         "#27ae60",
+  "Zmysł":         "#eea65f",
+  "Umagicznienie": "#b0a0e0",
 };
 
 const raceDescriptions = {
@@ -2841,7 +2842,29 @@ function statTestBoxes(baseVal) {
   });
   return html + '</span>';
 }
-function renderSkillsView(skillsStr, containerId, stats) {
+function getMagicCardsHtml() {
+  let html = '';
+  magicGroups.forEach(g => {
+    const lvl = magicLevels[g.name] || 0;
+    const valColor = lvl === 0 ? '#555' : '#b0a0e0';
+    const boxesHtml = statTestBoxes(lvl);
+    const skillsHtml = g.skills.map(s => '<span class="skill-tag" style="color:#8888bb;border-color:#4a4a6a;">' + s + '</span>').join('');
+    html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
+      (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
+      '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + g.name + boxesHtml + '</div>' +
+      '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
+      '<div class="magic-level-ctrl" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:6px;">' +
+      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',-1)">−</button>' +
+      '<span class="magic-level-val" style="color:' + valColor + ';font-size:16px;font-weight:bold;">' + lvl + '</span>' +
+      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',1)">+</button>' +
+      '</div></div>';
+  });
+  return html;
+}
+
+function renderSkillsView(skillsStr, containerId, stats, opts) {
+  opts = opts || {};
+  const magicEnabled = opts.magicEnabled || false;
   const container = document.getElementById(containerId);
   if (!container) return;
   const viewLevels = {};
@@ -2889,6 +2912,10 @@ function renderSkillsView(skillsStr, containerId, stats) {
         '</div>';
     });
     html += '</div></div>';
+  }
+  if (magicEnabled) {
+    const color = statColors['Umagicznienie'] || '#b0a0e0';
+    html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;">Umagicznienie</div><div class="skills-grid" id="view-magic-grid">' + getMagicCardsHtml() + '</div></div>';
   }
   container.innerHTML = html;
 }
@@ -3276,38 +3303,24 @@ function renderViewCard(data) {
   h += '<div class="print-page print-page-2">';
   h += '<div class="print-header">Misterium Skarbów i Cieni — Umiejętności</div>';
 
-  // Left col: ściąga trudności + sztuczki
+  // Left col: tylko sztuczki
   h += '<div class="print-col print-col-left">';
-  h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:nowrap;gap:2px;margin:0 0 12px;padding:6px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
-  [['+2','łat.'],['0','zwy.'],['−2','pro.'],['−5','tru.'],['−8','zło.'],['−11','kry.'],['−15','far.']].forEach(([mod,label], i) => {
-    const c = DIFFICULTY_COLORS[i] || '#888';
-    h += '<div style="flex:1;min-width:0;text-align:center;padding:2px 4px;border:1px solid #444;border-radius:4px;font-size:10px;background:' + c + '22;"><span style="font-weight:bold;color:' + c + ';">' + mod + '</span><br><span style="color:' + c + ';font-size:9px;">' + label + '</span></div>';
-  });
-  h += '</div>';
   h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
     '<span style="font-size:18px;">Sztuczki</span>' +
     '<a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a></div>' +
     '<div id="view-tricks" style="margin-top:6px;"></div>';
   h += '</div>'; // end print-col-left
 
-  // Right col: skills (bez duplikatu listy statów), magic
+  // Right col: ściąga trudności (zamiast "Umiejętności") + skills + magic
   h += '<div class="print-col print-col-right">';
-  h += '<span style="font-size:18px;">Umiejętności</span>';
-  h += '<div id="view-skills-container" style="margin-top:8px;"></div>';
-  h += '<hr>';
-  h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
-    '<span style="font-size:18px;color:#b0a0e0;">🔮 Umagicznienie</span>';
-  if (magicEnabled) {
-    h += '<span style="color:#b0a0e0;font-size:14px;background:#2a2a3a;padding:4px 10px;border-radius:6px;border:1px solid #4a4a6a;">Tak</span>';
-  } else {
-    h += '<span style="color:#555;font-size:14px;background:#1a1a1a;padding:4px 10px;border-radius:6px;border:1px solid #333;">Nie</span>' +
-      '<span style="color:#444;font-size:11px;font-style:italic;">— aktywuje Mistrz Kluczy</span>';
-  }
+  h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:nowrap;gap:2px;margin:0 0 12px;padding:6px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
+  [['+2','łat.'],['0','zwy.'],['−2','pro.'],['−5','tru.'],['−8','zło.'],['−11','kry.'],['−15','far.']].forEach(([mod,label], i) => {
+    const c = DIFFICULTY_COLORS[i] || '#888';
+    h += '<div style="flex:1;min-width:0;text-align:center;padding:2px 4px;border:1px solid #444;border-radius:4px;font-size:10px;background:' + c + '22;"><span style="font-weight:bold;color:' + c + ';">' + mod + '</span><br><span style="color:' + c + ';font-size:9px;">' + label + '</span></div>';
+  });
+  h += '</div>';
+  h += '<div id="view-skills-container" style="margin-top:0;"></div>';
   h += '<input type="hidden" id="view-magic-toggle" value="' + (magicEnabled ? 'Tak' : 'Nie') + '">';
-  h += '</div>';
-  h += '<div id="view-magic-panel" style="display:' + (magicEnabled ? 'block' : 'none') + ';">';
-  h += '<div class="magic-grid" id="view-magic-grid"></div>';
-  h += '</div>';
   h += '</div>'; // end print-col-right
 
   h += '</div>'; // end print-page-2
@@ -3345,8 +3358,8 @@ function renderViewCard(data) {
   dlInit('view-notes', noteItems.length ? noteItems : [], { placeholder: 'Notatka...', addLabel: '+ Dodaj notatkę', trackChanges: true });
   dlInit('view-tricks', trickItems.length ? trickItems : [], { placeholder: 'Sztuczka...', addLabel: '+ Dodaj sztuczkę', trackChanges: true });
 
-  renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl });
   renderViewMagic(tryParseJSON(data.magic_skills) || {});
+  renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl }, { magicEnabled });
 
   c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
   hasUnsavedChanges = false;
@@ -3398,36 +3411,9 @@ async function saveCard() {
 // =====================================================================
 // MAGIC & WOUNDS (VIEW MODE)
 // =====================================================================
-function toggleViewMagic() {
-  const val = document.getElementById('view-magic-toggle').value;
-  document.getElementById('view-magic-panel').style.display = val === 'Tak' ? 'block' : 'none';
-}
-
 function renderViewMagic(savedLevels) {
   Object.keys(magicLevels).forEach(k => delete magicLevels[k]);
   magicGroups.forEach(g => { magicLevels[g.name] = savedLevels[g.name] || 0; });
-  updateMagicGrid();
-}
-
-function updateMagicGrid() {
-  const grid = document.getElementById('view-magic-grid');
-  if (!grid) return;
-  let html = '';
-  magicGroups.forEach(g => {
-    const lvl = magicLevels[g.name] || 0;
-    const valColor = lvl === 0 ? '#555' : '#b0a0e0';
-    const boxesHtml = statTestBoxes(lvl);
-    html += '<div class="magic-card">' +
-      '<div style="font-size:18px;margin-bottom:2px;">' + g.icon + '</div>' +
-      '<div class="magic-card-title" style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + g.name + boxesHtml + '</div>';
-    g.skills.forEach(s => { html += '<span class="magic-skill-tag">' + s + '</span>'; });
-    html += '<div class="magic-level-ctrl">' +
-      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',-1)">−</button>' +
-      '<span class="magic-level-val" style="color:' + valColor + ';">' + lvl + '</span>' +
-      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',1)">+</button>' +
-      '</div></div>';
-  });
-  grid.innerHTML = html;
 }
 
 function changeMagicLevel(name, delta) {
@@ -3435,7 +3421,8 @@ function changeMagicLevel(name, delta) {
   const next = Math.max(0, Math.min(3, current + delta));
   if (next === current) return;
   magicLevels[name] = next;
-  updateMagicGrid();
+  const grid = document.getElementById('view-magic-grid');
+  if (grid) grid.innerHTML = getMagicCardsHtml();
   markUnsaved();
 }
 
@@ -3515,6 +3502,9 @@ function renderMechanicsSkills() {
     html += groups.map(g => g.icon + ' ' + g.name).join(' · ');
     html += '</div>';
   }
+  html += '<div style="margin-bottom:6px;"><span style="color:#b0a0e0;font-weight:bold;">Umagicznienie</span> → ';
+  html += magicGroups.map(g => g.icon + ' ' + g.name).join(' · ');
+  html += '</div>';
   el.innerHTML = html;
 }
 
