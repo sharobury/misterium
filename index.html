@@ -263,6 +263,106 @@ h2 {
   font-family: serif;
 }
 .back-link:hover { color: #ccc; }
+
+.wound-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.wound-label {
+  font-size: 13px;
+  min-width: 110px;
+}
+.wound-check {
+  width: 20px;
+  height: 20px;
+  accent-color: #e07070;
+  cursor: pointer;
+  margin: 0;
+}
+
+.magic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+.magic-card {
+  background: #1a1a2a;
+  border: 1px solid #3a3a5a;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+.magic-card-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #b0a0e0;
+  margin-bottom: 6px;
+}
+.magic-skill-tag {
+  display: block;
+  background: #1e1e2e;
+  border: 1px solid #3a3a5a;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: #8888bb;
+  margin: 2px 0;
+  line-height: 1.4;
+}
+.magic-level-ctrl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.magic-level-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  border-radius: 4px;
+  background: #2a2a3a;
+  color: #b0a0e0;
+  border: 1px solid #4a4a6a;
+  cursor: pointer;
+  margin: 0;
+  font-family: serif;
+}
+.magic-level-btn:hover { background: #3a3a5a; }
+.magic-level-val {
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+@media print {
+  body { background: white !important; color: black !important; padding: 10mm !important; font-size: 12pt; }
+  .page { display: none !important; }
+  #page-view { display: block !important; }
+  .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; }
+  .back-link, #save-btn, #print-btn, .dynamic-add, .dynamic-remove, #view-login { display: none !important; }
+  .view-field { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; }
+  input, textarea, select { border-color: #ccc !important; background: white !important; color: black !important; }
+  .stat-val { color: #333 !important; font-weight: bold !important; }
+  .stat-row { border-color: #ddd !important; }
+  hr { border-color: #ddd !important; }
+  label { color: #555 !important; }
+  h2 { color: black !important; }
+  .wound-check { accent-color: #c00 !important; }
+  .skill-tag { background: #f0f0f0 !important; border-color: #ccc !important; color: #333 !important; }
+  .magic-card { background: #f8f8ff !important; border-color: #ccc !important; }
+  .magic-card-title { color: #444 !important; }
+  .magic-skill-tag { background: #f0f0f8 !important; border-color: #ccc !important; color: #444 !important; }
+  .magic-level-btn { display: none !important; }
+  .magic-level-val { color: black !important; }
+  .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; }
+}
   </style>
 </head>
 <body>
@@ -478,8 +578,9 @@ h2 {
       <div style="color:#e0a040;font-weight:bold;font-size:15px;margin-bottom:8px;">🎲 Test Podstawowy</div>
       <div style="color:#ccc;font-size:14px;line-height:1.7;">
         Rzuć <b style="color:white;">1k20</b>. Wynik <b style="color:white;">≤ wartość statu</b> = sukces.<br>
-        Każdy poziom pakietu umiejętności: <b style="color:#7ec87e;">+2</b> do wartości statu.<br>
-        <span style="color:#888;font-size:12px;">Np. Ciało 12 + Gibkość lvl 2 (+4) = test ≤ 16 na skradanie.</span>
+        Każdy poziom pakietu umiejętności: <b style="color:#7ec87e;">+1</b> do wartości statu.<br>
+        Gracz znający pasującą umiejętność może negocjować obniżenie trudności testu.<br>
+        <span style="color:#888;font-size:12px;">Np. Ciało 12 + Gibkość lvl 2 (+2) = test ≤ 14 na skradanie.</span>
       </div>
     </div>
 
@@ -487,13 +588,13 @@ h2 {
     <div style="background:#1a1a1a;border-left:3px solid #8e44ad;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
       <div style="color:#8e44ad;font-weight:bold;font-size:15px;margin-bottom:8px;">📊 Poziomy Trudności</div>
       <table style="width:100%;color:#ccc;font-size:14px;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Łatwy</td><td style="text-align:right;color:#7ec87e;font-weight:bold;">+4</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Przeciętny</td><td style="text-align:right;color:#aaa;font-weight:bold;">+2</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Normalny</td><td style="text-align:right;color:white;font-weight:bold;">0</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Trudny</td><td style="text-align:right;color:#e0a040;font-weight:bold;">−2</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Bardzo Trudny</td><td style="text-align:right;color:#e07070;font-weight:bold;">−5</td></tr>
-        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Cholernie Trudny</td><td style="text-align:right;color:#c0392b;font-weight:bold;">−8</td></tr>
-        <tr><td style="padding:4px 0;">Fart / Mistrzowski</td><td style="text-align:right;color:#888;font-weight:bold;">−11 / −15</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Łatwy</td><td style="text-align:right;color:#7ec87e;font-weight:bold;">+2</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Zwykły</td><td style="text-align:right;color:white;font-weight:bold;">0</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Problemowy</td><td style="text-align:right;color:#e0a040;font-weight:bold;">−2</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Trudny</td><td style="text-align:right;color:#e07070;font-weight:bold;">−5</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Złożony</td><td style="text-align:right;color:#c0392b;font-weight:bold;">−8</td></tr>
+        <tr style="border-bottom:1px solid #333;"><td style="padding:4px 0;">Krytyczny</td><td style="text-align:right;color:#c0392b;font-weight:bold;">−11</td></tr>
+        <tr><td style="padding:4px 0;">Fartowny</td><td style="text-align:right;color:#888;font-weight:bold;">−15</td></tr>
       </table>
     </div>
 
@@ -501,21 +602,37 @@ h2 {
     <div style="background:#1a1a1a;border-left:3px solid #2980b9;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
       <div style="color:#2980b9;font-weight:bold;font-size:15px;margin-bottom:8px;">🎯 Testy Specjalne</div>
       <div style="color:#ccc;font-size:14px;line-height:1.7;">
-        <b style="color:white;">Test Otwarty</b> — rzuć 2k20, odrzuć gorszą, od lepszej odejmij umiejętność. Reszta oczek na kości = <b>Punkty Sukcesu</b>.<br>
-        <span style="color:#888;font-size:12px;">Im więcej PS, tym lepszy efekt.</span>
+        <b style="color:white;">Test Otwarty</b> — rzuć 1k20. Wartość statu (+ umiejętności) minus wynik na kości = <b>Punkty Sukcesu</b>.<br>
+        <span style="color:#888;font-size:12px;">Im więcej PS, tym lepszy efekt. Wynik ujemny = porażka.</span>
       </div>
       <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:8px;">
         <b style="color:white;">Test Przeciwstawny</b> — obie strony robią test otwarty. Różnica PS = <b>Punkty Przewagi</b> zwycięzcy.
       </div>
     </div>
 
-    <!-- ── SZCZĘŚLIWA 1 / PECHOWA 20 ── -->
+    <!-- ── KRYTYCZNY SUKCES / PORAŻKA ── -->
     <div style="background:#1a1a1a;border-left:3px solid #27ae60;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
-      <div style="color:#27ae60;font-weight:bold;font-size:15px;margin-bottom:8px;">🍀 Fart i Pech</div>
+      <div style="color:#27ae60;font-weight:bold;font-size:15px;margin-bottom:8px;">💥 Krytyczny sukces i porażka</div>
       <div style="color:#ccc;font-size:14px;line-height:1.7;">
-        <b style="color:#7ec87e;">1 na k20</b> (poza walką) — obniża trudność o jeden poziom.<br>
-        <b style="color:#e07070;">20 na k20</b> (poza walką) — podnosi trudność o jeden poziom.<br>
+        <b style="color:#7ec87e;">1 na k20</b> — obniża trudność o jeden poziom.<br>
+        <b style="color:#e07070;">20 na k20</b> — podnosi trudność o jeden poziom.<br>
         <span style="color:#888;font-size:12px;margin-top:4px;display:block;">W walce: 1 lub 2 = obrażenia o poziom wyższe. 20 = automatyczna porażka na tej kości.</span>
+      </div>
+    </div>
+
+    <!-- ── SZCZĘŚCIE, SŁAWA, REPUTACJA ── -->
+    <div style="background:#1a1a1a;border-left:3px solid #eea65f;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+      <div style="color:#eea65f;font-weight:bold;font-size:15px;margin-bottom:8px;">🍀 Szczęście · Sława · Reputacja</div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;">
+        <b style="color:#e0a040;">Szczęście (0–6)</b> — raz na sesję gracz może zmienić wynik rzutu o wartość swojego szczęścia. Może zużyć wszystko naraz (np. 6 = zmiana o 6) lub rozłożyć na kilka rzutów (np. 6× po 1).<br>
+        <span style="color:#888;font-size:12px;">Szczęście odnawia się co sesję.</span>
+      </div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:8px;">
+        <b style="color:#e0a040;">Sława (0–6)</b> — każda gwiazdka pozwala <b>przerzucić</b> nieudany rzut. Ale tylko <b>raz w całej grze</b> na każdą gwiazdkę. Zużyta = zużyta na zawsze.<br>
+        <span style="color:#888;font-size:12px;">Sława się nie odnawia — to jednorazowy zasób.</span>
+      </div>
+      <div style="color:#ccc;font-size:14px;line-height:1.7;margin-top:8px;">
+        <b style="color:#e0a040;">Reputacja (−20 do +20)</b> — jak NPC postrzegają postać. Negatywna → bandyci i szemrane typy traktują lepiej. Pozytywna → kupcy, strażnicy i uczciwy lud są przychylniejsi.
       </div>
     </div>
 
@@ -636,20 +753,6 @@ h2 {
     <div style="background:#1a1a1a;border-left:3px solid #eea65f;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
       <div style="color:#eea65f;font-weight:bold;font-size:15px;margin-bottom:8px;">📋 Staty i Pakiety — szybka ściąga</div>
       <div style="color:#ccc;font-size:13px;line-height:1.8;" id="mechanics-skills-ref"></div>
-    </div>
-
-    <!-- ── QUICK TIPS ── -->
-    <div style="background:#1a1a1a;border-left:3px solid #555;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
-      <div style="color:#888;font-weight:bold;font-size:15px;margin-bottom:8px;">💡 Rady dla MG (one-shot)</div>
-      <div style="color:#888;font-size:13px;line-height:1.7;">
-        • Nie licz segmentów co do jednego — „masz turę, co robisz?"<br>
-        • Testy tylko gdy jest ryzyko lub napięcie. Chodzenie po schodach ≠ test.<br>
-        • Jeśli gracz ma pomysł, który pasuje do jego umiejętności — daj bonus lub obniż trudność.<br>
-        • Walka powinna trwać 3–5 tur max. Potem ktoś ucieka albo ktoś leży.<br>
-        • Krytyczna rana = dramat. Nie zabijaj od razu — daj szansę na ratunek.<br>
-        • Fabularne konsekwencje > mechaniczne kary. Złamana ręka to nie „−5", to „nie udźwigniesz skrzyni ze skarbem".<br>
-        • W razie wątpliwości: test przeciwstawny rozwiązuje wszystko.
-      </div>
     </div>
 
   </div>
@@ -1129,7 +1232,7 @@ const allTricks = [
     { name: "Mokry Szczur", desc: "W wodzie czujesz się niemal jak w domu. Bonus +2 do wszystkich testów Pływania i działania w środowisku wodnym. Nie obejmuje walki pod wodą — tam każdy tonie na swój własny sposób." },
   ]},
   { group: "Budowa", stat: "Ciało", tricks: [
-    { name: "Żywa Taran", desc: "Możesz wyważyć zwykłe drzwi bez testu, o ile masz kilka sekund rozbiegu i nikogo po drugiej stronie nie poirytowałeś za mocno. Drzwi wzmocnione, okucia, zapory — wymagają testu z bonusem +3." },
+    { name: "Żywy Taran", desc: "Możesz wyważyć zwykłe drzwi bez testu, o ile masz kilka sekund rozbiegu i nikogo po drugiej stronie nie poirytowałeś za mocno. Drzwi wzmocnione, okucia, zapory — wymagają testu z bonusem +3." },
     { name: "Twardy Kark", desc: "Pierwsza rana w każdej walce jest o 1 stopień lżejsza. Twoje ciało zarejestrowało ból, ale uprzejmie postanowiło zająć się nim później." },
     { name: "Rzut Ostateczny", desc: "Możesz rzucić dowolnym trzymanym przedmiotem jako atak z pełnym bonusem Rzucania. Tak, sojusznikiem też — ale tylko za jego zgodą, lub gdy nie ma czasu jej udzielić." },
   ]},
@@ -1195,11 +1298,25 @@ const allTricks = [
   ]},
 ];
 
+const magicGroups = [
+  { name: "Element", icon: "🔥", skills: ["Piromancja", "Aquamancja", "Biomancja"] },
+  { name: "Chaos",   icon: "💀", skills: ["Czarnomagia", "Szamanizm", "Transmutacja"] },
+  { name: "Arkana",  icon: "✨", skills: ["Białomagia", "Mistycyzm", "Przywołanie"] },
+];
+
+const WOUND_LEVELS = [
+  { key: 'scratch',  label: 'Draśnięcie',     color: '#aaa',    max: 5 },
+  { key: 'light',    label: 'Lekka rana',      color: '#e0a040', max: 4 },
+  { key: 'heavy',    label: 'Ciężka rana',     color: '#e07070', max: 3 },
+  { key: 'critical', label: 'Krytyczna rana',  color: '#c0392b', max: 2 },
+];
+
 // =====================================================================
 // STATE
 // =====================================================================
 const skillLevels = {};
 const customEntries = {};
+const magicLevels = {};
 let hasUnsavedChanges = false;
 let viewPassword = null;
 let createInitialized = false;
@@ -1838,7 +1955,37 @@ function renderViewCard(data) {
 
   h += '<hr>';
 
+  // Wounds tracker
+  h += '<span style="font-size:18px;">💉 Rany</span>';
+  h += '<div id="view-wounds" style="margin-top:10px;">';
+  const woundsData = tryParseJSON(data.wounds) || {};
+  WOUND_LEVELS.forEach(w => {
+    const checked = woundsData[w.key] || [];
+    h += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div>';
+    for (let i = 0; i < w.max; i++) {
+      h += '<input type="checkbox" class="wound-check" data-level="' + w.key + '" data-idx="' + i + '"' + (checked[i] ? ' checked' : '') + ' onchange="markUnsaved()">';
+    }
+    h += '</div></div>';
+  });
+  h += '</div>';
+
+  h += '<hr>';
+
   h += '<span style="font-size:18px;">Umiejętności</span><div id="view-skills-container" style="margin-top:8px;"></div>';
+
+  h += '<hr>';
+
+  // Magic toggle
+  const magicEnabled = data.magic_enabled === 'Tak';
+  h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
+    '<span style="font-size:18px;color:#b0a0e0;">🔮 Umagicznienie</span>' +
+    '<select id="view-magic-toggle" onchange="toggleViewMagic();markUnsaved()" style="width:auto;padding:4px 8px;font-size:14px;background:#2a2a3a;border-color:#4a4a6a;color:#b0a0e0;">' +
+    '<option value="Nie"' + (!magicEnabled ? ' selected' : '') + '>Nie</option>' +
+    '<option value="Tak"' + (magicEnabled ? ' selected' : '') + '>Tak</option>' +
+    '</select></div>';
+  h += '<div id="view-magic-panel" style="display:' + (magicEnabled ? 'block' : 'none') + ';">';
+  h += '<div class="magic-grid" id="view-magic-grid"></div>';
+  h += '</div>';
 
   h += '<hr>';
 
@@ -1866,7 +2013,10 @@ function renderViewCard(data) {
 
   h += '<hr>';
 
-  h += '<button id="save-btn" onclick="saveCard()" style="background:#7a5c10;font-size:17px;padding:14px;width:100%;margin-top:10px;box-sizing:border-box;">💾 Zapisz zmiany</button>';
+  h += '<div style="display:flex;gap:10px;">' +
+    '<button id="save-btn" onclick="saveCard()" style="background:#7a5c10;font-size:17px;padding:14px;flex:1;box-sizing:border-box;">💾 Zapisz zmiany</button>' +
+    '<button id="print-btn" onclick="window.print()" style="background:#333;font-size:17px;padding:14px;box-sizing:border-box;">🖨️</button>' +
+    '</div>';
 
   c.innerHTML = h;
 
@@ -1885,6 +2035,7 @@ function renderViewCard(data) {
   dlInit('view-tricks', trickItems.length ? trickItems : [], { placeholder: 'Sztuczka...', addLabel: '+ Dodaj sztuczkę', trackChanges: true });
 
   renderSkillsView(data.skills, 'view-skills-container');
+  renderViewMagic(tryParseJSON(data.magic_skills) || {});
 
   c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
   hasUnsavedChanges = false;
@@ -1904,6 +2055,9 @@ async function saveCard() {
     bio: document.getElementById('view-bio').value.trim(),
     notes: JSON.stringify(dlGetItems('view-notes')),
     tricks: JSON.stringify(dlGetItems('view-tricks')),
+    wounds: JSON.stringify(getWoundsState()),
+    magic_enabled: document.getElementById('view-magic-toggle').value,
+    magic_skills: JSON.stringify(magicLevels),
   };
 
   try {
@@ -1928,6 +2082,61 @@ async function saveCard() {
     btn.style.background = '#7a5c10';
     alert('Błąd zapisu: ' + err.message);
   }
+}
+
+// =====================================================================
+// MAGIC & WOUNDS (VIEW MODE)
+// =====================================================================
+function toggleViewMagic() {
+  const val = document.getElementById('view-magic-toggle').value;
+  document.getElementById('view-magic-panel').style.display = val === 'Tak' ? 'block' : 'none';
+}
+
+function renderViewMagic(savedLevels) {
+  Object.keys(magicLevels).forEach(k => delete magicLevels[k]);
+  magicGroups.forEach(g => { magicLevels[g.name] = savedLevels[g.name] || 0; });
+  updateMagicGrid();
+}
+
+function updateMagicGrid() {
+  const grid = document.getElementById('view-magic-grid');
+  if (!grid) return;
+  let html = '';
+  magicGroups.forEach(g => {
+    const lvl = magicLevels[g.name] || 0;
+    const valColor = lvl === 0 ? '#555' : '#b0a0e0';
+    html += '<div class="magic-card">' +
+      '<div style="font-size:18px;margin-bottom:2px;">' + g.icon + '</div>' +
+      '<div class="magic-card-title">' + g.name + '</div>';
+    g.skills.forEach(s => { html += '<span class="magic-skill-tag">' + s + '</span>'; });
+    html += '<div class="magic-level-ctrl">' +
+      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',-1)">−</button>' +
+      '<span class="magic-level-val" style="color:' + valColor + ';">' + lvl + '</span>' +
+      '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',1)">+</button>' +
+      '</div></div>';
+  });
+  grid.innerHTML = html;
+}
+
+function changeMagicLevel(name, delta) {
+  const current = magicLevels[name] || 0;
+  const next = Math.max(0, Math.min(3, current + delta));
+  if (next === current) return;
+  magicLevels[name] = next;
+  updateMagicGrid();
+  markUnsaved();
+}
+
+function getWoundsState() {
+  const wounds = {};
+  WOUND_LEVELS.forEach(w => {
+    wounds[w.key] = [];
+    for (let i = 0; i < w.max; i++) {
+      const cb = document.querySelector('.wound-check[data-level="' + w.key + '"][data-idx="' + i + '"]');
+      wounds[w.key].push(cb ? cb.checked : false);
+    }
+  });
+  return wounds;
 }
 
 // =====================================================================
