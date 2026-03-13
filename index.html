@@ -24,6 +24,8 @@ body {
   box-sizing: border-box;
 }
 
+.page { display: none; }
+
 label {
   display: block;
   margin-top: 16px;
@@ -31,7 +33,7 @@ label {
   font-size: 14px;
 }
 
-input, textarea {
+input, textarea, select {
   width: 100%;
   box-sizing: border-box;
   padding: 8px;
@@ -72,7 +74,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-#stats {
+#stats, .view-stats {
   margin-top: 20px;
   font-size: 18px;
   line-height: 1.8;
@@ -104,7 +106,6 @@ button:disabled {
     max-width: 100%;
     padding: 20px 10px;
   }
-
   .skills-grid {
     grid-template-columns: repeat(3, 1fr);
     width: calc(100% - 10px);
@@ -135,149 +136,346 @@ hr {
 h2 {
   margin-top: 0;
 }
+
+.nav-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  margin-bottom: 12px;
+  background: #2a3a4a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+.nav-btn:hover { background: #3a4a5a; }
+
+.dynamic-item {
+  display: flex;
+  gap: 6px;
+  align-items: start;
+  margin-bottom: 6px;
+}
+.dynamic-item textarea { flex: 1; }
+.dynamic-remove {
+  background: #333;
+  color: #666;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 14px;
+  margin-top: 4px;
+  font-family: serif;
+  line-height: 1;
+}
+.dynamic-remove:hover { color: #e07070; background: #2a2a2a; }
+.dynamic-add {
+  display: block;
+  background: none;
+  color: #666;
+  border: 1px dashed #444;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 4px;
+  font-family: serif;
+  box-sizing: border-box;
+}
+.dynamic-add:hover { color: #aaa; border-color: #666; }
+
+.view-field {
+  background: #2a2a2a;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ddd;
+}
+
+.password-display {
+  background: #1a2a1a;
+  border: 2px solid #4a7a4a;
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+.password-code {
+  font-size: 36px;
+  color: #ffd700;
+  font-weight: bold;
+  letter-spacing: 6px;
+  margin: 12px 0;
+  font-family: monospace;
+}
+
+.trick-group { margin-bottom: 16px; }
+.trick-group-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ddd;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #444;
+}
+.trick-item {
+  margin-bottom: 8px;
+  padding: 10px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+.trick-name {
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 14px;
+}
+.trick-desc {
+  color: #aaa;
+  font-size: 13px;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.trick-req {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  margin-bottom: 16px;
+  font-family: serif;
+}
+.back-link:hover { color: #ccc; }
   </style>
 </head>
 <body>
-<div class="card">
-  <h2>Misterium Skarbów i Cieni</h2>
-  <p style="color:#aaa; font-size:14px; margin-top:-10px; margin-bottom:6px; line-height:1.7;">
-    Zamiast urodzin — posiedzenie złodziei.<br>
-    <span style="color:#777;">14 marca, 11:00–18:00, gdzieś w naturce.</span>
-  </p>
-  <p style="color:#888; font-size:13px; margin-top:0; margin-bottom:20px; line-height:1.7;">
-    Proszę nie przynosić prezentów dla Mistrza Kluczy — ale jeżeli chciałbyś wziąć udział w posiedzeniu na świeżym powietrzu i zagrać w one-shot RPG, wyślij zgłoszenie! :} Jeżeli wolisz posiedzieć na powietrzu bez RPG, zaznacz odpowiednią opcję poniżej i też wyślij. Może być tak, że część osób zagra w RPG, inna pochilluje z planszówkami albo zupełnie bez.
-  </p>
 
-  <label>Kto zgłasza się?</label>
-  <textarea id="realname" rows="2" oninput="autoGrow(this)" placeholder="Np. Michał Kowalski, bym wiedział kto kryje się pod maską!"></textarea>
-
-  <label style="margin-top:16px; display:block;">Planuję:</label>
-  <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
-    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:16px; color:#ddd;">
-      <input type="radio" name="attendance" value="rpg" onchange="handleAttendance()" style="width:auto; margin:0; accent-color:#ffd700;">
-      🎲 Będę i chcę zagrać w RPG
-    </label>
-    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:16px; color:#ddd;">
-      <input type="radio" name="attendance" value="chill" onchange="handleAttendance()" style="width:auto; margin:0; accent-color:#ffd700;">
-      ☀️ Będę pochillować
-    </label>
-  </div>
-
-  <div id="rpg-section" style="display:none; margin-top:10px;">
-
-  <label style="margin-top:16px;display:block">Imię postaci:</label>
-  <textarea id="name" rows="2" oninput="autoGrow(this)" placeholder="Imię jakie zna tylko matka i strażnicy..."></textarea>
-
-  <button onclick="generateName()">🎲 Wylosuj pseudonim</button>
-  <div id="nickname-wrapper" style="display:none; margin-top:10px;">
-    <textarea id="nickname" rows="2" oninput="autoGrow(this)" style="font-size:18px; color:#ffd700;" placeholder="Jak wołają Cię w Gildii..."></textarea>
-  </div>
-
-  <label style="margin-top:16px; display:block;">Rasa</label>
-  <select id="race" onchange="handleRaceChange()" style="width:100%; box-sizing:border-box; padding:8px; font-size:16px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-top:4px; font-family:serif;">
-    <option value="">— wybierz rasę —</option>
-    <option value="Normik (człowiek)">Normik (człowiek)</option>
-    <option value="half">Pół człowiek, pół...</option>
-    <option value="Szczurok">Szczurok</option>
-    <option value="Orkoblin">Orkoblin</option>
-    <option value="custom">Wpisz własne...</option>
-  </select>
-  <div id="race-desc" style="display:none; font-size:13px; color:#777; margin-top:8px; line-height:1.6; font-style:italic; padding: 6px 10px; border-left: 2px solid #444;"></div>
-  <div id="race-half-wrapper" style="display:none; margin-top:6px;">
-    <input id="race-half-input" placeholder="...pół co? (np. elf, kret, karczmarz)" style="font-size:15px;">
-  </div>
-  <div id="race-custom-wrapper" style="display:none; margin-top:6px;">
-    <input id="race-custom-input" placeholder="Wpisz rasę postaci..." style="font-size:15px;">
-  </div>
-
-  <hr>
-
-  <button id="luckBtn" onclick="rollLuck()">🎲 Wylosuj szczęście i reputację</button>
-  <div id="luck-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
-  <div id="luck" style="display:none; margin-top:10px;"></div>
-
-  <hr>
-
-  <button id="rollBtn" onclick="rollStats()">🎲 Wylosuj staty</button>
-  <div id="cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
-  <div id="stats"></div>
-
-  <hr>
-
-  <button id="flawBtn" onclick="rollFlaw()">🎲 Wylosuj wadę</button>
-  <div id="flaw-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
-  <div id="flaw" style="display:none; margin-top:10px;">
-    <label style="margin-top:0">Wada charakteru</label>
-    <textarea id="flaw-input" rows="2" oninput="autoGrow(this)" style="font-size:16px; color:#e07070;" placeholder="Wylosuj lub wpisz wadę..."></textarea>
-  </div>
-
-  <hr>
-
-  <div id="skills-section">
-    <span style="font-size:18px;">Umiejętności</span>
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; margin-bottom:8px;">
-      <div style="display:flex; gap:8px; align-items:center;">
-        <button onclick="randomizeSkills()" style="font-size:13px; padding:6px 10px; margin-top:0;">🎲 Losuj</button>
-        <button onclick="resetSkills()" style="font-size:13px; padding:6px 10px; margin-top:0; background:#333; color:#888;">✕ Reset</button>
-      </div>
-      <span style="font-size:14px; color:#aaa;">Punkty: <span id="pts-remaining">10</span> / 10</span>
-    </div>
-    <div id="skills-container"></div>
-  </div>
-
-  <hr>
-
-  <button id="gearBtn" onclick="rollGear()">🎲 Wylosuj ekwipunek</button>
-  <div id="gear-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
-  <div style="margin-top:10px;">
-    <label style="margin-top:8px;">Przedmiot 1</label>
-    <textarea id="gear1" rows="2" oninput="autoGrow(this)" placeholder="Pierwszy przedmiot ekwipunku..."></textarea>
-    <label style="margin-top:8px;">Przedmiot 2</label>
-    <textarea id="gear2" rows="2" oninput="autoGrow(this)" placeholder="Drugi przedmiot ekwipunku..."></textarea>
-    <label style="margin-top:8px;">Przedmiot 3</label>
-    <textarea id="gear3" rows="2" oninput="autoGrow(this)" placeholder="Trzeci przedmiot ekwipunku..."></textarea>
-  </div>
-
-  <hr>
-
-  <button id="weaponBtn" onclick="rollWeapon()">🎲 Wylosuj broń</button>
-  <div id="weapon-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
-  <div style="margin-top:10px;">
-    <label style="margin-top:8px;">Broń</label>
-    <textarea id="weapon-input" rows="2" oninput="autoGrow(this)" placeholder="Broń postaci..."></textarea>
-    <label style="margin-top:8px;">Inskrypcja</label>
-    <textarea id="weapon-inscription" rows="2" oninput="autoGrow(this)" placeholder="Inskrypcja na broni..." style="color:#888;"></textarea>
-  </div>
-
-  <hr>
-
-  <label>Krótkie Bio</label>
-  <p style="color:#666; font-size:13px; margin:4px 0 6px 0; line-height:1.5;">Kilka słów o postaci albo interesujący fakt — kim była zanim została złodziejem? Jaki był twój największy skok? Jaka największa wpadka? Co ludzie myślą, gdy wchodzisz do pokoju?</p>
-  <textarea id="bio" placeholder="Max 3 zdania. Reszta niech pozostanie tajemnicą Gildii..." style="width:100%; box-sizing:border-box; padding:8px; font-size:15px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-top:4px; font-family:serif; resize:vertical; min-height:90px;"></textarea>
-
-  <button onclick="generatePrompt()" style="background:#2a3a4a; font-size:15px; padding:12px; width:100%; margin-top:10px; box-sizing:border-box;">
-    📜 Skopiuj prompt historii postaci (dla leniwych)
-  </button>
-  <div id="prompt-msg" style="display:none; font-size:13px; color:#7ec87e; margin-top:6px;">✓ Prompt skopiowany — wklej do ChatGPT lub innego agenta.</div>
-
-  </div><!-- /#rpg-section -->
-
-  <hr>
-
-  <div id="submit-section" style="display:none;">
-    <button id="submitBtn" onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
-      ✉ Wyślij zgłoszenie do Mistrza Kluczy
-    </button>
+<!-- ===== PAGE: HOME ===== -->
+<div id="page-home" class="page">
+  <div class="card" style="text-align:center;">
+    <h2>Misterium Skarbów i Cieni</h2>
+    <p style="color:#aaa; font-size:14px; margin-top:-10px; margin-bottom:6px; line-height:1.7;">
+      Zamiast urodzin — posiedzenie złodziei.<br>
+      <span style="color:#777;">14 marca, 11:00–18:00, gdzieś w naturce.</span>
+    </p>
+    <p style="color:#888; font-size:13px; margin-top:0; margin-bottom:30px; line-height:1.7;">
+      Proszę nie przynosić prezentów dla Mistrza Kluczy — ale jeżeli chciałbyś wziąć udział w posiedzeniu na świeżym powietrzu i zagrać w one-shot RPG, wyślij zgłoszenie!&nbsp;:}<br>
+      Jeżeli wolisz posiedzieć na powietrzu bez RPG, zaznacz odpowiednią opcję i też wyślij.
+    </p>
+    <button class="nav-btn" onclick="location.hash='#create'">✉ Wyślij zgłoszenie</button>
+    <button class="nav-btn" onclick="location.hash='#view'" style="background:#333;">🔑 Zobacz swoją kartę</button>
+    <button class="nav-btn" onclick="location.hash='#tricks'" style="background:#2a2a2a;color:#aaa;">📜 Lista sztuczek</button>
   </div>
 </div>
-  <script>
+
+<!-- ===== PAGE: CREATE ===== -->
+<div id="page-create" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+    <h2>Misterium Skarbów i Cieni</h2>
+    <p style="color:#aaa; font-size:14px; margin-top:-10px; margin-bottom:6px; line-height:1.7;">
+      Zamiast urodzin — posiedzenie złodziei.<br>
+      <span style="color:#777;">14 marca, 11:00–18:00, gdzieś w naturce.</span>
+    </p>
+    <p style="color:#888; font-size:13px; margin-top:0; margin-bottom:20px; line-height:1.7;">
+      Proszę nie przynosić prezentów dla Mistrza Kluczy — ale jeżeli chciałbyś wziąć udział w posiedzeniu na świeżym powietrzu i zagrać w one-shot RPG, wyślij zgłoszenie! :} Jeżeli wolisz posiedzieć na powietrzu bez RPG, zaznacz odpowiednią opcję poniżej i też wyślij. Może być tak, że część osób zagra w RPG, inna pochilluje z planszówkami albo zupełnie bez.
+    </p>
+
+    <div id="create-form">
+      <label>Kto zgłasza się?</label>
+      <textarea id="realname" rows="2" oninput="autoGrow(this)" placeholder="Np. Michał Kowalski, bym wiedział kto kryje się pod maską!"></textarea>
+
+      <label style="margin-top:16px; display:block;">Planuję:</label>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:16px; color:#ddd;">
+          <input type="radio" name="attendance" value="rpg" onchange="handleAttendance()" style="width:auto; margin:0; accent-color:#ffd700;">
+          🎲 Będę i chcę zagrać w RPG
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:16px; color:#ddd;">
+          <input type="radio" name="attendance" value="chill" onchange="handleAttendance()" style="width:auto; margin:0; accent-color:#ffd700;">
+          ☀️ Będę pochillować
+        </label>
+      </div>
+
+      <div id="rpg-section" style="display:none; margin-top:10px;">
+        <label style="margin-top:16px;display:block">Imię postaci:</label>
+        <textarea id="name" rows="2" oninput="autoGrow(this)" placeholder="Imię jakie zna tylko matka i strażnicy..."></textarea>
+
+        <button onclick="generateName()">🎲 Wylosuj pseudonim</button>
+        <div id="nickname-wrapper" style="display:none; margin-top:10px;">
+          <textarea id="nickname" rows="2" oninput="autoGrow(this)" style="font-size:18px; color:#ffd700;" placeholder="Jak wołają Cię w Gildii..."></textarea>
+        </div>
+
+        <label style="margin-top:16px; display:block;">Rasa</label>
+        <select id="race" onchange="handleRaceChange()" style="font-family:serif;">
+          <option value="">— wybierz rasę —</option>
+          <option value="Normik (człowiek)">Normik (człowiek)</option>
+          <option value="half">Pół człowiek, pół...</option>
+          <option value="Szczurok">Szczurok</option>
+          <option value="Orkoblin">Orkoblin</option>
+          <option value="custom">Wpisz własne...</option>
+        </select>
+        <div id="race-desc" style="display:none; font-size:13px; color:#777; margin-top:8px; line-height:1.6; font-style:italic; padding: 6px 10px; border-left: 2px solid #444;"></div>
+        <div id="race-half-wrapper" style="display:none; margin-top:6px;">
+          <input id="race-half-input" placeholder="...pół co? (np. elf, kret, karczmarz)" style="font-size:15px;">
+        </div>
+        <div id="race-custom-wrapper" style="display:none; margin-top:6px;">
+          <input id="race-custom-input" placeholder="Wpisz rasę postaci..." style="font-size:15px;">
+        </div>
+
+        <hr>
+
+        <button id="luckBtn" onclick="rollLuck()">🎲 Wylosuj szczęście i reputację</button>
+        <div id="luck-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
+        <div id="luck" style="display:none; margin-top:10px;"></div>
+
+        <hr>
+
+        <button id="rollBtn" onclick="rollStats()">🎲 Wylosuj staty</button>
+        <div id="cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
+        <div id="stats"></div>
+
+        <hr>
+
+        <button id="flawBtn" onclick="rollFlaw()">🎲 Wylosuj wadę</button>
+        <div id="flaw-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
+        <div id="flaw" style="display:none; margin-top:10px;">
+          <label style="margin-top:0">Wada charakteru</label>
+          <textarea id="flaw-input" rows="2" oninput="autoGrow(this)" style="font-size:16px; color:#e07070;" placeholder="Wylosuj lub wpisz wadę..."></textarea>
+        </div>
+
+        <hr>
+
+        <div id="skills-section">
+          <span style="font-size:18px;">Umiejętności</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; margin-bottom:8px;">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <button onclick="randomizeSkills()" style="font-size:13px; padding:6px 10px; margin-top:0;">🎲 Losuj</button>
+              <button onclick="resetSkills()" style="font-size:13px; padding:6px 10px; margin-top:0; background:#333; color:#888;">✕ Reset</button>
+            </div>
+            <span style="font-size:14px; color:#aaa;">Punkty: <span id="pts-remaining">10</span> / 10</span>
+          </div>
+          <div id="skills-container"></div>
+        </div>
+
+        <hr>
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:18px;">Sztuczki</span>
+          <a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a>
+        </div>
+        <div id="create-tricks"></div>
+
+        <hr>
+
+        <button id="gearBtn" onclick="rollGear()">🎲 Wylosuj ekwipunek</button>
+        <div id="gear-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
+        <div id="create-gear" style="margin-top:10px;"></div>
+
+        <hr>
+
+        <button id="weaponBtn" onclick="rollWeapon()">🎲 Wylosuj broń</button>
+        <div id="weapon-cooldown-msg" style="font-size:13px; color:#888; margin-top:6px; display:none;"></div>
+        <div id="create-weapons" style="margin-top:10px;"></div>
+
+        <hr>
+
+        <label>Krótkie Bio</label>
+        <p style="color:#666; font-size:13px; margin:4px 0 6px 0; line-height:1.5;">Kilka słów o postaci albo interesujący fakt — kim była zanim została złodziejem? Jaki był twój największy skok? Jaka największa wpadka? Co ludzie myślą, gdy wchodzisz do pokoju?</p>
+        <textarea id="bio" placeholder="Max 3 zdania. Reszta niech pozostanie tajemnicą Gildii..." style="resize:vertical; min-height:90px;"></textarea>
+
+        <hr>
+
+        <label>Notatki własne</label>
+        <div id="create-notes" style="margin-top:6px;"></div>
+
+        <hr>
+
+        <button onclick="generatePrompt()" style="background:#2a3a4a; font-size:15px; padding:12px; width:100%; margin-top:10px; box-sizing:border-box;">
+          📜 Skopiuj prompt historii postaci (dla leniwych)
+        </button>
+        <div id="prompt-msg" style="display:none; font-size:13px; color:#7ec87e; margin-top:6px;">✓ Prompt skopiowany — wklej do ChatGPT lub innego agenta.</div>
+      </div><!-- /#rpg-section -->
+
+      <hr>
+
+      <div id="submit-section" style="display:none;">
+        <button id="submitBtn" onclick="submitCard()" style="background:#7a5c10; font-size:17px; padding:14px; width:100%; margin-top:10px; box-sizing:border-box;">
+          ✉ Wyślij zgłoszenie do Mistrza Kluczy
+        </button>
+      </div>
+    </div><!-- /#create-form -->
+
+    <div id="password-result" style="display:none;">
+      <div class="password-display">
+        <p style="color:#aaa;font-size:15px;margin:0 0 4px;">Zgłoszenie wysłane! Twoje hasło do karty:</p>
+        <div id="password-value" class="password-code"></div>
+        <p style="color:#888;font-size:13px;margin:6px 0 16px;line-height:1.6;">Zapisz to hasło! Pozwoli Ci później zobaczyć i edytować kartę.<br>Możesz też poprosić Mistrza Kluczy o przypomnienie.</p>
+        <button onclick="copyPassword()" style="background:#333;padding:10px 20px;font-size:15px;margin-top:0;">📋 Skopiuj hasło</button>
+        <div id="password-copy-msg" style="display:none;color:#7ec87e;font-size:13px;margin-top:8px;">✓ Skopiowane!</div>
+      </div>
+      <button onclick="location.hash='#view/'+document.getElementById('password-value').textContent.trim()" style="background:#2a3a4a;padding:12px;font-size:16px;width:100%;margin-top:16px;box-sizing:border-box;">🔑 Zobacz swoją kartę</button>
+      <button onclick="location.hash='#home'" style="background:#333;padding:10px;font-size:14px;width:100%;margin-top:8px;box-sizing:border-box;">← Strona główna</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: VIEW ===== -->
+<div id="page-view" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+    <div id="view-login">
+      <h2>Zobacz swoją kartę</h2>
+      <label>Wpisz hasło do karty:</label>
+      <input id="view-password-input" placeholder="np. K3X9P2" style="text-transform:uppercase; letter-spacing:3px; font-size:22px; text-align:center; font-family:monospace;" onkeydown="if(event.key==='Enter')loadCard()">
+      <button id="view-login-btn" onclick="loadCard()" style="width:100%;margin-top:12px;background:#2a3a4a;font-size:16px;padding:12px;box-sizing:border-box;">
+        🔑 Pokaż kartę
+      </button>
+      <div id="view-error" style="display:none;color:#e07070;font-size:14px;margin-top:10px;text-align:center;"></div>
+      <div id="view-loading" style="display:none;color:#888;font-size:14px;margin-top:10px;text-align:center;">⏳ Ładowanie karty...</div>
+    </div>
+    <div id="view-card" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: TRICKS ===== -->
+<div id="page-tricks" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+    <h2>📜 Lista sztuczek</h2>
+    <p style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:16px;line-height:1.6;">Każda sztuczka wymaga min. 1 punktu w danym pakiecie umiejętności. Dodaj wybrane sztuczki do swojej karty postaci.</p>
+    <div id="tricks-content"></div>
+  </div>
+</div>
+
+<script>
+// =====================================================================
+// DATA
+// =====================================================================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDCt14FwTzvpqabeZQbjfVTQMNYdPCFllW6dQRgJ_tXIa4g1xFzGw7XhZ5mcT6kLIw/exec";
 const COOLDOWN_5MIN = 5 * 60 * 1000;
 const COOLDOWN_30SEC = 30 * 1000;
 const cooldownIntervals = {};
 
 const second = [
-  // rodzaj męski
-  { word: "Dłoń",         gender: "m" },   // jak "Rączka" ale poważniej
+  { word: "Dłoń",         gender: "m" },
   { word: "Mostek",       gender: "m" },
   { word: "Łokieć",       gender: "m" },
   { word: "Korzeń",       gender: "m" },
@@ -294,19 +492,19 @@ const second = [
   { word: "Kłębek",       gender: "m" },
   { word: "Supeł",        gender: "m" },
   { word: "Kłopot",       gender: "m" },
-  { word: "Zbytek",       gender: "m" },   // Pratchett - ironia zbytku wśród złodziei
+  { word: "Zbytek",       gender: "m" },
   { word: "Nadmiar",      gender: "m" },
   { word: "Dłużnik",      gender: "m" },
-  { word: "Wierzyciel",   gender: "m" },   // Lamora - finansowa ironia
+  { word: "Wierzyciel",   gender: "m" },
   { word: "Egzekutor",    gender: "m" },
   { word: "Notariusz",    gender: "m" },
-  { word: "Aptekarz",     gender: "m" },   // Gothic - ironiczne "zawody" obozowe
+  { word: "Aptekarz",     gender: "m" },
   { word: "Kapelan",      gender: "m" },
   { word: "Literat",      gender: "m" },
   { word: "Kronikarz",    gender: "m" },
   { word: "Znawca",       gender: "m" },
   { word: "Rzeczoznawca", gender: "m" },
-  { word: "Recenzent",    gender: "m" },   // Pratchett - Gildia i jej biurokracja
+  { word: "Recenzent",    gender: "m" },
   { word: "Sekretarz",    gender: "m" },
   { word: "Kontroler",    gender: "m" },
   { word: "Wizytator",    gender: "m" },
@@ -345,20 +543,19 @@ const second = [
   { word: "Hak",          gender: "m" },
   { word: "Gwóźdź",       gender: "m" },
   { word: "Węzeł",        gender: "m" },
-  { word: "Wyga",       gender: "m" },
-  { word: "Łotr",        gender: "m" },
+  { word: "Wyga",         gender: "m" },
+  { word: "Łotr",         gender: "m" },
   { word: "Chytrus",      gender: "m" },
-  { word: "Kolec",    gender: "m" },
+  { word: "Kolec",        gender: "m" },
   { word: "Lizus",        gender: "m" },
-  { word: "Mąciwoda",  gender: "m" },
+  { word: "Mąciwoda",     gender: "m" },
   { word: "Krętacz",      gender: "m" },
   { word: "Łajza",        gender: "m" },
   { word: "Szkodnik",     gender: "m" },
-  // rodzaj żeński
   { word: "Mgła",         gender: "f" },
   { word: "Szczelina",    gender: "f" },
   { word: "Rysa",         gender: "f" },
-  { word: "Szrama",       gender: "f" },   // wersja żeńska obok phrase
+  { word: "Szrama",       gender: "f" },
   { word: "Łuska",        gender: "f" },
   { word: "Sieć",         gender: "f" },
   { word: "Kłódka",       gender: "f" },
@@ -366,12 +563,12 @@ const second = [
   { word: "Norka",        gender: "f" },
   { word: "Sarna",        gender: "f" },
   { word: "Jaszczurka",   gender: "f" },
-  { word: "Szparka",      gender: "f" },   // szczelina w murze — złodziejskie
+  { word: "Szparka",      gender: "f" },
   { word: "Klamra",       gender: "f" },
-  { word: "Szubienica",   gender: "f" },   // Gothic - ciemny humor
+  { word: "Szubienica",   gender: "f" },
   { word: "Czaszka",      gender: "f" },
   { word: "Ruina",        gender: "f" },
-  { word: "Przekupka",    gender: "f" },   // ironicznie jako przydomek
+  { word: "Przekupka",    gender: "f" },
   { word: "Szeptucha",    gender: "f" },
   { word: "Znachorka",    gender: "f" },
   { word: "Posłanka",     gender: "f" },
@@ -393,10 +590,9 @@ const second = [
   { word: "Pułapka",      gender: "f" },
   { word: "Zagadka",      gender: "f" },
   { word: "Plotka",       gender: "f" },
-  // jednowyrazowe przydomki (bez przymiotnika) — styl Gothic/obóz
   { word: "Krzywy",           gender: "phrase" },
   { word: "Niekompletny",     gender: "phrase" },
-  { word: "Bezuszy",          gender: "phrase" },  // jak Beznos ale ucho
+  { word: "Bezuszy",          gender: "phrase" },
   { word: "Złamany",          gender: "phrase" },
   { word: "Spóźniony",        gender: "phrase" },
   { word: "Zaspany",          gender: "phrase" },
@@ -404,50 +600,49 @@ const second = [
   { word: "Poparzony",        gender: "phrase" },
   { word: "Posiniaczony",     gender: "phrase" },
   { word: "Podrapany",        gender: "phrase" },
-  { word: "Bezbuty",          gender: "phrase" },   // Gothic - praktyczny detal
+  { word: "Bezbuty",          gender: "phrase" },
   { word: "Naćpany",          gender: "phrase" },
-  { word: "Trzeźwy",          gender: "phrase" },   // ironia — w tym towarzystwie to wada
-  { word: "Wstrzemięźliwy",   gender: "phrase" },   // Pratchett - absurd
-  { word: "Porządny",         gender: "phrase" },   // "Porządny" wśród złodziei = podejrzany
+  { word: "Trzeźwy",          gender: "phrase" },
+  { word: "Wstrzemięźliwy",   gender: "phrase" },
+  { word: "Porządny",         gender: "phrase" },
   { word: "Szanowny",         gender: "phrase" },
   { word: "Grzeczny",         gender: "phrase" },
-  { word: "Uczciwy",          gender: "phrase" },   // największa obelga w Gildii
+  { word: "Uczciwy",          gender: "phrase" },
   { word: "Dobroczynny",      gender: "phrase" },
   { word: "Weteran",          gender: "phrase" },
-  { word: "Emeryt",           gender: "phrase" },   // "emeryt" w złodziejskim rzemiośle
+  { word: "Emeryt",           gender: "phrase" },
   { word: "Debiutant",        gender: "phrase" },
-  { word: "Stażysta",         gender: "phrase" },   // Lamora - hierarchia Gildii
+  { word: "Stażysta",         gender: "phrase" },
   { word: "Praktykant",       gender: "phrase" },
-  { word: "Rączka",       gender: "phrase" },
-  { word: "Zły",          gender: "phrase" },
-  { word: "Łysy",         gender: "phrase" },
-  { word: "Garbaty",      gender: "phrase" },
-  { word: "Bezpalcy",     gender: "phrase" },
-  { word: "Beznos",       gender: "phrase" },
-  { word: "Szrama",       gender: "phrase" },
-  { word: "Kikut",        gender: "phrase" },
-  { word: "Blizna",       gender: "phrase" },
-  { word: "Cienias",      gender: "phrase" },
-  { word: "Tłuścioch",    gender: "phrase" },
-  { word: "Kościotrup",   gender: "phrase" },
-  { word: "Ślamazara",    gender: "phrase" },
-  { word: "Żółtodziób",   gender: "phrase" },
-  { word: "Leworęki",   gender: "phrase" },
-  { word: "Praworęki",  gender: "phrase" },
-  { word: "Bezgłowy",     gender: "phrase" },
-  { word: "Beksa",        gender: "phrase" },
-  { word: "Gaduła",       gender: "phrase" },
-  { word: "Milczek",      gender: "phrase" },
-  { word: "Śpioch",       gender: "phrase" },
-  { word: "Żarłok",       gender: "phrase" },
-  { word: "Moczydziób",        gender: "phrase" },
-  { word: "Szczęściarz",  gender: "phrase" },
-  { word: "Pechowiec",    gender: "phrase" },
-  // zawodowe frazy
+  { word: "Rączka",           gender: "phrase" },
+  { word: "Zły",              gender: "phrase" },
+  { word: "Łysy",             gender: "phrase" },
+  { word: "Garbaty",          gender: "phrase" },
+  { word: "Bezpalcy",         gender: "phrase" },
+  { word: "Beznos",           gender: "phrase" },
+  { word: "Szrama",           gender: "phrase" },
+  { word: "Kikut",            gender: "phrase" },
+  { word: "Blizna",           gender: "phrase" },
+  { word: "Cienias",          gender: "phrase" },
+  { word: "Tłuścioch",        gender: "phrase" },
+  { word: "Kościotrup",       gender: "phrase" },
+  { word: "Ślamazara",        gender: "phrase" },
+  { word: "Żółtodziób",       gender: "phrase" },
+  { word: "Leworęki",         gender: "phrase" },
+  { word: "Praworęki",        gender: "phrase" },
+  { word: "Bezgłowy",         gender: "phrase" },
+  { word: "Beksa",            gender: "phrase" },
+  { word: "Gaduła",           gender: "phrase" },
+  { word: "Milczek",          gender: "phrase" },
+  { word: "Śpioch",           gender: "phrase" },
+  { word: "Żarłok",           gender: "phrase" },
+  { word: "Moczydziób",       gender: "phrase" },
+  { word: "Szczęściarz",      gender: "phrase" },
+  { word: "Pechowiec",        gender: "phrase" },
   { word: "Licencjonowany Złodziej (Licencja Wygasła)",               gender: "phrase" },
   { word: "Członek Gildii w Dobrej Wierze",                          gender: "phrase" },
   { word: "Były Członek Gildii z Przyczyn Proceduralnych",           gender: "phrase" },
-  { word: "Niezależny Specjalista od Cudzej Własności",              gender: "phrase" },
+  { word: "Niezależny Specjalista od Cudzej Własności",               gender: "phrase" },
   { word: "Doradca ds. Nieautoryzowanych Wejść",                     gender: "phrase" },
   { word: "Technik ds. Mechanizmów Zamykających",                    gender: "phrase" },
   { word: "Analityk Nocnego Ruchu Towarowego",                       gender: "phrase" },
@@ -457,9 +652,9 @@ const second = [
   { word: "Specjalista od Optymalizacji Cudzego Magazynu",           gender: "phrase" },
   { word: "Zewnętrzny Audytor Domowego Bezpieczeństwa",              gender: "phrase" },
   { word: "Niezapowiedziany Inspektor Sanitarny",                    gender: "phrase" },
-  { word: "Konsultant Ubezpieczeniowy (Strona Roszczeniowa)",        gender: "phrase" },
+  { word: "Konsultant Ubezpieczeniowy (Strona Roszczeniowa)",         gender: "phrase" },
   { word: "Główny Likwidator ds. Nadmiaru Dóbr",                     gender: "phrase" },
-  { word: "Wcześniejszy Właściciel Tego Przedmiotu",                 gender: "phrase" },
+  { word: "Wcześniejszy Właściciel Tego Przedmiotu",                  gender: "phrase" },
   { word: "Jedyny Znający Drugie Wyjście",                           gender: "phrase" },
   { word: "Człowiek na Dachu (Zawodowo)",                            gender: "phrase" },
   { word: "Drugi od Prawej w Tamtej Sprawie",                        gender: "phrase" },
@@ -472,7 +667,7 @@ const second = [
   { word: "Niezależny Doradca Finansowy",             gender: "phrase" },
   { word: "Zarządca Cudzych Aktywów",                 gender: "phrase" },
   { word: "Konsultant ds. Przeniesień Majątkowych",   gender: "phrase" },
-  { word: "Specjalista od Nieplanowanych Transferów", gender: "phrase" },
+  { word: "Specjalista od Nieplanowanych Transferów",  gender: "phrase" },
   { word: "Ekspert od Cudzych Zamków",                gender: "phrase" },
   { word: "Doradca ds. Nocnych Wizyt",                gender: "phrase" },
   { word: "Audytor Cudzych Skarbców",                 gender: "phrase" },
@@ -484,6 +679,7 @@ const second = [
   { word: "Ostatni Znający Szyfr",                    gender: "phrase" },
   { word: "Trzeci od Lewej",                          gender: "phrase" },
 ];
+
 const firstByGender = {
   m: [
     "Krzywy", "Złamany", "Spóźniony", "Zaspany", "Zmoczony",
@@ -574,7 +770,7 @@ const flaws = [
 ];
 
 const gearPool = [
- "Licencja Gildii na działalność nocną (dział prawny kwestionuje jej autentyczność)",
+  "Licencja Gildii na działalność nocną (dział prawny kwestionuje jej autentyczność)",
   "Pieczęć urzędowa wyryta w ziemniaku (zaskakująco skuteczna)",
   "Certyfikat ukończenia kursu 'Niewidoczność dla Początkujących' (ocena: dostateczny)",
   "Mundur straży miejskiej — zły rozmiar, właściwy kolor",
@@ -603,7 +799,7 @@ const gearPool = [
   "Moneta z dwoma orłami (do rzutów, gdzie wynik musi być właściwy)",
   "Zegarek kieszonkowy działający idealnie — w innej strefie czasowej",
   "Peleryna strażnika miejskiego, z plamy na plecach wytłumaczalne jako 'atrament'",
-  "Mały słoik z napisem 'Trucizna' wypełniony dżemem — odstraszający skutecznie", 
+  "Mały słoik z napisem 'Trucizna' wypełniony dżemem — odstraszający skutecznie",
   "Wytrych z wyrytą dedykacją od poprzedniego właściciela",
   "Lina o długości dokładnie o trzy stopy za krótkiej",
   "Latarnia z wyczerpującym się olejem (zawsze w połowie drogi)",
@@ -728,38 +924,248 @@ const statColors = {
   "Zmysł":    "#eea65f",
 };
 
+const raceDescriptions = {
+  "Normik (człowiek)": "Dominująca rasa w mieście — adaptacyjna, wszechstronna i przeciętna we wszystkim, co czyni ją nieprzewidywalną. Gildia rekrutuje ich najchętniej, bo można ich wyprzeć się bez komplikacji dyplomatycznych.",
+  "half": "Coś między. Dokładnie ile czego — to już kwestia nastroju i towarzystwa. Zazwyczaj odziedziczyło wady obu stron i zalety żadnej, co bywa zaskakująco użyteczne w zawodach wymagających elastyczności moralnej.",
+  "Szczurok": "Potomkowie eksperymentu alchemicznego który poszedł 'dobrze' w złym sensie. Doskonali w kanałach, ciasnych korytarzach i sytuacjach wymagających znikania. Gildia traktuje ich z szacunkiem — i trzyma z dala od kuchni.",
+  "Orkoblin": "Hybryda której nikt nie zamawiał. Za duży żeby być niezauważonym, za sprytny żeby był tylko mięśniakiem. Niedoceniany przez wszystkich, co bywa jego największą przewagą taktyczną.",
+  "custom": "",
+};
+
+const allTricks = [
+  { group: "Chyżość", stat: "Ciało", tricks: [
+    { name: "Dach to Droga", desc: "Poruszasz się po dachach jak inni po ulicach. Nie wykonujesz testów Wspinaczki na budynkach do 3 pięter." },
+    { name: "Drugie Tchnienie", desc: "Raz na sesję możesz zignorować efekty zmęczenia i działać normalnie przez kolejną scenę." },
+    { name: "Mokry Szczur", desc: "W wodzie czujesz się jak w domu. Bonus +2 do wszystkich testów w środowisku wodnym." },
+  ]},
+  { group: "Budowa", stat: "Ciało", tricks: [
+    { name: "Żywa Taran", desc: "Możesz wyważyć drzwi bez testu. Drzwi wzmocnione wymagają testu, ale z bonusem +3." },
+    { name: "Twardy Kark", desc: "Pierwsza rana w każdej walce jest o 1 stopień lżejsza." },
+    { name: "Rzut Ostateczny", desc: "Możesz rzucić dowolnym przedmiotem jako atak z pełnym bonusem Rzucania. Tak, sojusznikiem też." },
+  ]},
+  { group: "Gibkość", stat: "Ciało", tricks: [
+    { name: "Cień w Cieniu", desc: "Gdy się skradasz w ciemności, przeciwnik musi zdać test żeby Cię wykryć (zamiast Ty zdawać test skradania)." },
+    { name: "Koci Refleks", desc: "Spadając, automatycznie lądujesz na nogach. Obrażenia od upadku zmniejszone o połowę." },
+    { name: "Wymknij się", desc: "Raz na sesję automatycznie uciekasz z fizycznego schwytania (pęta, chwyt, kajdanki)." },
+  ]},
+  { group: "Finezja", stat: "Zdolność", tricks: [
+    { name: "Złote Palce", desc: "Otwieranie prostych zamków bez narzędzi. Złożone zamki z improwizowanymi narzędziami bez kary." },
+    { name: "Precyzyjny Rzut", desc: "Rzucasz nożem z taką precyzją, że możesz trafić w konkretny przedmiot (sznur, pasek, klamkę) bez testu." },
+    { name: "Prestidigitacja", desc: "Możesz ukryć lub podmienić mały przedmiot w rękach innej osoby bez wykrycia." },
+  ]},
+  { group: "Reakcja", stat: "Zdolność", tricks: [
+    { name: "Zawsze Pierwszy", desc: "W walce wręcz zawsze działasz przed przeciwnikiem, niezależnie od inicjatywy." },
+    { name: "Ripostuj!", desc: "Gdy przeciwnik pudłuje w walce wręcz, dostajesz darmowy kontratak." },
+    { name: "Odruch Przetrwania", desc: "Raz na sesję możesz uniknąć jednego ataku, nawet jeśli go nie widzisz." },
+  ]},
+  { group: "Precyzja", stat: "Zdolność", tricks: [
+    { name: "Czysta Robota", desc: "Ofiara Twojej kradzieży kieszonkowej zauważy brak dopiero następnego dnia." },
+    { name: "Mechaniczna Intuicja", desc: "Rozumiesz mechanizm zamka/pułapki po krótkim zbadaniu. GM musi ujawnić jedną wskazówkę." },
+    { name: "Cechy Szczególne Brak", desc: "Nie zostawiasz śladów. Żadnych. Test tropienia Cię ma karę -3." },
+  ]},
+  { group: "Hart", stat: "Psycha", tricks: [
+    { name: "Reputacja Wchodzi Pierwsza", desc: "Gdy Twoja tożsamość jest znana, przeciwnicy o niższej Woli muszą zdać test, by zaatakować." },
+    { name: "Zimna Krew", desc: "Jesteś odporny na zastraszanie i tortury. Automatycznie zdajesz testy Woli przeciw strachowi." },
+    { name: "Twarde Słowo", desc: "Raz na sesję możesz zakończyć konfrontację słowami zamiast walką." },
+  ]},
+  { group: "Influencja", stat: "Psycha", tricks: [
+    { name: "Tysiąc Twarzy", desc: "Możesz wiarygodnie udawać członka dowolnej profesji. Test tylko przy szczegółowym sprawdzaniu." },
+    { name: "Język Srebro", desc: "Raz na sesję możesz przekonać jedną osobę do jednej nieprawdy, która jest oczywiście absurdalna." },
+    { name: "Czytanie Ludzi", desc: "Po 5 minutach rozmowy GM musi ujawnić jedną motywację lub sekret rozmówcy." },
+  ]},
+  { group: "Wola", stat: "Psycha", tricks: [
+    { name: "Nie Dzisiaj", desc: "Raz na sesję możesz zignorować efekt nadprzyrodzonego strachu lub klątwy na jedną scenę." },
+    { name: "Ostatni Stojący", desc: "Gdy HP spadnie do 0, możesz działać jeszcze jedną turę zanim padniesz." },
+    { name: "Żelazna Determinacja", desc: "Raz na sesję możesz powtórzyć dowolny nieudany test Woli." },
+  ]},
+  { group: "Teoria", stat: "Rozum", tricks: [
+    { name: "Elementarne", desc: "Raz na sesję możesz poprosić GM o jedną logiczną dedukcję na podstawie dostępnych poszlak." },
+    { name: "Kalkulacja Ryzyka", desc: "Przed akcją możesz zapytać GM o szanse powodzenia (niskie/średnie/wysokie)." },
+    { name: "Pamięć Absolutna", desc: "Możesz zapytać GM o dowolny szczegół, który Twoja postać widziała lub słyszała wcześniej w sesji." },
+  ]},
+  { group: "Praktyka", stat: "Rozum", tricks: [
+    { name: "Improwizacja", desc: "Z dostępnych materiałów możesz skonstruować proste narzędzie lub pułapkę bez testu." },
+    { name: "Alchemiczna Niespodzianka", desc: "Nosisz ze sobą 1k3 losowych mikstur. Na początku sesji losuj efekty." },
+    { name: "Złota Rączka", desc: "Możesz naprawić dowolny uszkodzony przedmiot, ale naprawiony zyska nową 'cechę' (GM decyduje)." },
+  ]},
+  { group: "Percepcja", stat: "Zmysł", tricks: [
+    { name: "Szósty Zmysł", desc: "GM ostrzega Cię o zasadzkach i pułapkach automatycznie (ale nie mówi jakich)." },
+    { name: "Sokolie Oko", desc: "Widzisz drobne szczegóły na dystansie. Bonus +2 do wypatrywania." },
+    { name: "Nos Jak Pies", desc: "Możesz tropić po zapachu. W zamkniętych pomieszczeniach wyczuwasz obecność ukrytych osób." },
+  ]},
+  { group: "Uduchowienie", stat: "Zmysł", tricks: [
+    { name: "Rozmówca Umarłych", desc: "Możesz zadać jedno pytanie duchowi lub ciału. Odpowiedź może być kryptyczna." },
+    { name: "Dreszcz Ostrzegawczy", desc: "Wyczuwasz nadprzyrodzone zagrożenie. GM musi ostrzec Cię o obecności magii/klątwy." },
+    { name: "Medium", desc: "Raz na sesję możesz wejść w trans i uzyskać wizję dotyczącą bieżącego problemu." },
+  ]},
+  { group: "Przetrwanie", stat: "Zmysł", tricks: [
+    { name: "Nigdy Nie Zgubiony", desc: "Nie możesz się zgubić. Nawet w labiryncie, kanałach, czy lesie nocą." },
+    { name: "Kucharz Polowy", desc: "Z byle czego przygotujesz posiłek. Dobrze nakarmiona drużyna dostaje +1 do następnego testu." },
+    { name: "Łowca", desc: "Potrafisz tropić i polować efektywnie. Nigdy nie grozi Ci głód w dziczy." },
+  ]},
+];
+
+// =====================================================================
+// STATE
+// =====================================================================
 const skillLevels = {};
 const customEntries = {};
+let hasUnsavedChanges = false;
+let viewPassword = null;
+let createInitialized = false;
 
-function rollDice() {
-  return Math.floor(Math.random() * 6) + 1;
+// =====================================================================
+// DYNAMIC LIST COMPONENT
+// =====================================================================
+const dlState = {};
+
+function dlInit(id, items, options) {
+  dlState[id] = { items, options: options || {} };
+  dlRender(id);
 }
 
-function stat() {
-  return rollDice() + rollDice() + 4;
+function dlRender(id) {
+  const state = dlState[id];
+  if (!state) return;
+  const container = document.getElementById(id);
+  if (!container) return;
+  const { items, options } = state;
+  const { placeholder, addLabel, readonly, trackChanges } = options;
+  const onChange = trackChanges ? 'markUnsaved();' : '';
+  let html = '';
+  items.forEach((item, i) => {
+    if (readonly) {
+      html += '<div class="view-field" style="margin-bottom:6px;">' + (esc(item) || '<span style="color:#555;">—</span>') + '</div>';
+    } else {
+      html += '<div class="dynamic-item">' +
+        '<textarea rows="2" oninput="dlState[\'' + id + '\'].items[' + i + ']=this.value;autoGrow(this);' + onChange + '" placeholder="' + esc(placeholder || '') + '">' + esc(item) + '</textarea>' +
+        '<button class="dynamic-remove" onclick="dlRemove(\'' + id + '\',' + i + ')">✕</button>' +
+        '</div>';
+    }
+  });
+  if (!readonly) {
+    html += '<button class="dynamic-add" onclick="dlAdd(\'' + id + '\')">' + (addLabel || '+ Dodaj') + '</button>';
+  }
+  container.innerHTML = html;
+  container.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
 }
 
-function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+function dlAdd(id) {
+  dlState[id].items.push('');
+  dlRender(id);
+  if (dlState[id].options.trackChanges) markUnsaved();
 }
 
-function pickUnique(arr, count) {
-  return [...arr].sort(() => Math.random() - 0.5).slice(0, count);
+function dlRemove(id, index) {
+  dlState[id].items.splice(index, 1);
+  if (dlState[id].items.length === 0) dlState[id].items.push('');
+  dlRender(id);
+  if (dlState[id].options.trackChanges) markUnsaved();
 }
 
-function levelCost(level) {
-  return (level * (level + 1)) / 2;
+function dlGetItems(id) {
+  return (dlState[id]?.items || []).filter(s => s && s.trim());
 }
 
-function getSpent() {
-  return Object.values(skillLevels).reduce((sum, lvl) => sum + levelCost(lvl), 0);
+// =====================================================================
+// UTILITY
+// =====================================================================
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function rollDice() { return Math.floor(Math.random() * 6) + 1; }
+function stat() { return rollDice() + rollDice() + 4; }
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function pickUnique(arr, count) { return [...arr].sort(() => Math.random() - 0.5).slice(0, count); }
+
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+function autoGrowById(id) {
+  const el = document.getElementById(id);
+  if (el) autoGrow(el);
+}
+
+function levelCost(level) { return (level * (level + 1)) / 2; }
+function getSpent() { return Object.values(skillLevels).reduce((sum, lvl) => sum + levelCost(lvl), 0); }
+
+function tryParseJSON(str) {
+  if (!str || str === '—') return null;
+  try {
+    const p = JSON.parse(str);
+    return Array.isArray(p) ? p : null;
+  } catch { return null; }
+}
+
+function generateClientPassword() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let pw = '';
+  for (let i = 0; i < 6; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+  return pw;
+}
+
+function markUnsaved() { hasUnsavedChanges = true; }
+
+// =====================================================================
+// ROUTING
+// =====================================================================
+function navigate() {
+  const hash = (location.hash || '#home').slice(1);
+  ['page-home','page-create','page-view','page-tricks'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+
+  if (hash === 'home' || hash === '') {
+    document.getElementById('page-home').style.display = 'block';
+  } else if (hash === 'create') {
+    document.getElementById('page-create').style.display = 'block';
+    initCreatePage();
+  } else if (hash.startsWith('view')) {
+    document.getElementById('page-view').style.display = 'block';
+    const parts = hash.split('/');
+    if (parts[1]) {
+      document.getElementById('view-password-input').value = parts[1];
+      loadCard();
+    } else {
+      document.getElementById('view-login').style.display = 'block';
+      document.getElementById('view-card').style.display = 'none';
+    }
+  } else if (hash === 'tricks') {
+    document.getElementById('page-tricks').style.display = 'block';
+    renderTricksPage();
+  } else {
+    document.getElementById('page-home').style.display = 'block';
+  }
+}
+
+window.addEventListener('hashchange', navigate);
+window.addEventListener('beforeunload', function(e) {
+  if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// =====================================================================
+// CREATE PAGE INIT
+// =====================================================================
+function initCreatePage() {
+  dlInit('create-gear', dlState['create-gear']?.items || ['', '', ''], { placeholder: 'Przedmiot ekwipunku...', addLabel: '+ Dodaj przedmiot' });
+  dlInit('create-weapons', dlState['create-weapons']?.items || [''], { placeholder: 'Broń + inskrypcja...', addLabel: '+ Dodaj broń' });
+  dlInit('create-notes', dlState['create-notes']?.items || [], { placeholder: 'Notatka...', addLabel: '+ Dodaj notatkę' });
+  dlInit('create-tricks', dlState['create-tricks']?.items || [], { placeholder: 'Nazwa sztuczki...', addLabel: '+ Dodaj sztuczkę' });
+  renderSkills();
+}
+
+// =====================================================================
+// SKILLS (CREATE MODE)
+// =====================================================================
 function updatePointsDisplay() {
   const remaining = SKILL_POINTS_TOTAL - getSpent();
-  const el = document.getElementById("pts-remaining");
+  const el = document.getElementById('pts-remaining');
+  if (!el) return;
   el.textContent = remaining;
-  el.style.color = remaining < 0 ? "#e07070" : "#ffd700";
+  el.style.color = remaining < 0 ? '#e07070' : '#ffd700';
 }
 
 function changeLevel(key, delta) {
@@ -773,12 +1179,12 @@ function changeLevel(key, delta) {
 }
 
 function addCustomSkill(key) {
-  const input = document.getElementById("custom-input-" + key);
+  const input = document.getElementById('custom-input-' + key);
   const val = input.value.trim();
   if (!val) return;
   if (!customEntries[key]) customEntries[key] = [];
   customEntries[key].push(val);
-  input.value = "";
+  input.value = '';
   renderSkills();
 }
 
@@ -788,363 +1194,50 @@ function removeCustomSkill(key, index) {
 }
 
 function renderSkills() {
-  const container = document.getElementById("skills-container");
+  const container = document.getElementById('skills-container');
+  if (!container) return;
   const byGroup = {};
   skillGroups.forEach(g => {
     if (!byGroup[g.stat]) byGroup[g.stat] = [];
     byGroup[g.stat].push(g);
   });
-
-  let html = "";
+  let html = '';
   for (const [statName, groups] of Object.entries(byGroup)) {
-    const color = statColors[statName] || "#888";
-    html += `<div style="margin-bottom:14px;">
-      <div style="font-size:13px;color:${color};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ${color}44;padding-bottom:2px;text-align:center;">${statName}</div>
-      <div class="skills-grid">`;
-
+    const color = statColors[statName] || '#888';
+    html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;">' + statName + '</div><div class="skills-grid">';
     groups.forEach(g => {
       const key = g.name;
       const level = skillLevels[key] || 0;
       const cost = levelCost(level);
-      const customSkills = g.custom ? (customEntries[key] || []) : [];
-      const allSkills = [...g.skills, ...customSkills];
-
+      const cs = g.custom ? (customEntries[key] || []) : [];
+      const allSkills = [...g.skills, ...cs];
       const skillsHtml = allSkills.length > 0
         ? allSkills.map((s, i) => {
             if (i >= g.skills.length) {
-              return `<span class="skill-tag" style="color:#999;">${s}<span onclick="removeCustomSkill('${key}',${i - g.skills.length})" style="color:#555;cursor:pointer;margin-left:3px;font-size:10px;">✕</span></span>`;
+              return '<span class="skill-tag" style="color:#999;">' + s + '<span onclick="removeCustomSkill(\'' + key + '\',' + (i - g.skills.length) + ')" style="color:#555;cursor:pointer;margin-left:3px;font-size:10px;">✕</span></span>';
             }
-            return `<span class="skill-tag">${s}</span>`;
-          }).join("")
-        : `<span style="color:#444;font-style:italic;font-size:11px;">brak</span>`;
-
-      const customInputHtml = g.custom ? `
-        <div style="display:flex;gap:4px;margin-top:6px;">
-          <input id="custom-input-${key}" placeholder="Dodaj umiejętność..."
-            style="flex:1;font-size:11px;padding:3px 6px;background:#1a1a1a;color:#ccc;border:1px solid #444;border-radius:4px;font-family:serif;">
-          <button onclick="addCustomSkill('${key}')"
-            style="padding:2px 8px;font-size:13px;background:#444;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
-        </div>` : "";
-
-      html += `<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">
-        ${g.icon ? `<div style="font-size:20px;line-height:1;margin-bottom:4px;">${g.icon}</div>` : ""}
-        <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${key}</div>
-        <div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">${skillsHtml}</div>
-        ${customInputHtml}
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:6px;">
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button onclick="changeLevel('${key}',-1)"
-              style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">−</button>
-            <span style="min-width:20px;text-align:center;color:${level > 0 ? "#ffd700" : "#555"};font-size:16px;font-weight:bold;">${level}</span>
-            <button onclick="changeLevel('${key}',1)"
-              style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;">+</button>
-          </div>
-          ${level > 0 ? `<span style="font-size:11px;color:#555;">${cost} pkt</span>` : ""}
-        </div>
-      </div>`;
+            return '<span class="skill-tag">' + s + '</span>';
+          }).join('')
+        : '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
+      const customInputHtml = g.custom ? '<div style="display:flex;gap:4px;margin-top:6px;"><input id="custom-input-' + key + '" placeholder="Dodaj umiejętność..." style="flex:1;font-size:11px;padding:3px 6px;background:#1a1a1a;color:#ccc;border:1px solid #444;border-radius:4px;font-family:serif;"><button onclick="addCustomSkill(\'' + key + '\')" style="padding:2px 8px;font-size:13px;background:#444;border:none;border-radius:4px;color:white;cursor:pointer;margin-top:0;">+</button></div>' : '';
+      html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
+        (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
+        '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + key + '</div>' +
+        '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
+        customInputHtml +
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:6px;">' +
+          '<div style="display:flex;align-items:center;gap:6px;">' +
+            '<button onclick="changeLevel(\'' + key + '\',-1)" style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;margin-top:0;">−</button>' +
+            '<span style="min-width:20px;text-align:center;color:' + (level > 0 ? '#ffd700' : '#555') + ';font-size:16px;font-weight:bold;">' + level + '</span>' +
+            '<button onclick="changeLevel(\'' + key + '\',1)" style="width:24px;height:24px;padding:0;font-size:16px;line-height:1;background:#333;border:none;border-radius:4px;color:white;cursor:pointer;margin-top:0;">+</button>' +
+          '</div>' +
+          (level > 0 ? '<span style="font-size:11px;color:#555;">' + cost + ' pkt</span>' : '') +
+        '</div></div>';
     });
-
-    html += `</div></div>`;
+    html += '</div></div>';
   }
-
   container.innerHTML = html;
   updatePointsDisplay();
-}
-
-const raceDescriptions = {
-  "Normik (człowiek)": "Dominująca rasa w mieście — adaptacyjna, wszechstronna i przeciętna we wszystkim, co czyni ją nieprzewidywalną. Gildia rekrutuje ich najchętniej, bo można ich wyprzeć się bez komplikacji dyplomatycznych.",
-  "half": "Coś między. Dokładnie ile czego — to już kwestia nastroju i towarzystwa. Zazwyczaj odziedziczyło wady obu stron i zalety żadnej, co bywa zaskakująco użyteczne w zawodach wymagających elastyczności moralnej.",
-  "Szczurok": "Potomkowie eksperymentu alchemicznego który poszedł 'dobrze' w złym sensie. Doskonali w kanałach, ciasnych korytarzach i sytuacjach wymagających znikania. Gildia traktuje ich z szacunkiem — i trzyma z dala od kuchni.",
-  "Orkoblin": "Hybryda której nikt nie zamawiał. Za duży żeby być niezauważonym, za sprytny żeby był tylko mięśniakiem. Niedoceniany przez wszystkich, co bywa jego największą przewagą taktyczną.",
-  "custom": "",
-};
-
-function autoGrow(el) {
-  el.style.height = "auto";
-  el.style.height = el.scrollHeight + "px";
-}
-
-function autoGrowById(id) {
-  const el = document.getElementById(id);
-  if (el) autoGrow(el);
-}
-
-function handleAttendance() {
-  const val = document.querySelector('input[name="attendance"]:checked')?.value;
-  const rpg = document.getElementById("rpg-section");
-  const submit = document.getElementById("submit-section");
-  if (val === "rpg") {
-    rpg.style.display = "block";
-    submit.style.display = "block";
-  } else if (val === "chill") {
-    rpg.style.display = "none";
-    submit.style.display = "block";
-  } else {
-    rpg.style.display = "none";
-    submit.style.display = "none";
-  }
-}
-
-function handleRaceChange() {
-  const val = document.getElementById("race").value;
-  document.getElementById("race-half-wrapper").style.display = val === "half" ? "block" : "none";
-  document.getElementById("race-custom-wrapper").style.display = val === "custom" ? "block" : "none";
-  const descEl = document.getElementById("race-desc");
-  const desc = raceDescriptions[val];
-  if (desc) {
-    descEl.textContent = desc;
-    descEl.style.display = "block";
-  } else {
-    descEl.style.display = "none";
-  }
-}
-
-function getRaceValue() {
-  const raceEl = document.getElementById("race");
-  if (!raceEl) return "—";
-  const val = raceEl.value;
-  if (val === "half") {
-    const half = document.getElementById("race-half-input").value.trim();
-    return half ? `Pół człowiek, pół ${half}` : "Pół człowiek, pół (nieokreślone)";
-  }
-  if (val === "custom") {
-    return document.getElementById("race-custom-input").value.trim() || "—";
-  }
-  return val || "—";
-}
-
-function generateName() {
-  const noun = second[Math.floor(Math.random() * second.length)];
-  let name;
-  if (noun.gender === "phrase") {
-    // frazy już mają wbudowany przymiotnik, nie doklejamy drugiego
-    name = noun.word;
-  } else {
-    const adjectiveList = firstByGender[noun.gender];
-    const adj = adjectiveList[Math.floor(Math.random() * adjectiveList.length)];
-    name = adj + " " + noun.word;
-  }
-  document.getElementById("nickname-wrapper").style.display = "block";
-  document.getElementById("nickname").value = name;
-  autoGrowById("nickname");
-}
-
-function startCooldown(btnId, msgId, durationMs, label) {
-  const btn = document.getElementById(btnId);
-  const msg = document.getElementById(msgId);
-  btn.disabled = true;
-  msg.style.display = "block";
-  if (cooldownIntervals[btnId]) clearInterval(cooldownIntervals[btnId]);
-  const since = Date.now();
-  cooldownIntervals[btnId] = setInterval(() => {
-    const remaining = durationMs - (Date.now() - since);
-    if (remaining <= 0) {
-      clearInterval(cooldownIntervals[btnId]);
-      btn.disabled = false;
-      msg.style.display = "none";
-    } else if (durationMs >= 60000) {
-      const m = Math.floor(remaining / 60000);
-      const s = Math.floor((remaining % 60000) / 1000);
-      msg.textContent = `${label} za: ${m}:${s.toString().padStart(2, "0")}`;
-    } else {
-      msg.textContent = `${label} za: ${Math.ceil(remaining / 1000)}s`;
-    }
-  }, 500);
-}
-
-function rollStats() {
-  document.getElementById("stats").innerHTML = statNames.map(name =>
-    `<div class="stat-row"><span>${name}</span><span class="stat-val">${stat()}</span></div>`
-  ).join("");
-  startCooldown("rollBtn", "cooldown-msg", COOLDOWN_5MIN, "Kości ostygną");
-}
-
-function rollFlaw() {
-  document.getElementById("flaw-input").value = pickRandom(flaws);
-  document.getElementById("flaw").style.display = "block";
-  autoGrowById("flaw-input");
-  startCooldown("flawBtn", "flaw-cooldown-msg", COOLDOWN_30SEC, "Wada ostygnie");
-}
-
-function rollLuck() {
-  const luck = Math.floor(Math.random() * 7);
-  const fame = Math.floor(Math.random() * 7);
-  const reputation = Math.floor(Math.random() * 41) - 20;
-
-  const repColor = reputation > 5 ? "#7ec87e" : reputation < -5 ? "#e07070" : "#aaa";
-
-  const repLabel = reputation >= 18 ? "— Gildia rozważa pomnik za życia"
-    : reputation >= 14 ? "— Święty patron złodziei"
-    : reputation >= 10 ? "— Słowo honoru coś znaczy"
-    : reputation >= 6  ? "— Umowy dotrzymuje. Zazwyczaj."
-    : reputation >= 2  ? "— Można mu zaufać w drobnych sprawach"
-    : reputation >= -1 ? "— Wszystko zależy od kwoty"
-    : reputation >= -5 ? "— Zależy co rozumiesz przez 'uczciwy'"
-    : reputation >= -9 ? "— Nie odwracaj się plecami"
-    : reputation >= -13? "— Własna matka liczy srebrne łyżki"
-    : reputation >= -17? "— Nawet złodzieje zamykają przed nim drzwi"
-    : "— Legenda hańby. Cytowany jako przestroga.";
-
-  const fameLabel = fame === 0 ? "— Nie istnieje w żadnym rejestrze"
-    : fame === 1 ? "— Kto taki?"
-    : fame === 2 ? "— Ta twarz skądś znajoma"
-    : fame === 3 ? "— Znany w kręgach"
-    : fame === 4 ? "— Szepczą o nim po tawernach"
-    : fame === 5 ? "— Opiewany w balladach"
-    : "— Chodząca legenda";
-
-  const luckLabel = luck === 0 ? "— No właśnie szczęścia brak."
-    : luck === 1 ? "— Coś mu wychodzi raz na jakiś czas"
-    : luck === 2 ? "— Nieprzypadkowo wciąż żyje"
-    : luck === 3 ? "— Monety lądują właściwą stroną"
-    : luck === 4 ? "— Bez szwanku od urodzenia"
-    : luck === 5 ? "— Podobno ma 7 żyć"
-    : "— To szczęście jest cięższe niż prawa fizyki";
-
-  document.getElementById("luck").style.display = "block";
-  document.getElementById("luck").innerHTML = `
-    <div class="stat-row">
-      <span>Szczęście</span>
-      <span class="stat-val" style="${luck === 0 ? "color:#e07070;" : ""}">${luck}<span style="color:#555;font-size:13px;">/6</span></span>
-      <span style="color:#555;font-size:12px;width:100%;margin-top:2px;">${luckLabel}</span>
-    </div>
-    <div class="stat-row">
-      <span>Sława</span>
-      <span class="stat-val" style="${fame === 0 ? "color:#e07070;" : ""}">${fame}<span style="color:#555;font-size:13px;">/6</span></span>
-      <span style="color:#555;font-size:12px;width:100%;margin-top:2px;">${fameLabel}</span>
-    </div>
-    <div class="stat-row">
-      <span>Reputacja</span>
-      <span class="stat-val" style="color:${repColor};">${reputation > 0 ? "+" : ""}${reputation}<span style="color:#555;font-size:13px;">/20</span></span>
-      <span style="color:#555;font-size:12px;width:100%;margin-top:2px;">${repLabel}</span>
-    </div>
-  `;
-  startCooldown("luckBtn", "luck-cooldown-msg", COOLDOWN_5MIN, "Losy ostygną");
-}
-
-function rollGear() {
-  const items = pickUnique(gearPool, 3);
-  ["gear1","gear2","gear3"].forEach((id, i) => {
-    document.getElementById(id).value = items[i];
-    autoGrowById(id);
-  });
-  startCooldown("gearBtn", "gear-cooldown-msg", COOLDOWN_30SEC, "Ekwipunek ostygnie");
-}
-
-function rollWeapon() {
-  document.getElementById("weapon-input").value = pickRandom(weaponPool);
-  document.getElementById("weapon-inscription").value = pickRandom(inscriptions);
-  autoGrowById("weapon-input");
-  autoGrowById("weapon-inscription");
-  startCooldown("weaponBtn", "weapon-cooldown-msg", COOLDOWN_30SEC, "Broń ostygnie");
-}
-
-function generatePrompt() {
-  const get = id => document.getElementById(id)?.value?.trim() || null;
-
-  const statEls = document.querySelectorAll("#stats .stat-val");
-  const statValues = [...statEls].map(el => el.textContent.replace(/\/\d+/, "").trim());
-  const luckEls = document.querySelectorAll("#luck .stat-val");
-  const luckValues = [...luckEls].map(el => el.textContent.replace("/6","").replace("/20","").trim());
-
-  const skillLines = skillGroups
-    .map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? `${g.name} (poziom ${lvl})` : null; })
-    .filter(Boolean).join(", ") || "brak";
-
-  const gear = [get("gear1"), get("gear2"), get("gear3")].filter(Boolean).join(", ") || "—";
-  const weapon = [get("weapon-input"), get("weapon-inscription") ? `inskrypcja: ${get("weapon-inscription")}` : null].filter(Boolean).join(", ") || "—";
-
-  const lines = [
-    `Jesteś narratorem mrocznej, lecz humorystycznej gry fabularnej w stylu Złodziei z Ankh-Morpork i Dżentelmenów Bastardów. Na podstawie poniższej karty postaci napisz krótką historię tej postaci — maksymalnie 3 zdania. Kim jest, skąd pochodzi, jak trafiła do Gildii i co ją wyróżnia. Styl: ciemny humor, ironiczny dystans, konkretne szczegóły. Nie używaj ogólników. Nie przekraczaj 3 zdań.`,
-    ``,
-    `Kilka słów o postaci albo interesujący fakt — kim była zanim została złodziejem? Jaki był twój największy skok? Jaka największa wpadka? Co ludzie myślą, gdy wchodzisz do pokoju?`,
-    ``,
-    `--- KARTA POSTACI ---`,
-    get("realname")  ? `Gracz: ${get("realname")}` : null,
-    get("name")      ? `Imię postaci: ${get("name")}` : null,
-    getRaceValue() !== "—" ? `Rasa: ${getRaceValue()}` : null,
-    get("nickname")  ? `Pseudonim w Gildii: ${get("nickname")}` : null,
-    luckValues[0]    ? `Szczęście: ${luckValues[0]}/6` : null,
-    luckValues[1]    ? `Sława: ${luckValues[1]}/6` : null,
-    luckValues[2]    ? `Reputacja: ${luckValues[2]}` : null,
-    statValues.length === 5
-      ? `Staty — Ciało: ${statValues[0]}, Zdolność: ${statValues[1]}, Psycha: ${statValues[2]}, Rozum: ${statValues[3]}, Zmysł: ${statValues[4]}`
-      : null,
-    skillLines !== "brak" ? `Umiejętności: ${skillLines}` : null,
-    get("flaw-input") ? `Wada: ${get("flaw-input")}` : null,
-    gear !== "—"      ? `Ekwipunek: ${gear}` : null,
-    weapon !== "—"    ? `Broń: ${weapon}` : null,
-    get("bio")        ? `Bio: ${get("bio")}` : null,
-  ].filter(Boolean).join("\n");
-
-  navigator.clipboard.writeText(lines).then(() => {
-    const msg = document.getElementById("prompt-msg");
-    msg.style.display = "block";
-    setTimeout(() => { msg.style.display = "none"; }, 4000);
-  });
-}
-
-function submitCard() {
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDCt14FwTzvpqabeZQbjfVTQMNYdPCFllW6dQRgJ_tXIa4g1xFzGw7XhZ5mcT6kLIw/exec";
-
-  const statEls = document.querySelectorAll("#stats .stat-val");
-  const statValues = [...statEls].map(el => parseInt(el.textContent));
-
-  const luckEls = document.querySelectorAll("#luck .stat-val");
-  const luckValues = [...luckEls].map(el => el.textContent.replace("/6","").replace("/20","").trim());
-
-  const skillLines = skillGroups
-    .map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? `${g.name}:${lvl}` : null; })
-    .filter(Boolean).join(", ") || "brak";
-
-  const params = new URLSearchParams({
-    attendance:    document.querySelector('input[name="attendance"]:checked')?.value === "rpg" ? "RPG" : "Chill",
-    realname:      document.getElementById("realname").value.trim() || "—",
-    name:          document.getElementById("name").value.trim() || "—",
-    nickname:      document.getElementById("nickname").value.trim() || "—",
-    race:          getRaceValue(),
-    luck:          luckValues[0] || "—",
-    fame:          luckValues[1] || "—",
-    reputation:    luckValues[2] || "—",
-    stat_cialo:    statValues[0] || "—",
-    stat_zdolnosc: statValues[1] || "—",
-    stat_psycha:   statValues[2] || "—",
-    stat_rozum:    statValues[3] || "—",
-    stat_zmysl:    statValues[4] || "—",
-    skills:        skillLines,
-    flaw:          document.getElementById("flaw-input").value.trim() || "—",
-    bio:           document.getElementById("bio").value.trim() || "—",
-    gear:          [
-                     document.getElementById("gear1").value.trim(),
-                     document.getElementById("gear2").value.trim(),
-                     document.getElementById("gear3").value.trim(),
-                   ].filter(Boolean).join(" | ") || "—",
-    weapon:        [
-                     document.getElementById("weapon-input").value.trim(),
-                     document.getElementById("weapon-inscription").value.trim(),
-                   ].filter(Boolean).join(" | ") || "—",
-  });
-
-  const btn = document.getElementById("submitBtn");
-  btn.disabled = true;
-  btn.textContent = "Wysyłanie...";
-
-  fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" })
-    .then(() => {
-      btn.textContent = "✓ Wysłano do Mistrza Kluczy";
-      btn.style.background = "#2d6a2d";
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.textContent = "✉ Wyślij zgłoszenie do Mistrza Kluczy";
-        btn.style.background = "#7a5c10";
-      }, 4000);
-    })
-    .catch(() => {
-      btn.disabled = false;
-      btn.textContent = "✉ Wyślij zgłoszenie do Mistrza Kluczy";
-      btn.style.background = "#7a5c10";
-      alert("Coś poszło nie tak. Spróbuj ponownie.");
-    });
 }
 
 function randomizeSkills() {
@@ -1175,7 +1268,504 @@ function resetSkills() {
   renderSkills();
 }
 
-renderSkills();
-  </script>
+// =====================================================================
+// SKILLS (VIEW MODE - READ-ONLY)
+// =====================================================================
+function renderSkillsView(skillsStr, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const viewLevels = {};
+  if (skillsStr && skillsStr !== 'brak') {
+    skillsStr.split(',').forEach(part => {
+      const [name, lvl] = part.trim().split(':');
+      if (name && lvl) viewLevels[name.trim()] = parseInt(lvl);
+    });
+  }
+  const byGroup = {};
+  skillGroups.forEach(g => {
+    if (!byGroup[g.stat]) byGroup[g.stat] = [];
+    byGroup[g.stat].push(g);
+  });
+  let html = '';
+  for (const [statName, groups] of Object.entries(byGroup)) {
+    const color = statColors[statName] || '#888';
+    html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;">' + statName + '</div><div class="skills-grid">';
+    groups.forEach(g => {
+      const level = viewLevels[g.name] || 0;
+      const skillsHtml = g.skills.length > 0
+        ? g.skills.map(s => '<span class="skill-tag">' + s + '</span>').join('')
+        : '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
+      html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
+        (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
+        '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
+        '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
+        '<div style="text-align:center;margin-top:6px;"><span style="color:' + (level > 0 ? '#ffd700' : '#555') + ';font-size:16px;font-weight:bold;">' + level + '</span></div>' +
+        '</div>';
+    });
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+// =====================================================================
+// CREATE MODE FUNCTIONS
+// =====================================================================
+function handleAttendance() {
+  const val = document.querySelector('input[name="attendance"]:checked')?.value;
+  document.getElementById('rpg-section').style.display = val === 'rpg' ? 'block' : 'none';
+  document.getElementById('submit-section').style.display = (val === 'rpg' || val === 'chill') ? 'block' : 'none';
+}
+
+function handleRaceChange() {
+  const val = document.getElementById('race').value;
+  document.getElementById('race-half-wrapper').style.display = val === 'half' ? 'block' : 'none';
+  document.getElementById('race-custom-wrapper').style.display = val === 'custom' ? 'block' : 'none';
+  const descEl = document.getElementById('race-desc');
+  const desc = raceDescriptions[val];
+  if (desc) { descEl.textContent = desc; descEl.style.display = 'block'; }
+  else { descEl.style.display = 'none'; }
+}
+
+function getRaceValue() {
+  const raceEl = document.getElementById('race');
+  if (!raceEl) return '—';
+  const val = raceEl.value;
+  if (val === 'half') {
+    const half = document.getElementById('race-half-input').value.trim();
+    return half ? 'Pół człowiek, pół ' + half : 'Pół człowiek, pół (nieokreślone)';
+  }
+  if (val === 'custom') return document.getElementById('race-custom-input').value.trim() || '—';
+  return val || '—';
+}
+
+function generateName() {
+  const noun = second[Math.floor(Math.random() * second.length)];
+  let name;
+  if (noun.gender === 'phrase') {
+    name = noun.word;
+  } else {
+    const adj = firstByGender[noun.gender][Math.floor(Math.random() * firstByGender[noun.gender].length)];
+    name = adj + ' ' + noun.word;
+  }
+  document.getElementById('nickname-wrapper').style.display = 'block';
+  document.getElementById('nickname').value = name;
+  autoGrowById('nickname');
+}
+
+function startCooldown(btnId, msgId, durationMs, label) {
+  const btn = document.getElementById(btnId);
+  const msg = document.getElementById(msgId);
+  btn.disabled = true;
+  msg.style.display = 'block';
+  if (cooldownIntervals[btnId]) clearInterval(cooldownIntervals[btnId]);
+  const since = Date.now();
+  cooldownIntervals[btnId] = setInterval(() => {
+    const remaining = durationMs - (Date.now() - since);
+    if (remaining <= 0) {
+      clearInterval(cooldownIntervals[btnId]);
+      btn.disabled = false;
+      msg.style.display = 'none';
+    } else if (durationMs >= 60000) {
+      const m = Math.floor(remaining / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      msg.textContent = label + ' za: ' + m + ':' + s.toString().padStart(2, '0');
+    } else {
+      msg.textContent = label + ' za: ' + Math.ceil(remaining / 1000) + 's';
+    }
+  }, 500);
+}
+
+function rollStats() {
+  document.getElementById('stats').innerHTML = statNames.map(name =>
+    '<div class="stat-row"><span>' + name + '</span><span class="stat-val">' + stat() + '</span></div>'
+  ).join('');
+  startCooldown('rollBtn', 'cooldown-msg', COOLDOWN_5MIN, 'Kości ostygną');
+}
+
+function rollFlaw() {
+  document.getElementById('flaw-input').value = pickRandom(flaws);
+  document.getElementById('flaw').style.display = 'block';
+  autoGrowById('flaw-input');
+  startCooldown('flawBtn', 'flaw-cooldown-msg', COOLDOWN_30SEC, 'Wada ostygnie');
+}
+
+function rollLuck() {
+  const luck = Math.floor(Math.random() * 7);
+  const fame = Math.floor(Math.random() * 7);
+  const reputation = Math.floor(Math.random() * 41) - 20;
+  const repColor = reputation > 5 ? '#7ec87e' : reputation < -5 ? '#e07070' : '#aaa';
+  const repLabel = reputation >= 18 ? '— Gildia rozważa pomnik za życia'
+    : reputation >= 14 ? '— Święty patron złodziei'
+    : reputation >= 10 ? '— Słowo honoru coś znaczy'
+    : reputation >= 6  ? '— Umowy dotrzymuje. Zazwyczaj.'
+    : reputation >= 2  ? '— Można mu zaufać w drobnych sprawach'
+    : reputation >= -1 ? '— Wszystko zależy od kwoty'
+    : reputation >= -5 ? "— Zależy co rozumiesz przez 'uczciwy'"
+    : reputation >= -9 ? '— Nie odwracaj się plecami'
+    : reputation >= -13? '— Własna matka liczy srebrne łyżki'
+    : reputation >= -17? '— Nawet złodzieje zamykają przed nim drzwi'
+    : '— Legenda hańby. Cytowany jako przestroga.';
+  const fameLabel = fame === 0 ? '— Nie istnieje w żadnym rejestrze'
+    : fame === 1 ? '— Kto taki?'
+    : fame === 2 ? '— Ta twarz skądś znajoma'
+    : fame === 3 ? '— Znany w kręgach'
+    : fame === 4 ? '— Szepczą o nim po tawernach'
+    : fame === 5 ? '— Opiewany w balladach'
+    : '— Chodząca legenda';
+  const luckLabel = luck === 0 ? '— No właśnie szczęścia brak.'
+    : luck === 1 ? '— Coś mu wychodzi raz na jakiś czas'
+    : luck === 2 ? '— Nieprzypadkowo wciąż żyje'
+    : luck === 3 ? '— Monety lądują właściwą stroną'
+    : luck === 4 ? '— Bez szwanku od urodzenia'
+    : luck === 5 ? '— Podobno ma 7 żyć'
+    : '— To szczęście jest cięższe niż prawa fizyki';
+  document.getElementById('luck').style.display = 'block';
+  document.getElementById('luck').innerHTML =
+    '<div class="stat-row"><span>Szczęście</span><span class="stat-val" style="' + (luck === 0 ? 'color:#e07070;' : '') + '">' + luck + '<span style="color:#555;font-size:13px;">/6</span></span><span style="color:#555;font-size:12px;width:100%;margin-top:2px;">' + luckLabel + '</span></div>' +
+    '<div class="stat-row"><span>Sława</span><span class="stat-val" style="' + (fame === 0 ? 'color:#e07070;' : '') + '">' + fame + '<span style="color:#555;font-size:13px;">/6</span></span><span style="color:#555;font-size:12px;width:100%;margin-top:2px;">' + fameLabel + '</span></div>' +
+    '<div class="stat-row"><span>Reputacja</span><span class="stat-val" style="color:' + repColor + ';">' + (reputation > 0 ? '+' : '') + reputation + '<span style="color:#555;font-size:13px;">/20</span></span><span style="color:#555;font-size:12px;width:100%;margin-top:2px;">' + repLabel + '</span></div>';
+  startCooldown('luckBtn', 'luck-cooldown-msg', COOLDOWN_5MIN, 'Losy ostygną');
+}
+
+function rollGear() {
+  const items = pickUnique(gearPool, 3);
+  dlState['create-gear'].items.splice(0, Infinity, ...items);
+  dlRender('create-gear');
+  startCooldown('gearBtn', 'gear-cooldown-msg', COOLDOWN_30SEC, 'Ekwipunek ostygnie');
+}
+
+function rollWeapon() {
+  const weapon = pickRandom(weaponPool);
+  const inscription = pickRandom(inscriptions);
+  dlState['create-weapons'].items.splice(0, Infinity, weapon + '\nInskrypcja: ' + inscription);
+  dlRender('create-weapons');
+  startCooldown('weaponBtn', 'weapon-cooldown-msg', COOLDOWN_30SEC, 'Broń ostygnie');
+}
+
+function generatePrompt() {
+  const get = id => document.getElementById(id)?.value?.trim() || null;
+  const statEls = document.querySelectorAll('#stats .stat-val');
+  const statValues = [...statEls].map(el => el.textContent.replace(/\/\d+/, '').trim());
+  const luckEls = document.querySelectorAll('#luck .stat-val');
+  const luckValues = [...luckEls].map(el => el.textContent.replace('/6','').replace('/20','').trim());
+  const skillLines = skillGroups.map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? g.name + ' (poziom ' + lvl + ')' : null; }).filter(Boolean).join(', ') || 'brak';
+  const gearItems = dlGetItems('create-gear');
+  const gear = gearItems.length > 0 ? gearItems.join(', ') : '—';
+  const weaponItems = dlGetItems('create-weapons');
+  const weapon = weaponItems.length > 0 ? weaponItems.join(', ') : '—';
+  const trickItems = dlGetItems('create-tricks');
+  const tricks = trickItems.length > 0 ? trickItems.join(', ') : 'brak';
+
+  const lines = [
+    'Jesteś narratorem mrocznej, lecz humorystycznej gry fabularnej w stylu Złodziei z Ankh-Morpork i Dżentelmenów Bastardów. Na podstawie poniższej karty postaci napisz krótką historię tej postaci — maksymalnie 3 zdania. Kim jest, skąd pochodzi, jak trafiła do Gildii i co ją wyróżnia. Styl: ciemny humor, ironiczny dystans, konkretne szczegóły. Nie używaj ogólników. Nie przekraczaj 3 zdań.',
+    '',
+    'Kilka słów o postaci albo interesujący fakt — kim była zanim została złodziejem? Jaki był twój największy skok? Jaka największa wpadka? Co ludzie myślą, gdy wchodzisz do pokoju?',
+    '',
+    '--- KARTA POSTACI ---',
+    get('realname')  ? 'Gracz: ' + get('realname') : null,
+    get('name')      ? 'Imię postaci: ' + get('name') : null,
+    getRaceValue() !== '—' ? 'Rasa: ' + getRaceValue() : null,
+    get('nickname')  ? 'Pseudonim w Gildii: ' + get('nickname') : null,
+    luckValues[0]    ? 'Szczęście: ' + luckValues[0] + '/6' : null,
+    luckValues[1]    ? 'Sława: ' + luckValues[1] + '/6' : null,
+    luckValues[2]    ? 'Reputacja: ' + luckValues[2] : null,
+    statValues.length === 5 ? 'Staty — Ciało: ' + statValues[0] + ', Zdolność: ' + statValues[1] + ', Psycha: ' + statValues[2] + ', Rozum: ' + statValues[3] + ', Zmysł: ' + statValues[4] : null,
+    skillLines !== 'brak' ? 'Umiejętności: ' + skillLines : null,
+    get('flaw-input') ? 'Wada: ' + get('flaw-input') : null,
+    gear !== '—' ? 'Ekwipunek: ' + gear : null,
+    weapon !== '—' ? 'Broń: ' + weapon : null,
+    tricks !== 'brak' ? 'Sztuczki: ' + tricks : null,
+    get('bio') ? 'Bio: ' + get('bio') : null,
+  ].filter(Boolean).join('\n');
+
+  navigator.clipboard.writeText(lines).then(() => {
+    const msg = document.getElementById('prompt-msg');
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  });
+}
+
+// =====================================================================
+// SUBMIT (CREATE)
+// =====================================================================
+function collectFormData(password) {
+  const attendance = document.querySelector('input[name="attendance"]:checked')?.value === 'rpg' ? 'RPG' : 'Chill';
+  const data = {
+    password: password,
+    attendance: attendance,
+    realname: document.getElementById('realname').value.trim() || '—',
+  };
+  if (attendance !== 'RPG') return data;
+
+  const statEls = document.querySelectorAll('#stats .stat-val');
+  const sv = [...statEls].map(el => el.textContent.replace(/\/\d+/, '').trim());
+  const luckEls = document.querySelectorAll('#luck .stat-val');
+  const lv = [...luckEls].map(el => el.textContent.replace('/6','').replace('/20','').trim());
+  const skillLines = skillGroups.map(g => { const lvl = skillLevels[g.name] || 0; return lvl > 0 ? g.name + ':' + lvl : null; }).filter(Boolean).join(', ') || 'brak';
+
+  Object.assign(data, {
+    name: document.getElementById('name').value.trim() || '—',
+    race: getRaceValue(),
+    nickname: document.getElementById('nickname').value.trim() || '—',
+    luck: lv[0] || '—',
+    fame: lv[1] || '—',
+    reputation: lv[2] || '—',
+    stat_cialo: sv[0] || '—',
+    stat_zdolnosc: sv[1] || '—',
+    stat_psycha: sv[2] || '—',
+    stat_rozum: sv[3] || '—',
+    stat_zmysl: sv[4] || '—',
+    skills: skillLines,
+    flaw: document.getElementById('flaw-input')?.value.trim() || '—',
+    gear: JSON.stringify(dlGetItems('create-gear')),
+    weapons: JSON.stringify(dlGetItems('create-weapons')),
+    bio: document.getElementById('bio')?.value.trim() || '—',
+    notes: JSON.stringify(dlGetItems('create-notes')),
+    tricks: JSON.stringify(dlGetItems('create-tricks')),
+  });
+  return data;
+}
+
+async function submitCard() {
+  const password = generateClientPassword();
+  const payload = collectFormData(password);
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Wysyłanie...';
+
+  try {
+    const url = SCRIPT_URL + '?action=create&payload=' + encodeURIComponent(JSON.stringify(payload));
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result.ok) {
+      showPasswordResult(password);
+    } else {
+      throw new Error(result.error || 'Błąd serwera');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = '✉ Wyślij zgłoszenie do Mistrza Kluczy';
+    btn.style.background = '#7a5c10';
+    alert('Nie udało się wysłać zgłoszenia. Spróbuj ponownie.\n' + err.message);
+  }
+}
+
+function showPasswordResult(password) {
+  document.getElementById('create-form').style.display = 'none';
+  document.getElementById('password-result').style.display = 'block';
+  document.getElementById('password-value').textContent = password;
+}
+
+function copyPassword() {
+  const pw = document.getElementById('password-value').textContent;
+  navigator.clipboard.writeText(pw).then(() => {
+    const msg = document.getElementById('password-copy-msg');
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 3000);
+  });
+}
+
+// =====================================================================
+// VIEW MODE
+// =====================================================================
+async function loadCard() {
+  const pw = document.getElementById('view-password-input').value.trim().toUpperCase();
+  if (!pw) return;
+  const btn = document.getElementById('view-login-btn');
+  btn.disabled = true;
+  document.getElementById('view-error').style.display = 'none';
+  document.getElementById('view-loading').style.display = 'block';
+
+  try {
+    const response = await fetch(SCRIPT_URL + '?action=read&password=' + encodeURIComponent(pw));
+    const result = await response.json();
+    if (result.ok) {
+      viewPassword = pw;
+      renderViewCard(result.data);
+    } else {
+      document.getElementById('view-error').textContent = 'Nie znaleziono karty z tym hasłem.';
+      document.getElementById('view-error').style.display = 'block';
+    }
+  } catch (err) {
+    document.getElementById('view-error').textContent = 'Błąd połączenia. Spróbuj ponownie.';
+    document.getElementById('view-error').style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    document.getElementById('view-loading').style.display = 'none';
+  }
+}
+
+function renderViewCard(data) {
+  document.getElementById('view-login').style.display = 'none';
+  const c = document.getElementById('view-card');
+  c.style.display = 'block';
+  const isRPG = data.attendance === 'RPG';
+
+  let h = '<h2 style="margin-bottom:4px;">Karta Postaci</h2>' +
+    '<p style="color:#666;font-size:12px;margin-top:0;">Hasło: ' + esc(viewPassword) + '</p>';
+
+  h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
+
+  if (!isRPG) {
+    h += '<div class="view-field" style="margin-top:16px;color:#888;">☀️ Pochilluje — brak karty RPG</div>';
+    c.innerHTML = h;
+    return;
+  }
+
+  h += '<label>Imię postaci</label>' +
+    '<textarea id="view-name" rows="2" oninput="autoGrow(this);markUnsaved()">' + esc(data.name) + '</textarea>';
+  h += '<label>Pseudonim w Gildii</label>' +
+    '<textarea id="view-nickname" rows="2" oninput="autoGrow(this);markUnsaved()" style="color:#ffd700;font-size:18px;">' + esc(data.nickname) + '</textarea>';
+  h += '<label>Rasa</label><div class="view-field">' + esc(data.race) + '</div>';
+
+  h += '<hr>';
+
+  // Luck / Fame / Reputation
+  h += '<div style="font-size:18px;line-height:1.8;">';
+  h += '<div class="stat-row"><span>Szczęście</span><span class="stat-val">' + esc(data.luck) + '<span style="color:#555;font-size:13px;">/6</span></span></div>';
+  h += '<div class="stat-row"><span>Sława</span><span class="stat-val">' + esc(data.fame) + '<span style="color:#555;font-size:13px;">/6</span></span></div>';
+  const repNum = parseInt(data.reputation) || 0;
+  const repColor = repNum > 5 ? '#7ec87e' : repNum < -5 ? '#e07070' : '#aaa';
+  h += '<div class="stat-row"><span>Reputacja</span><span class="stat-val" style="color:' + repColor + ';">' + esc(data.reputation) + '<span style="color:#555;font-size:13px;">/20</span></span></div>';
+  h += '</div>';
+
+  h += '<hr>';
+
+  // Stats
+  h += '<div style="font-size:18px;line-height:1.8;">';
+  [['Ciało', data.stat_cialo], ['Zdolność', data.stat_zdolnosc], ['Psycha', data.stat_psycha], ['Rozum', data.stat_rozum], ['Zmysł', data.stat_zmysl]].forEach(([name, val]) => {
+    h += '<div class="stat-row"><span>' + name + '</span><span class="stat-val">' + esc(val) + '</span></div>';
+  });
+  h += '</div>';
+
+  h += '<hr>';
+
+  h += '<label style="color:#e07070;">Wada charakteru</label>' +
+    '<div class="view-field" style="color:#e07070;">' + esc(data.flaw) + '</div>';
+
+  h += '<hr>';
+
+  h += '<span style="font-size:18px;">Umiejętności</span><div id="view-skills-container" style="margin-top:8px;"></div>';
+
+  h += '<hr>';
+
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+    '<span style="font-size:18px;">Sztuczki</span>' +
+    '<a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a></div>' +
+    '<div id="view-tricks" style="margin-top:6px;"></div>';
+
+  h += '<hr>';
+
+  h += '<label>Ekwipunek</label><div id="view-gear" style="margin-top:6px;"></div>';
+
+  h += '<hr>';
+
+  h += '<label>Broń</label><div id="view-weapons" style="margin-top:6px;"></div>';
+
+  h += '<hr>';
+
+  h += '<label>Krótkie Bio</label>' +
+    '<textarea id="view-bio" oninput="autoGrow(this);markUnsaved()" style="min-height:60px;">' + esc(data.bio) + '</textarea>';
+
+  h += '<hr>';
+
+  h += '<label>Notatki własne</label><div id="view-notes" style="margin-top:6px;"></div>';
+
+  h += '<hr>';
+
+  h += '<button id="save-btn" onclick="saveCard()" style="background:#7a5c10;font-size:17px;padding:14px;width:100%;margin-top:10px;box-sizing:border-box;">💾 Zapisz zmiany</button>';
+
+  c.innerHTML = h;
+
+  // Parse lists (backward compat: try JSON, fallback to pipe-separated)
+  let gearItems = tryParseJSON(data.gear) || (data.gear && data.gear !== '—' ? data.gear.split(' | ').filter(Boolean) : []);
+  let weaponItems = tryParseJSON(data.weapons) || (data.weapons && data.weapons !== '—' ? data.weapons.split(' | ').filter(Boolean) : []);
+  let noteItems = tryParseJSON(data.notes) || [];
+  let trickItems = tryParseJSON(data.tricks) || [];
+
+  if (gearItems.length === 0) gearItems = [''];
+  if (weaponItems.length === 0) weaponItems = [''];
+
+  dlInit('view-gear', gearItems, { placeholder: 'Przedmiot...', addLabel: '+ Dodaj przedmiot', trackChanges: true });
+  dlInit('view-weapons', weaponItems, { placeholder: 'Broń...', addLabel: '+ Dodaj broń', trackChanges: true });
+  dlInit('view-notes', noteItems.length ? noteItems : [], { placeholder: 'Notatka...', addLabel: '+ Dodaj notatkę', trackChanges: true });
+  dlInit('view-tricks', trickItems.length ? trickItems : [], { placeholder: 'Sztuczka...', addLabel: '+ Dodaj sztuczkę', trackChanges: true });
+
+  renderSkillsView(data.skills, 'view-skills-container');
+
+  c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
+  hasUnsavedChanges = false;
+}
+
+async function saveCard() {
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.textContent = 'Zapisywanie...';
+
+  const payload = {
+    password: viewPassword,
+    nickname: document.getElementById('view-nickname').value.trim(),
+    name: document.getElementById('view-name').value.trim(),
+    gear: JSON.stringify(dlGetItems('view-gear')),
+    weapons: JSON.stringify(dlGetItems('view-weapons')),
+    bio: document.getElementById('view-bio').value.trim(),
+    notes: JSON.stringify(dlGetItems('view-notes')),
+    tricks: JSON.stringify(dlGetItems('view-tricks')),
+  };
+
+  try {
+    const url = SCRIPT_URL + '?action=update&payload=' + encodeURIComponent(JSON.stringify(payload));
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result.ok) {
+      btn.textContent = '✓ Zapisano';
+      btn.style.background = '#2d6a2d';
+      hasUnsavedChanges = false;
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = '💾 Zapisz zmiany';
+        btn.style.background = '#7a5c10';
+      }, 3000);
+    } else {
+      throw new Error(result.error || 'Błąd serwera');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = '💾 Zapisz zmiany';
+    btn.style.background = '#7a5c10';
+    alert('Błąd zapisu: ' + err.message);
+  }
+}
+
+// =====================================================================
+// TRICKS PAGE
+// =====================================================================
+function renderTricksPage() {
+  const container = document.getElementById('tricks-content');
+  if (container.innerHTML) return;
+  let html = '';
+  let currentStat = '';
+  allTricks.forEach(group => {
+    if (group.stat !== currentStat) {
+      currentStat = group.stat;
+      const color = statColors[currentStat] || '#888';
+      html += '<div style="font-size:14px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin:24px 0 10px;border-bottom:2px solid ' + color + '44;padding-bottom:4px;">' + currentStat + '</div>';
+    }
+    const sg = skillGroups.find(s => s.name === group.group);
+    const icon = sg ? sg.icon : '';
+    html += '<div class="trick-group"><div class="trick-group-title">' + icon + ' ' + group.group + '</div>';
+    group.tricks.forEach(t => {
+      html += '<div class="trick-item"><div class="trick-name">' + t.name + '</div><div class="trick-req">Wymaga: ' + group.group + ' 1+</div><div class="trick-desc">' + t.desc + '</div></div>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+navigate();
+</script>
 </body>
 </html>
