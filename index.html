@@ -354,19 +354,24 @@ h2 {
   .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login { display: none !important; }
   .print-header { display: block !important; text-align: center; font-size: 8pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid #ccc; margin-bottom: 6px; }
 
-  /* Character card: two-column layout per page */
-  .print-page { column-count: 2; column-gap: 14px; }
-  .print-page > * { break-inside: avoid; }
+  .print-page { display: flex !important; flex-wrap: wrap; gap: 0 12px; min-height: calc(297mm - 16mm); align-content: flex-start; }
+  .print-page > .print-header { flex-basis: 100%; }
+  .print-col-left { flex: 1; min-width: 0; }
+  .print-col-right { flex: 1; min-width: 0; }
+  .print-page-1 .print-col-right { display: flex; flex-direction: column; }
   .print-page-2 { break-before: page; }
+
+  .print-notes-area { flex: 1; border: 1px solid #aaa; border-radius: 4px; padding: 8px; box-sizing: border-box; }
+  .print-notes-area > div:first-child { font-size: 9pt !important; font-weight: bold; color: #333 !important; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
 
   .view-field { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; padding: 2px 5px !important; font-size: 8pt !important; }
   input, textarea, select { border-color: #ccc !important; background: white !important; color: black !important; font-size: 8pt !important; padding: 2px 5px !important; }
-  textarea { min-height: 0 !important; overflow: hidden !important; }
+  textarea { min-height: 0 !important; height: auto !important; overflow: hidden !important; }
   .stat-val { color: #333 !important; font-weight: bold !important; }
   .stat-row { border-color: #ddd !important; padding: 1px 0 !important; font-size: 9pt !important; }
   hr { border-color: #ddd !important; margin: 4px 0 !important; }
   label { color: #555 !important; margin-top: 4px !important; font-size: 8pt !important; }
-  h2 { color: black !important; font-size: 12pt !important; margin-bottom: 2px !important; }
+  h2 { color: black !important; font-size: 11pt !important; margin-bottom: 2px !important; }
   .wound-check { accent-color: #c00 !important; width: 14px !important; height: 14px !important; }
   .wound-label { font-size: 8pt !important; min-width: 80px !important; }
   .wound-row { margin-bottom: 1px !important; gap: 4px !important; }
@@ -386,7 +391,7 @@ h2 {
   .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 2px 5px !important; }
   #view-card span[style*="font-size:18px"] { font-size: 10pt !important; }
 
-  /* Mechanics page print: compact two-column single A4 */
+  /* Mechanics page print */
   #page-mechanics .card { padding: 0 !important; column-count: 2; column-gap: 12px; }
   #page-mechanics .card > * { break-inside: avoid; }
   #page-mechanics h2 { font-size: 11pt !important; margin-bottom: 2px !important; column-span: all; }
@@ -1332,7 +1337,7 @@ const allTricks = [
     { name: "Sokolie Oko", desc: "Widzisz drobne szczegóły na dystansie. Bonus +2 do testów Wypatrywania. W złym oświetleniu lub przez przeszkody bonus spada do +1 — oko sokole, nie oka rentgenowskie." },
     { name: "Nos Jak Pies", desc: "Możesz tropić po zapachu i w zamkniętych pomieszczeniach wyczuwasz obecność ukrytych osób. Wymaga testu Powonienia przy wielu zapachach lub słabym śladzie. Gildia nie odpowiada za konsekwencje pracy w garbarniach." },
   ]},
-  { group: "Uduchowienie", stat: "Zmysł", tricks: [
+  { group: "Duch", stat: "Zmysł", tricks: [
     { name: "Rozmówca Umarłych", desc: "Raz na sesję możesz zadać jedno pytanie duchowi lub świeżym zwłokom. Odpowiedź jest szczera, ale duchy mają własne priorytety i rzadko mówią wprost. Wymaga chwili skupienia i braku świadków, którzy krzyczą." },
     { name: "Dreszcz Ostrzegawczy", desc: "Masz bonus +2 do testów wykrycia nadprzyrodzonego zagrożenia. Jeśli w pobliżu działa magia lub klątwa, GM informuje Cię że czujesz coś dziwnego. Nie mówi co — twoje nerwy to nie encyklopedia." },
     { name: "Medium", desc: "Raz na sesję możesz wejść w trans i uzyskać mglistą wizję dotyczącą bieżącego problemu. Wymaga 10 minut spokoju i braku ktoś-kopie-mnie-w-żebra. Wizje są metaforyczne — duchy nie rysują map z podpisami." },
@@ -1985,44 +1990,37 @@ function renderViewCard(data) {
     return;
   }
 
-  // ===== PRINT PAGE 1: personal data, flaw, wounds, tricks, gear, weapons, notes =====
-  h += '<div class="print-page print-page-1">';
+  const repNum = parseInt(data.reputation) || 0;
+  const repColor = repNum > 5 ? '#7ec87e' : repNum < -5 ? '#e07070' : '#aaa';
+  const woundsData = tryParseJSON(data.wounds) || {};
+  const magicEnabled = data.magic_enabled === 'Tak';
 
+  // ===== PRINT PAGE 1 =====
+  h += '<div class="print-page print-page-1">';
   h += '<div class="print-header">Misterium Skarbów i Cieni — Karta Postaci</div>';
 
+  // Left col: personal data, luck, flaw, wounds
+  h += '<div class="print-col print-col-left">';
   h += '<h2 style="margin-bottom:4px;">Karta Postaci</h2>' +
     '<p style="color:#666;font-size:12px;margin-top:0;">Hasło: ' + esc(viewPassword) + '</p>';
-
   h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
-
   h += '<label>Imię postaci</label>' +
-    '<textarea id="view-name" rows="2" oninput="autoGrow(this);markUnsaved()">' + esc(data.name) + '</textarea>';
+    '<textarea id="view-name" rows="1" oninput="autoGrow(this);markUnsaved()">' + esc(data.name) + '</textarea>';
   h += '<label>Pseudonim w Gildii</label>' +
-    '<textarea id="view-nickname" rows="2" oninput="autoGrow(this);markUnsaved()" style="color:#ffd700;font-size:18px;">' + esc(data.nickname) + '</textarea>';
+    '<textarea id="view-nickname" rows="1" oninput="autoGrow(this);markUnsaved()" style="color:#ffd700;font-size:18px;">' + esc(data.nickname) + '</textarea>';
   h += '<label>Rasa</label><div class="view-field">' + esc(data.race) + '</div>';
-
   h += '<hr>';
-
-  // Luck / Fame / Reputation
   h += '<div style="font-size:18px;line-height:1.8;">';
   h += '<div class="stat-row"><span>Szczęście</span><span class="stat-val">' + esc(data.luck) + '<span style="color:#555;font-size:13px;">/6</span></span></div>';
   h += '<div class="stat-row"><span>Sława</span><span class="stat-val">' + esc(data.fame) + '<span style="color:#555;font-size:13px;">/6</span></span></div>';
-  const repNum = parseInt(data.reputation) || 0;
-  const repColor = repNum > 5 ? '#7ec87e' : repNum < -5 ? '#e07070' : '#aaa';
   h += '<div class="stat-row"><span>Reputacja</span><span class="stat-val" style="color:' + repColor + ';">' + esc(data.reputation) + '<span style="color:#555;font-size:13px;">/20</span></span></div>';
   h += '</div>';
-
   h += '<hr>';
-
   h += '<label style="color:#e07070;">Wada charakteru</label>' +
     '<div class="view-field" style="color:#e07070;">' + esc(data.flaw) + '</div>';
-
   h += '<hr>';
-
-  // Wounds tracker
   h += '<span style="font-size:18px;">💉 Rany</span>';
   h += '<div id="view-wounds" style="margin-top:10px;">';
-  const woundsData = tryParseJSON(data.wounds) || {};
   WOUND_LEVELS.forEach(w => {
     const checked = woundsData[w.key] || [];
     h += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div>';
@@ -2032,48 +2030,44 @@ function renderViewCard(data) {
     h += '</div></div>';
   });
   h += '</div>';
+  h += '</div>'; // end print-col-left
 
+  // Right col: portrait + notes area (print only - visible as bordered area)
+  h += '<div class="print-col print-col-right">';
+  h += '<div class="print-notes-area">' +
+    '<div style="font-size:16px;margin-bottom:8px;color:#aaa;">Notatki i Portret</div>' +
+    '<div id="view-notes" style="margin-top:6px;"></div>' +
+    '</div>';
+  h += '</div>'; // end print-col-right
+
+  h += '</div>'; // end print-page-1
+
+  // ===== PRINT PAGE 2 =====
+  h += '<div class="print-page print-page-2">';
+  h += '<div class="print-header">Misterium Skarbów i Cieni — Umiejętności</div>';
+
+  // Left col: gear, weapons, tricks
+  h += '<div class="print-col print-col-left">';
+  h += '<label>Ekwipunek</label><div id="view-gear" style="margin-top:6px;"></div>';
   h += '<hr>';
-
+  h += '<label>Broń</label><div id="view-weapons" style="margin-top:6px;"></div>';
+  h += '<hr>';
   h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
     '<span style="font-size:18px;">Sztuczki</span>' +
     '<a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a></div>' +
     '<div id="view-tricks" style="margin-top:6px;"></div>';
+  h += '</div>'; // end print-col-left
 
-  h += '<hr>';
-
-  h += '<label>Ekwipunek</label><div id="view-gear" style="margin-top:6px;"></div>';
-
-  h += '<hr>';
-
-  h += '<label>Broń</label><div id="view-weapons" style="margin-top:6px;"></div>';
-
-  h += '<hr>';
-
-  h += '<label>Notatki własne</label><div id="view-notes" style="margin-top:6px;"></div>';
-
-  h += '</div>'; // end print-page-1
-
-  // ===== PRINT PAGE 2: stats, skills, magic =====
-  h += '<div class="print-page print-page-2">';
-
-  h += '<div class="print-header">Misterium Skarbów i Cieni — Umiejętności</div>';
-
-  // Stats
+  // Right col: stats, skills, magic
+  h += '<div class="print-col print-col-right">';
   h += '<div style="font-size:18px;line-height:1.8;">';
   [['Ciało', data.stat_cialo], ['Zdolność', data.stat_zdolnosc], ['Psycha', data.stat_psycha], ['Rozum', data.stat_rozum], ['Zmysł', data.stat_zmysl]].forEach(([name, val]) => {
     h += '<div class="stat-row"><span>' + name + '</span><span class="stat-val">' + esc(val) + '</span></div>';
   });
   h += '</div>';
-
   h += '<hr>';
-
   h += '<span style="font-size:18px;">Umiejętności</span><div id="view-skills-container" style="margin-top:8px;"></div>';
-
   h += '<hr>';
-
-  // Magic toggle (read-only, controlled by GM via spreadsheet)
-  const magicEnabled = data.magic_enabled === 'Tak';
   h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
     '<span style="font-size:18px;color:#b0a0e0;">🔮 Umagicznienie</span>';
   if (magicEnabled) {
@@ -2087,6 +2081,7 @@ function renderViewCard(data) {
   h += '<div id="view-magic-panel" style="display:' + (magicEnabled ? 'block' : 'none') + ';">';
   h += '<div class="magic-grid" id="view-magic-grid"></div>';
   h += '</div>';
+  h += '</div>'; // end print-col-right
 
   h += '</div>'; // end print-page-2
 
