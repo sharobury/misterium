@@ -432,10 +432,11 @@ h2 {
   #view-card span[style*="font-size:18px"] { font-size: 10pt !important; }
   .print-difficulty-cheat { font-size: 7pt !important; padding: 4px !important; }
   .print-difficulty-cheat > div { min-width: 40px !important; font-size: 7pt !important; }
-  .skill-level-box { width: 10px !important; height: 10px !important; }
-  .skill-level-box.checked { background: #333 !important; }
+  .stat-test-box { width: 18px !important; height: 14px !important; font-size: 7pt !important; line-height: 12px !important; }
+  .stat-test-box.base { color: #333 !important; font-weight: bold !important; }
   .print-gear-weapons { border-color: #ccc !important; background: #f9f9f9 !important; }
-  .print-portrait-area { border-color: #ccc !important; }
+  .print-portrait-area { border-color: #ccc !important; display: flex !important; flex-direction: column !important; }
+  .print-no-frame { border: none !important; background: transparent !important; }
 
   /* Mechanics page print */
   #page-mechanics .card { padding: 0 !important; column-count: 2; column-gap: 12px; }
@@ -2947,7 +2948,18 @@ function resetSkills() {
 // =====================================================================
 // SKILLS (VIEW MODE - READ-ONLY)
 // =====================================================================
-function renderSkillsView(skillsStr, containerId) {
+const DIFFICULTY_MODIFIERS = [0, 2, 0, -2, -5, -8, -15]; // X, +2, 0, -2, -5, -8, -15
+function statTestBoxes(baseVal) {
+  const base = parseInt(baseVal) || 0;
+  const vals = DIFFICULTY_MODIFIERS.map(m => base + m);
+  let html = '<span class="stat-test-boxes">';
+  vals.forEach((v, i) => {
+    const isBase = i === 0;
+    html += '<span class="stat-test-box' + (isBase ? ' base' : '') + '" style="display:inline-block;width:22px;height:18px;border:1px solid #555;border-radius:2px;margin:0 1px;text-align:center;line-height:16px;font-size:10px;font-weight:bold;' + (isBase ? 'background:#333;color:#ffd700;' : 'background:#1a1a1a;color:#888;') + '">' + v + '</span>';
+  });
+  return html + '</span>';
+}
+function renderSkillsView(skillsStr, containerId, stats) {
   const container = document.getElementById(containerId);
   if (!container) return;
   const viewLevels = {};
@@ -2967,10 +2979,13 @@ function renderSkillsView(skillsStr, containerId) {
     if (!byGroup[g.stat]) byGroup[g.stat] = [];
     byGroup[g.stat].push(g);
   });
+  const statToData = { 'Ciało': 'stat_cialo', 'Zdolność': 'stat_zdolnosc', 'Psycha': 'stat_psycha', 'Rozum': 'stat_rozum', 'Zmysł': 'stat_zmysl' };
   let html = '';
   for (const [statName, groups] of Object.entries(byGroup)) {
     const color = statColors[statName] || '#888';
-    html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;">' + statName + '</div><div class="skills-grid">';
+    const baseVal = stats && stats[statToData[statName]] !== undefined ? stats[statToData[statName]] : '';
+    const boxesHtml = stats ? statTestBoxes(baseVal) : '';
+    html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + statName + boxesHtml + '</div><div class="skills-grid">';
     groups.forEach(g => {
       const level = viewLevels[g.name] || 0;
       const customs = viewCustom[g.name] || [];
@@ -2984,14 +2999,11 @@ function renderSkillsView(skillsStr, containerId) {
       } else {
         skillsHtml = '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
       }
-      const levelBoxes = Array(7).fill(0).map((_, i) =>
-        '<span class="skill-level-box' + (i < level ? ' checked' : '') + '" style="display:inline-block;width:14px;height:14px;border:1px solid #555;border-radius:2px;margin:0 1px;background:' + (i < level ? '#ffd700' : 'transparent') + ';"></span>'
-      ).join('');
       html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
         (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
         '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
         '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
-        '<div style="text-align:center;margin-top:6px;" title="Poziom ' + level + '">' + levelBoxes + '</div>' +
+        '<div style="text-align:center;margin-top:6px;"><span style="color:' + (level > 0 ? '#ffd700' : '#555') + ';font-size:16px;font-weight:bold;">' + level + '</span></div>' +
         '</div>';
     });
     html += '</div></div>';
@@ -3348,8 +3360,8 @@ function renderViewCard(data) {
     h += '</div></div>';
   });
   h += '</div>';
-  // Ekwipunek + Broń (wspólna tabela) — na pierwszej stronie, w dolnej połowie
-  h += '<div class="print-gear-weapons" style="flex-basis:100%;margin-top:12px;border:1px solid #333;border-radius:6px;padding:12px;background:#1a1a1a;">';
+  // Ekwipunek + Broń — bez ramki (nie da się przewidzieć rozmiaru zawartości)
+  h += '<div class="print-gear-weapons print-no-frame" style="flex-basis:100%;margin-top:12px;padding:12px 0;background:transparent;">';
   h += '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Ekwipunek i broń</div>';
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">';
   h += '<div><div style="font-size:11px;color:#666;margin-bottom:4px;">Ekwipunek</div><div id="view-gear" style="margin-top:6px;"></div></div>';
@@ -3357,13 +3369,13 @@ function renderViewCard(data) {
   h += '</div></div>';
   h += '</div>'; // end print-col-left
 
-  // Right col: portret (oddzielnie) + notatki (oddzielnie)
+  // Right col: portret (sama ramka, bez tekstu wewnątrz) + notatki (bez ramki)
   h += '<div class="print-col print-col-right">';
-  h += '<div class="print-portrait-area print-notes-area">' +
+  h += '<div class="print-portrait-area print-notes-area" style="display:flex;flex-direction:column;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Portret</div>' +
-    '<div style="min-height:80px;border:1px dashed #444;border-radius:4px;padding:8px;color:#555;font-size:12px;">Miejsce na portret postaci</div>' +
+    '<div style="flex:1;min-height:120px;"></div>' +
     '</div>';
-  h += '<div class="print-notes-area" style="margin-top:12px;">' +
+  h += '<div class="print-notes-area print-no-frame" style="margin-top:12px;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Notatki</div>' +
     '<div id="view-notes" style="margin-top:6px;"></div>' +
     '</div>';
@@ -3387,7 +3399,7 @@ function renderViewCard(data) {
   h += '<div class="print-col print-col-right">';
   h += '<span style="font-size:18px;">Umiejętności</span>';
   h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:wrap;gap:4px;margin:10px 0;padding:8px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
-  [['+2','łatwy'],['0','zwykły'],['−2','problem.'],['−5','trudny'],['−8','złożony'],['−11','fartowny'],['−15','krytyczny']].forEach(([mod,label]) => {
+  [['+2','łat.'],['0','zwy.'],['−2','pro.'],['−5','tru.'],['−8','zło.'],['−11','far.'],['−15','kry.']].forEach(([mod,label]) => {
     h += '<div style="flex:1;min-width:50px;text-align:center;padding:4px;border:1px solid #444;border-radius:4px;font-size:11px;"><span style="font-weight:bold;color:#ffd700;">' + mod + '</span><br><span style="color:#888;font-size:10px;">' + label + '</span></div>';
   });
   h += '</div>';
@@ -3443,7 +3455,7 @@ function renderViewCard(data) {
   dlInit('view-notes', noteItems.length ? noteItems : [], { placeholder: 'Notatka...', addLabel: '+ Dodaj notatkę', trackChanges: true });
   dlInit('view-tricks', trickItems.length ? trickItems : [], { placeholder: 'Sztuczka...', addLabel: '+ Dodaj sztuczkę', trackChanges: true });
 
-  renderSkillsView(data.skills, 'view-skills-container');
+  renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl });
   renderViewMagic(tryParseJSON(data.magic_skills) || {});
 
   c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
@@ -3514,9 +3526,10 @@ function updateMagicGrid() {
   magicGroups.forEach(g => {
     const lvl = magicLevels[g.name] || 0;
     const valColor = lvl === 0 ? '#555' : '#b0a0e0';
+    const boxesHtml = statTestBoxes(lvl);
     html += '<div class="magic-card">' +
       '<div style="font-size:18px;margin-bottom:2px;">' + g.icon + '</div>' +
-      '<div class="magic-card-title">' + g.name + '</div>';
+      '<div class="magic-card-title" style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + g.name + boxesHtml + '</div>';
     g.skills.forEach(s => { html += '<span class="magic-skill-tag">' + s + '</span>'; });
     html += '<div class="magic-level-ctrl">' +
       '<button class="magic-level-btn" onclick="changeMagicLevel(\'' + g.name + '\',-1)">−</button>' +
