@@ -2054,15 +2054,6 @@ h2 {
 </div>
 
 <script>
-window.onerror = function(msg, url, line, col, err) {
-  var d = document.createElement('div');
-  d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#2a0000;color:#ff6666;padding:16px 20px;font-family:monospace;font-size:14px;white-space:pre-wrap;border-bottom:3px solid #ff3333;max-height:40vh;overflow:auto;';
-  d.textContent = 'JS ERROR @ line ' + line + ', col ' + col + ':\n' + msg + (err && err.stack ? '\n\n' + err.stack : '');
-  d.onclick = function() { d.remove(); };
-  document.body.appendChild(d);
-};
-</script>
-<script>
 // =====================================================================
 // DATA
 // =====================================================================
@@ -2779,12 +2770,12 @@ function unlockGm() {
 }
 
 const SECRET_AGENDAS = [
-  { who: "Wherk'ha „Sprytny Cień"", text: "Upewnij się, że Hrabia przeżyje — jest ci winien przysługę (dawny dług rodzinny). Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Madziok „Inspektor Cudzych Kieszeni"", text: "W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie. Nie mów nikomu. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Kubol „Otwarta Księga"", text: "Syn Babci Piwonki jest strażnikiem. Upewnij się, że nie zostanie wplątany w sprawę ani nie ucierpi z powodu twojej misji. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Marceyli „Zawieszona Zagadka"", text: "Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Rastlin „Samozwańczy Kruk"", text: "Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku na 2. piętrze). Zabierz go, zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
-  { who: "Hulietta Królik „Technik ds. Mechanizmów Zamykających"", text: "Ksiądz który cię przeklął jest w mieście. Hrabia go zna. Pozyskaj informację gdzie go znaleźć — zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." }
+  { who: "Wherk'ha 'Sprytny Cień'", text: "Upewnij się, że Hrabia przeżyje — jest ci winien przysługę (dawny dług rodzinny). Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Madziok 'Inspektor Cudzych Kieszeni'", text: "W skarbcu jest coś więcej niż artefakt — stary dokument. Znajdź go i zabierz, zanim grupa wyjdzie. Nie mów nikomu. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Kubol 'Otwarta Księga'", text: "Syn Babci Piwonki jest strażnikiem. Upewnij się, że nie zostanie wplątany w sprawę ani nie ucierpi z powodu twojej misji. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Marceyli 'Zawieszona Zagadka'", text: "Oprócz artefaktu: odzyskaj swój zgubiony odłamek. Nie mów grupie — twoja sprawa. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Rastlin 'Samozwańczy Kruk'", text: "Jesteś benkartem Lorda Morrigana — posiadłość powinna być twoja. Hrabia ma jedyny dokument dowodzący dziedzictwa (w biurku na 2. piętrze). Zabierz go, zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." },
+  { who: "Hulietta Królik 'Technik ds. Mechanizmów Zamykających'", text: "Ksiądz który cię przeklął jest w mieście. Hrabia go zna. Pozyskaj informację gdzie go znaleźć — zanim rezydencja stanie się gruzem. Jeśli go osiągniesz, dostajesz bonusowy epilog." }
 ];
 function rollSecretAgenda() {
   const pick = SECRET_AGENDAS[Math.floor(Math.random() * SECRET_AGENDAS.length)];
