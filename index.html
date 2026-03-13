@@ -25,7 +25,6 @@ body {
 }
 
 .page { display: none; }
-#page-home { display: block; } /* fallback gdy JS się nie załaduje */
 
 label {
   display: block;
@@ -2055,33 +2054,13 @@ h2 {
 </div>
 
 <script>
-// Minimal router — uruchamia się pierwszy, działa nawet gdy główny skrypt się wykrzaczy
-(function() {
-  function route() {
-    var hash = (location.hash || '#home').slice(1);
-    var ids = ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'];
-    for (var i = 0; i < ids.length; i++) {
-      var el = document.getElementById(ids[i]);
-      if (el) el.style.display = 'none';
-    }
-    var target = 'page-home';
-    if (hash === 'create') target = 'page-create';
-    else if (hash.indexOf('view') === 0) target = 'page-view';
-    else if (hash === 'tricks') target = 'page-tricks';
-    else if (hash === 'maps') target = 'page-maps';
-    else if (hash === 'mechanics') target = 'page-mechanics';
-    else if (hash === 'gm') target = 'page-gm';
-    var el = document.getElementById(target);
-    if (el) el.style.display = 'block';
-  }
-  window._misteriumMinimalRoute = route;
-  window.addEventListener('hashchange', route);
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', route);
-  } else {
-    route();
-  }
-})();
+window.onerror = function(msg, url, line, col, err) {
+  var d = document.createElement('div');
+  d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#2a0000;color:#ff6666;padding:16px 20px;font-family:monospace;font-size:14px;white-space:pre-wrap;border-bottom:3px solid #ff3333;max-height:40vh;overflow:auto;';
+  d.textContent = 'JS ERROR @ line ' + line + ', col ' + col + ':\n' + msg + (err && err.stack ? '\n\n' + err.stack : '');
+  d.onclick = function() { d.remove(); };
+  document.body.appendChild(d);
+};
 </script>
 <script>
 // =====================================================================
@@ -2751,54 +2730,40 @@ function markUnsaved() { hasUnsavedChanges = true; }
 // ROUTING
 // =====================================================================
 function navigate() {
-  try {
-    const hash = (location.hash || '#home').slice(1);
-    ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
+  const hash = (location.hash || '#home').slice(1);
+  ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 
-    if (hash === 'home' || hash === '') {
-      const home = document.getElementById('page-home');
-      if (home) home.style.display = 'block';
-    } else if (hash === 'create') {
-      const el = document.getElementById('page-create');
-      if (el) { el.style.display = 'block'; initCreatePage(); }
-    } else if (hash.startsWith('view')) {
-      const el = document.getElementById('page-view');
-      if (el) {
-        el.style.display = 'block';
-        const parts = hash.split('/');
-        if (parts[1]) {
-          const inp = document.getElementById('view-password-input');
-          if (inp) { inp.value = parts[1]; loadCard(); }
-        } else {
-          const login = document.getElementById('view-login');
-          const card = document.getElementById('view-card');
-          if (login) login.style.display = 'block';
-          if (card) card.style.display = 'none';
-        }
-      }
-    } else if (hash === 'tricks') {
-      const el = document.getElementById('page-tricks');
-      if (el) { el.style.display = 'block'; renderTricksPage(); }
-    } else if (hash === 'maps') {
-      const el = document.getElementById('page-maps');
-      if (el) { el.style.display = 'block'; restorePlayerMaps(); }
-    } else if (hash === 'mechanics') {
-      const el = document.getElementById('page-mechanics');
-      if (el) { el.style.display = 'block'; renderMechanicsSkills(); }
-    } else if (hash === 'gm') {
-      const el = document.getElementById('page-gm');
-      if (el) el.style.display = 'block';
+  if (hash === 'home' || hash === '') {
+    document.getElementById('page-home').style.display = 'block';
+  } else if (hash === 'create') {
+    document.getElementById('page-create').style.display = 'block';
+    initCreatePage();
+  } else if (hash.startsWith('view')) {
+    document.getElementById('page-view').style.display = 'block';
+    const parts = hash.split('/');
+    if (parts[1]) {
+      document.getElementById('view-password-input').value = parts[1];
+      loadCard();
     } else {
-      const home = document.getElementById('page-home');
-      if (home) home.style.display = 'block';
+      document.getElementById('view-login').style.display = 'block';
+      document.getElementById('view-card').style.display = 'none';
     }
-  } catch (err) {
-    const home = document.getElementById('page-home');
-    if (home) home.style.display = 'block';
-    console.error('navigate error:', err);
+  } else if (hash === 'tricks') {
+    document.getElementById('page-tricks').style.display = 'block';
+    renderTricksPage();
+  } else if (hash === 'maps') {
+    document.getElementById('page-maps').style.display = 'block';
+    restorePlayerMaps();
+  } else if (hash === 'mechanics') {
+    document.getElementById('page-mechanics').style.display = 'block';
+    renderMechanicsSkills();
+  } else if (hash === 'gm') {
+    document.getElementById('page-gm').style.display = 'block';
+  } else {
+    document.getElementById('page-home').style.display = 'block';
   }
 }
 
@@ -2852,9 +2817,6 @@ function restorePlayerMaps() {
   } catch(e) {}
 }
 
-if (window._misteriumMinimalRoute) {
-  window.removeEventListener('hashchange', window._misteriumMinimalRoute);
-}
 window.addEventListener('hashchange', navigate);
 window.addEventListener('beforeunload', function(e) {
   if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; }
@@ -2870,7 +2832,6 @@ function initCreatePage() {
   const trickItems = dlState['create-tricks']?.items;
   dlInit('create-tricks', (trickItems?.length ? [trickItems[0]] : ['']), { placeholder: 'Nazwa sztuczki...', addLabel: '+ Dodaj sztuczkę', maxItems: 1 });
   renderSkills();
-  handleAttendance();
 }
 
 // =====================================================================
@@ -3331,9 +3292,7 @@ async function submitCard() {
   try {
     const url = SCRIPT_URL + '?action=create&payload=' + encodeURIComponent(JSON.stringify(payload));
     const response = await fetch(url);
-    const text = await response.text();
-    let result;
-    try { result = JSON.parse(text); } catch (_) { throw new Error('Serwer zwrócił nieprawidłową odpowiedź'); }
+    const result = await response.json();
     if (result.ok) {
       showPasswordResult(password);
     } else {
@@ -3375,9 +3334,7 @@ async function loadCard() {
 
   try {
     const response = await fetch(SCRIPT_URL + '?action=read&password=' + encodeURIComponent(pw));
-    const text = await response.text();
-    let result;
-    try { result = JSON.parse(text); } catch (_) { throw new Error('Serwer zwrócił nieprawidłową odpowiedź'); }
+    const result = await response.json();
     if (result.ok) {
       viewPassword = pw;
       renderViewCard(result.data);
@@ -3561,9 +3518,7 @@ async function saveCard() {
   try {
     const url = SCRIPT_URL + '?action=update&payload=' + encodeURIComponent(JSON.stringify(payload));
     const response = await fetch(url);
-    const text = await response.text();
-    let result;
-    try { result = JSON.parse(text); } catch (_) { throw new Error('Serwer zwrócił nieprawidłową odpowiedź'); }
+    const result = await response.json();
     if (result.ok) {
       btn.textContent = '✓ Zapisano';
       btn.style.background = '#2d6a2d';
