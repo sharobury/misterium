@@ -388,6 +388,16 @@ h2 {
 .player-map-unlock-msg.err { color: #e07070; }
 #page-maps .card { max-width: 600px; }
 
+/* Music page */
+#page-music .card { max-width: 720px; }
+.music-act { background: #1a2332; border: 1px solid #2a3a4d; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+.music-act h3 { font-size: 1.2rem; color: #7eb8da; margin: 0 0 6px; }
+.music-act-desc { font-size: 14px; color: #8b9eb0; margin-bottom: 12px; line-height: 1.5; }
+.music-spotify { width: 100%; min-height: 352px; border-radius: 12px; border: none; background: #1a2332; }
+.music-soundboard { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.music-soundboard iframe { border: none; width: 100%; height: 110px; border-radius: 8px; }
+@media (max-width: 600px) { .music-soundboard { grid-template-columns: repeat(2, 1fr); } }
+
 @media print {
   body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; font-size: 9pt; }
   .page { display: none !important; }
@@ -510,6 +520,7 @@ h2 {
     <button class="nav-btn" onclick="location.hash='#tricks'" style="background:#2a2a2a;color:#aaa;">📜 Lista sztuczek</button>
     <button class="nav-btn" onclick="location.hash='#mechanics'" style="background:#2a2a2a;color:#aaa;">⚙️ Mechanika (MG)</button>
     <button class="nav-btn" onclick="location.hash='#gm'" style="background:#2a2a2a;color:#aaa;">🎭 Mistrz gry i fabuła</button>
+    <button class="nav-btn" onclick="location.hash='#music'" style="background:#2a2a2a;color:#aaa;">🎵 Muzyka na sesję</button>
   </div>
 </div>
 
@@ -1045,6 +1056,61 @@ h2 {
   </div>
 </div>
 
+<!-- ===== PAGE: MUZYKA ===== -->
+<div id="page-music" class="page">
+  <div class="card">
+    <button class="back-link" onclick="location.hash='#home'">← Powrót</button>
+    <h2>🎵 Muzyka na sesję</h2>
+    <p style="color:#888;font-size:14px;margin-top:-6px;margin-bottom:20px;">Spotify i dźwięki do odtwarzania podczas sesji.</p>
+
+    <div class="music-act">
+      <h3>Dźwięki – MyInstants</h3>
+      <div class="music-soundboard">
+        <iframe src="https://www.myinstants.com/instant/akh-26815/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/all-abord-crazy-train-41070/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/deep-meow-35837/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/fahhhhhhh-84270/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/final-fantasy-7-battle-93311/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/final-fantasy-victoria-34544/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/final-fantasy-victory-93854/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/mog-4939/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/tidus-laugh-japanese/embed/" scrolling="no"></iframe>
+        <iframe src="https://www.myinstants.com/instant/windows-xp-start/embed/" scrolling="no"></iframe>
+      </div>
+    </div>
+
+    <div class="music-act">
+      <h3>Prolog – Przybycie</h3>
+      <p class="music-act-desc">Ciepłe powitanie, intryga, lekka przygoda.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5fEkyTeRzYV32RcT8c5tTn?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="music-act">
+      <h3>Akt I – Napięcie, katastrofa</h3>
+      <p class="music-act-desc">Determinacja, pierwsze misje.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5jTYZA6b4VoSRnR5TMldgb?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="music-act">
+      <h3>Akt II – Zdrada, konflikt</h3>
+      <p class="music-act-desc">Ciemniej, walka o przetrwanie.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/4XgGOMRY7H4hl6OQi5wb2Z?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="music-act">
+      <h3>Akt III – Climax</h3>
+      <p class="music-act-desc">Epicki finał.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/3B61kSKTxlY36cYgzvf3cP?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="music-act">
+      <h3>Epilog – Odbudowa</h3>
+      <p class="music-act-desc">Spokój, zamknięcie, nadzieja.</p>
+      <iframe class="music-spotify" src="https://open.spotify.com/embed/album/5fEkyTeRzYV32RcT8c5tTn?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
 <!-- ===== PAGE: GM SCENARIO ===== -->
 <div id="page-gm" class="page">
   <div class="card">
@@ -1082,6 +1148,7 @@ h2 {
         <a onclick="document.getElementById('gm-epilogue').scrollIntoView({behavior:'smooth'})">Epilog</a>
         <a onclick="document.getElementById('gm-maps').scrollIntoView({behavior:'smooth'})">Mapy</a>
         <a onclick="document.getElementById('gm-cheatsheet').scrollIntoView({behavior:'smooth'})">Ściąga MG — testy i trudności</a>
+        <a onclick="location.hash='#music'">🎵 Muzyka na sesję</a>
       </div>
 
       <hr class="gm-divider">
@@ -2876,7 +2943,7 @@ function markUnsaved() { hasUnsavedChanges = true; }
 // =====================================================================
 function navigate() {
   const hash = (location.hash || '#home').slice(1);
-  ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm'].forEach(id => {
+  ['page-home','page-create','page-view','page-tricks','page-maps','page-mechanics','page-gm','page-music'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -2907,6 +2974,8 @@ function navigate() {
     renderMechanicsSkills();
   } else if (hash === 'gm') {
     document.getElementById('page-gm').style.display = 'block';
+  } else if (hash === 'music') {
+    document.getElementById('page-music').style.display = 'block';
   } else {
     document.getElementById('page-home').style.display = 'block';
   }
@@ -3020,17 +3089,19 @@ function changeLevel(key, delta) {
 
 function addCustomSkill(key) {
   const input = document.getElementById('custom-input-' + key);
+  if (!input) return;
   const val = input.value.trim();
   if (!val) return;
   if (!customEntries[key]) customEntries[key] = [];
   customEntries[key].push(val);
   input.value = '';
-  renderSkills();
+  if (viewSkillsContext) { renderViewSkills(); markUnsaved(); } else renderSkills();
 }
 
 function removeCustomSkill(key, index) {
+  if (!customEntries[key]) return;
   customEntries[key].splice(index, 1);
-  renderSkills();
+  if (viewSkillsContext) { renderViewSkills(); markUnsaved(); } else renderSkills();
 }
 
 function renderSkills() {
@@ -3176,9 +3247,11 @@ function getMagicCardsHtml() {
   return html;
 }
 
+var viewSkillsContext = null;
 function renderSkillsView(skillsStr, containerId, stats, opts) {
   opts = opts || {};
   const magicEnabled = opts.magicEnabled || false;
+  const editable = opts.editable || false;
   const container = document.getElementById(containerId);
   if (!container) return;
   const viewLevels = {};
@@ -3193,6 +3266,13 @@ function renderSkillsView(skillsStr, containerId, stats, opts) {
       }
     });
   }
+  if (editable) {
+    skillGroups.forEach(g => { skillLevels[g.name] = viewLevels[g.name] || 0; });
+    skillGroups.forEach(g => {
+      if (g.custom) customEntries[g.name] = viewCustom[g.name] ? [...viewCustom[g.name]] : [];
+    });
+    viewSkillsContext = { containerId, stats, opts };
+  }
   const byGroup = {};
   skillGroups.forEach(g => {
     if (!byGroup[g.stat]) byGroup[g.stat] = [];
@@ -3206,22 +3286,27 @@ function renderSkillsView(skillsStr, containerId, stats, opts) {
     const boxesHtml = stats ? statTestBoxes(baseVal) : '';
     html += '<div style="margin-bottom:14px;"><div style="font-size:13px;color:' + color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;border-bottom:1px solid ' + color + '44;padding-bottom:2px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">' + statName + boxesHtml + '</div><div class="skills-grid">';
     groups.forEach(g => {
-      const level = viewLevels[g.name] || 0;
-      const customs = viewCustom[g.name] || [];
+      const level = editable ? (skillLevels[g.name] || 0) : (viewLevels[g.name] || 0);
+      const customs = editable && g.custom ? (customEntries[g.name] || []) : (viewCustom[g.name] || []);
       const allSkills = [...g.skills, ...customs];
       let skillsHtml;
+      const wiedzaEditable = editable && g.custom;
       if (allSkills.length > 0) {
         skillsHtml = allSkills.map((s, i) => {
           const isCustom = i >= g.skills.length;
-          return '<span class="skill-tag"' + (isCustom ? ' style="color:#b0a0e0;border-color:#4a4a6a;"' : '') + '>' + s + '</span>';
+          if (wiedzaEditable && isCustom) {
+            return '<span class="skill-tag" style="color:#b0a0e0;border-color:#4a4a6a;">' + esc(s) + '<span class="no-print" onclick="removeCustomSkill(\'' + g.name + '\',' + (i - g.skills.length) + ')" style="color:#555;cursor:pointer;margin-left:3px;font-size:10px;">✕</span></span>';
+          }
+          return '<span class="skill-tag"' + (isCustom ? ' style="color:#b0a0e0;border-color:#4a4a6a;"' : '') + '>' + esc(s) + '</span>';
         }).join('');
       } else {
         skillsHtml = '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
       }
+      const customInputHtml = wiedzaEditable ? '<div class="no-print" style="display:flex;gap:4px;margin-top:6px;"><input id="custom-input-' + g.name + '" placeholder="Dodaj tag wiedzy..." style="flex:1;font-size:11px;padding:3px 6px;background:#1a1a1a;color:#ccc;border:1px solid #444;border-radius:4px;font-family:serif;"><button onclick="addCustomSkill(\'' + g.name + '\')" style="padding:2px 8px;font-size:13px;background:#444;border:none;border-radius:4px;color:white;cursor:pointer;margin-top:0;">+</button></div>' : '';
       html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
         (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
         '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
-        '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
+        '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' + customInputHtml +
         '<div style="text-align:center;margin-top:6px;"><span style="color:' + (level > 0 ? '#ffd700' : '#555') + ';font-size:16px;font-weight:bold;">' + level + '</span></div>' +
         '</div>';
     });
@@ -3233,6 +3318,21 @@ function renderSkillsView(skillsStr, containerId, stats, opts) {
       '<div class="skills-grid" id="view-magic-grid">' + getMagicCardsHtml() + '</div></div>';
   }
   container.innerHTML = html;
+}
+
+function renderViewSkills() {
+  if (!viewSkillsContext) return;
+  const skillsStr = getViewSkillsString();
+  renderSkillsView(skillsStr, viewSkillsContext.containerId, viewSkillsContext.stats, viewSkillsContext.opts);
+}
+
+function getViewSkillsString() {
+  return skillGroups.map(g => {
+    const lvl = skillLevels[g.name] || 0;
+    if (lvl === 0) return null;
+    const cs = g.custom ? (customEntries[g.name] || []) : [];
+    return cs.length > 0 ? g.name + ':' + lvl + ' (' + cs.join('; ') + ')' : g.name + ':' + lvl;
+  }).filter(Boolean).join(', ') || 'brak';
 }
 
 // =====================================================================
@@ -3705,7 +3805,7 @@ function renderViewCard(data) {
     }
   } catch {}
   renderViewMagic(magicData);
-  renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl }, { magicEnabled });
+  renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl }, { magicEnabled, editable: true });
 
   c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
   requestAnimationFrame(() => {
@@ -3732,6 +3832,7 @@ async function saveCard() {
     wounds: JSON.stringify(getWoundsState()),
     magic_enabled: document.getElementById('view-magic-toggle').value,
     magic_skills: JSON.stringify(magicLevels),
+    skills: getViewSkillsString(),
   };
 
   try {
