@@ -274,6 +274,10 @@ h2 {
   font-size: 13px;
   min-width: 110px;
 }
+.wound-checks {
+  display: flex;
+  margin-left: auto;
+}
 .wound-check {
   width: 20px;
   height: 20px;
@@ -420,6 +424,7 @@ h2 {
   .wound-check { accent-color: #c00 !important; width: 14px !important; height: 14px !important; }
   .wound-label { font-size: 8pt !important; min-width: 80px !important; }
   .wound-row { margin-bottom: 1px !important; gap: 4px !important; }
+  .wound-checks { margin-left: auto !important; }
   .skill-tag { background: #f0f0f0 !important; border-color: #ccc !important; color: #333 !important; font-size: 7pt !important; padding: 1px 4px !important; margin: 1px 0 !important; }
   .skills-grid { grid-template-columns: repeat(3, 1fr) !important; width: 100% !important; gap: 4px !important; }
   .skills-grid > div { padding: 4px !important; }
@@ -2703,8 +2708,9 @@ function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function pickUnique(arr, count) { return [...arr].sort(() => Math.random() - 0.5).slice(0, count); }
 
 function autoGrow(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
+  el.style.overflow = 'hidden';
+  el.style.height = '1px';
+  el.style.height = Math.max(el.scrollHeight, parseInt(el.style.minHeight) || 60) + 'px';
 }
 function autoGrowById(id) {
   const el = document.getElementById(id);
@@ -3436,7 +3442,7 @@ function renderViewCard(data) {
   h += '<div id="view-wounds" style="margin-top:10px;">';
   WOUND_LEVELS.forEach(w => {
     const checked = woundsData[w.key] || [];
-    h += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div>';
+    h += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div class="wound-checks">';
     for (let i = 0; i < w.max; i++) {
       h += '<input type="checkbox" class="wound-check" data-level="' + w.key + '" data-idx="' + i + '"' + (checked[i] ? ' checked' : '') + ' onchange="markUnsaved()">';
     }
@@ -3448,7 +3454,7 @@ function renderViewCard(data) {
     h += '<div style="margin-top:10px;">';
     MAGIC_WOUND_LEVELS.forEach(w => {
       const checked = woundsData[w.key] || [];
-      h += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div>';
+      h += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div class="wound-checks">';
       for (let i = 0; i < w.max; i++) {
         h += '<input type="checkbox" class="wound-check" data-level="' + w.key + '" data-idx="' + i + '"' + (checked[i] ? ' checked' : '') + ' onchange="markUnsaved()">';
       }
@@ -3470,11 +3476,11 @@ function renderViewCard(data) {
   h += '<div class="print-col print-col-right">';
   h += '<div class="print-portrait-area print-notes-area" style="display:flex;flex-direction:column;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Portret</div>' +
-    '<div style="flex:1;min-height:120px;"></div>' +
+    '<div style="flex:1;min-height:220px;"></div>' +
     '</div>';
   h += '<div class="print-notes-area print-no-frame" style="margin-top:12px;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Bio postaci</div>' +
-    '<textarea id="view-bio" oninput="autoGrow(this);markUnsaved()" style="width:100%;min-height:60px;margin-top:6px;box-sizing:border-box;resize:vertical;background:transparent;border:none;border-bottom:1px solid #444;color:#ccc;font-family:serif;font-size:13px;line-height:1.5;">' + esc(data.bio) + '</textarea>' +
+    '<textarea id="view-bio" oninput="autoGrow(this);markUnsaved()" style="width:100%;min-height:60px;margin-top:6px;box-sizing:border-box;resize:vertical;overflow:hidden;background:transparent;border:none;border-bottom:1px solid #444;color:#ccc;font-family:serif;font-size:13px;line-height:1.5;">' + esc(data.bio) + '</textarea>' +
     '</div>';
   h += '<div class="print-notes-area print-no-frame" style="margin-top:12px;">' +
     '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Notatki</div>' +
@@ -3549,6 +3555,10 @@ function renderViewCard(data) {
   renderSkillsView(data.skills, 'view-skills-container', { stat_cialo: data.stat_cialo, stat_zdolnosc: data.stat_zdolnosc, stat_psycha: data.stat_psycha, stat_rozum: data.stat_rozum, stat_zmysl: data.stat_zmysl }, { magicEnabled });
 
   c.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
+  requestAnimationFrame(() => {
+    const bio = document.getElementById('view-bio');
+    if (bio) autoGrow(bio);
+  });
   hasUnsavedChanges = false;
 }
 
@@ -3627,7 +3637,7 @@ function injectMagicWoundsSection() {
   if (!container) return;
   let html = '<div id="view-magic-wounds"><span style="font-size:18px;color:#8888bb;">✨ Magiczne obrażenia</span><div style="margin-top:10px;">';
   MAGIC_WOUND_LEVELS.forEach(w => {
-    html += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div>';
+    html += '<div class="wound-row"><span class="wound-label" style="color:' + w.color + ';">' + w.label + '</span><div class="wound-checks">';
     for (let i = 0; i < w.max; i++) {
       html += '<input type="checkbox" class="wound-check" data-level="' + w.key + '" data-idx="' + i + '" onchange="markUnsaved()">';
     }
@@ -3689,6 +3699,7 @@ function renderTricksPage() {
 function printPage(pageId) {
   document.body.dataset.printPage = pageId;
   if (pageId === 'view') {
+    autoGrowById('view-bio');
     ['view-notes', 'view-tricks', 'view-gear', 'view-weapons'].forEach(containerId => {
       const container = document.getElementById(containerId);
       if (container) {
