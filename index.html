@@ -391,7 +391,7 @@ h2 {
   body[data-print-page="mechanics"] #page-mechanics { display: block !important; }
   body[data-print-page="gm"] #page-gm { display: block !important; }
   .card { max-width: 100% !important; background: white !important; box-shadow: none !important; border: none !important; padding: 0 !important; border-radius: 0 !important; }
-  .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login { display: none !important; }
+  .back-link, .no-print, .dynamic-add, .dynamic-remove, #view-login, .print-hide-gracz { display: none !important; }
   .print-header { display: block !important; text-align: center; font-size: 8pt; color: #888 !important; text-transform: uppercase; letter-spacing: 2px; padding-bottom: 4px; border-bottom: 1px solid #ccc; margin-bottom: 6px; }
 
   .print-page { display: flex !important; flex-wrap: wrap; gap: 0 12px; min-height: calc(297mm - 16mm); align-content: flex-start; }
@@ -430,6 +430,12 @@ h2 {
   .dynamic-item { margin-bottom: 1px !important; }
   .dynamic-item textarea { border-color: #ccc !important; background: #f9f9f9 !important; color: black !important; font-size: 8pt !important; padding: 2px 5px !important; }
   #view-card span[style*="font-size:18px"] { font-size: 10pt !important; }
+  .print-difficulty-cheat { font-size: 7pt !important; padding: 4px !important; }
+  .print-difficulty-cheat > div { min-width: 40px !important; font-size: 7pt !important; }
+  .skill-level-box { width: 10px !important; height: 10px !important; }
+  .skill-level-box.checked { background: #333 !important; }
+  .print-gear-weapons { border-color: #ccc !important; background: #f9f9f9 !important; }
+  .print-portrait-area { border-color: #ccc !important; }
 
   /* Mechanics page print */
   #page-mechanics .card { padding: 0 !important; column-count: 2; column-gap: 12px; }
@@ -664,6 +670,13 @@ h2 {
     <h2>🗺️ Mapy</h2>
     <p style="color:#888;font-size:13px;margin-top:-8px;margin-bottom:20px;line-height:1.6;">Odkrywaj lokacje w miarę postępów sesji. MG poda hasło do kolejnej mapy, gdy dotrzecie w nowe miejsce.</p>
 
+    <!-- Unlock input — na górze -->
+    <div class="player-map-unlock">
+      <input id="maps-password-input" placeholder="Hasło do kolejnej lokacji" onkeydown="if(event.key==='Enter')unlockPlayerMap()">
+      <button onclick="unlockPlayerMap()" style="background:#27ae60;">Odkryj</button>
+    </div>
+    <div id="maps-unlock-msg" class="player-map-unlock-msg"></div>
+
     <!-- MAPA 1: Polana Misterium (widoczna od razu) -->
     <div id="player-map-1" class="player-map-card">
       <div class="player-map-title">Polana Misterium</div>
@@ -681,13 +694,6 @@ h2 {
           w las</div>
       </div>
     </div>
-
-    <!-- Unlock input -->
-    <div class="player-map-unlock">
-      <input id="maps-password-input" placeholder="Hasło do kolejnej lokacji" onkeydown="if(event.key==='Enter')unlockPlayerMap()">
-      <button onclick="unlockPlayerMap()" style="background:#27ae60;">Odkryj</button>
-    </div>
-    <div id="maps-unlock-msg" class="player-map-unlock-msg"></div>
 
     <!-- MAPA 2: Las (hasło: LAS) -->
     <div id="player-map-2" class="player-map-card hidden">
@@ -725,29 +731,37 @@ h2 {
       </div>
     </div>
 
-    <!-- MAPA 4: Rezydencja (hasło: REZYDENCJA) -->
+    <!-- MAPA 4: Rezydencja zewnątrz (hasło: REZYDENCJA) -->
     <div id="player-map-4" class="player-map-card hidden">
-      <div class="player-map-title">Posiadłość Hrabiego Morrigana</div>
-      <div class="player-map-desc">Dzielnica Brązowa. Trzypiętrowa rezydencja z ogrodami i murem. Brama, wejście boczne od kuchni. Kolacja w toku — chaos i kelnerzy.</div>
+      <div class="player-map-title">Posiadłość Hrabiego — zewnątrz</div>
+      <div class="player-map-desc">Dzielnica Brązowa. Trzypiętrowa rezydencja z ogrodami i murem. Brama, wejście boczne od kuchni. Powozy, goście na kolacji.</div>
       <div class="player-map-img-wrap">
-        <img class="player-map-img" src="images/maps/map-4-rezydencja.png" alt="Posiadłość Hrabiego — zewnątrz" onerror="this.style.display='none'; var n=this.nextElementSibling; if(n&&n.tagName==='IMG')n.style.display='none'; var a=this.parentElement.querySelector('.player-map-ascii'); if(a)a.style.display='block';">
-        <img class="player-map-img" src="images/maps/map-5-interior.png" alt="Posiadłość Hrabiego — wnętrze" style="margin-top:8px;" onerror="this.style.display='none';">
+        <img class="player-map-img" src="images/maps/map-4-rezydencja.png" alt="Posiadłość Hrabiego — zewnątrz" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
         <div class="player-map-ascii" style="display:none;">    BRAMA
        │
   ┌────┴────┐
   │ DZIEDZ. │  powozy, goście
   │    │    │
   │  REZYDENCJA
-  │  parter: sala bankietowa
-  │  piętro: gabinet Hrabiego
-  │  piwnica: skarbiec
   └─────────┘
    wejście boczne (kuchnia)</div>
       </div>
     </div>
 
-    <!-- MAPA 5: Skarbiec (hasło: SKARBIEC) -->
+    <!-- MAPA 5: Rezydencja wnętrze (hasło: WNĘTRZE) -->
     <div id="player-map-5" class="player-map-card hidden">
+      <div class="player-map-title">Posiadłość Hrabiego — wnętrze</div>
+      <div class="player-map-desc">Parter: sala bankietowa, kolacja w toku — chaos i kelnerzy. Piętro: gabinet Hrabiego. Piwnica: skarbiec.</div>
+      <div class="player-map-img-wrap">
+        <img class="player-map-img" src="images/maps/map-5-interior.png" alt="Posiadłość Hrabiego — wnętrze" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+        <div class="player-map-ascii" style="display:none;">  parter: sala bankietowa
+  piętro: gabinet Hrabiego
+  piwnica: skarbiec</div>
+      </div>
+    </div>
+
+    <!-- MAPA 6: Skarbiec (hasło: SKARBIEC) -->
+    <div id="player-map-6" class="player-map-card hidden">
       <div class="player-map-title">Skarbiec</div>
       <div class="player-map-desc">Podziemna komnata pod rezydencją. Na piedestale — Serce z Gliny. Posąg z brązu i obsydianu. Ciężki, emanuje czymś dziwnym.</div>
       <div class="player-map-img-wrap">
@@ -1769,8 +1783,121 @@ PIĘTRO 2 — gabinet Hrabiego
       <div id="gm-maps" class="gm-act" style="border-left-color:#2980b9;">
         <div class="gm-act-title" style="color:#2980b9;">Mapy</div>
 
-        <div class="gm-tip" style="margin-top:0;">
-          <b style="color:#e0a040;">Mapy dla graczy</b> — strona <b>#maps</b>. Gracze widzą Polanę od razu. Podaj im hasła, gdy dotrą na miejsce: <b>LAS</b> → Las · <b>MIASTO</b> → Tantalos · <b>REZYDENCJA</b> → Posiadłość · <b>SKARBIEC</b> → Skarbiec.
+        <div style="background:#1a2a1a;border:1px solid #333;border-radius:6px;padding:14px 18px;margin:12px 0;">
+          <b style="color:#ffd700;">Wszystkie hasła — ściąga MG</b>
+          <table style="width:100%;margin-top:10px;color:#ccc;font-size:14px;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;color:#888;">Panel MG (scenariusz)</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>GOLEM</b></td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Polana</td><td style="text-align:right;color:#888;">widoczna od razu</td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Las</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>LAS</b></td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Tantalos</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>MIASTO</b></td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Posiadłość (zewnątrz)</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>REZYDENCJA</b></td></tr>
+            <tr style="border-bottom:1px solid #333;"><td style="padding:6px 0;">Mapy graczy — Posiadłość (wnętrze)</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>WNĘTRZE</b></td></tr>
+            <tr><td style="padding:6px 0;">Mapy graczy — Skarbiec</td><td style="text-align:right;font-family:monospace;letter-spacing:2px;"><b>SKARBIEC</b></td></tr>
+          </table>
+          <p style="color:#888;font-size:12px;margin:10px 0 0;line-height:1.5;">Strona <b>#maps</b> — gracze wpisują hasła w pole na górze. Podawaj po kolei, gdy dotrą na miejsce.</p>
+        </div>
+
+        <div class="gm-section" style="border-left-color:#27ae60;">
+          <div class="gm-section-title" style="color:#27ae60;">Mapy graczy — podgląd (te same obrazy co widzą gracze)</div>
+          <p style="color:#888;font-size:12px;margin:0 0 12px;line-height:1.5;">Wszystkie 6 map w kolejności odblokowywania. Gracze widzą je po wpisaniu hasła.</p>
+
+          <div class="player-map-card" style="margin:16px 0;">
+            <div class="player-map-title">1. Polana Misterium</div>
+            <div class="player-map-desc">Tajna polana w Lesie Cichych Dębów. Tu zwołano Misterium — zgromadzenie przedstawicieli gildii złodziejskich. Kamienny stół, latarnie ze świetlikami, zapach wilgoci i spisku.</div>
+            <div class="player-map-img-wrap">
+              <img class="player-map-img" src="images/maps/map-1-polana.png" alt="Polana Misterium" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+              <div class="player-map-ascii" style="display:none;">        🌲  🌲
+     🌲      ⬡      🌲
+    🌲   POLANA   🌲
+     🌲  MISTERIUM  🌲
+      🌲  kamienny  🌲
+       🌲  stół  🌲
+        🌲🌲🌲🌲
+         ścieżki
+          w las</div>
+            </div>
+          </div>
+
+          <div class="player-map-card" style="margin:16px 0;">
+            <div class="player-map-title">2. Las Cichych Dębów</div>
+            <div class="player-map-desc">Ścieżka przez gęsty las nocą. Dęby, korzenie, ciemność. Droga prowadzi w stronę murów Tantalos.</div>
+            <div class="player-map-img-wrap">
+              <img class="player-map-img" src="images/maps/map-2-las-i-brama.png" alt="Las Cichych Dębów" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+              <div class="player-map-ascii" style="display:none;">  🌲🌲🌲
+ 🌲  ·····  🌲
+🌲  ścieżka  🌲
+ 🌲  do miasta  🌲
+  🌲·······🌲
+   🌲🌲🌲🌲
+    │
+    ▼
+  MURY TANTALOS</div>
+            </div>
+          </div>
+
+          <div class="player-map-card" style="margin:16px 0;">
+            <div class="player-map-title">3. Tantalos — wejście do miasta</div>
+            <div class="player-map-desc">Mury miasta. Brama główna, stare pęknięcia w murze przy Dzielnicy Rybaków, kanały pod rzeką. Straż na bramach.</div>
+            <div class="player-map-img-wrap">
+              <img class="player-map-img" src="images/maps/map-3-tantalos.png" alt="Tantalos" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+              <div class="player-map-ascii" style="display:none;">  ═══ MURY ═══
+ ║  BRAMA  ║  pęknięcie  ║ kanały
+ ║ główna  ║  w murze    ║ (pod rzeką)
+ ╠═════════╩════════════╣
+ ║                     ║
+ ║    TANTALOS         ║
+ ║   ulice, straże     ║
+ ║   listy gończe?     ║
+ ╚═════════════════════╝</div>
+            </div>
+          </div>
+
+          <div class="player-map-card" style="margin:16px 0;">
+            <div class="player-map-title">4. Posiadłość Hrabiego — zewnątrz</div>
+            <div class="player-map-desc">Dzielnica Brązowa. Trzypiętrowa rezydencja z ogrodami i murem. Brama, wejście boczne od kuchni. Powozy, goście na kolacji.</div>
+            <div class="player-map-img-wrap">
+              <img class="player-map-img" src="images/maps/map-4-rezydencja.png" alt="Posiadłość Hrabiego — zewnątrz" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+              <div class="player-map-ascii" style="display:none;">    BRAMA
+       │
+  ┌────┴────┐
+  │ DZIEDZ. │  powozy, goście
+  │    │    │
+  │  REZYDENCJA
+  └─────────┘
+   wejście boczne (kuchnia)</div>
+            </div>
+          </div>
+
+          <div class="player-map-card" style="margin:16px 0;">
+            <div class="player-map-title">5. Posiadłość Hrabiego — wnętrze</div>
+            <div class="player-map-desc">Parter: sala bankietowa, kolacja w toku — chaos i kelnerzy. Piętro: gabinet Hrabiego. Piwnica: skarbiec.</div>
+            <div class="player-map-img-wrap">
+              <img class="player-map-img" src="images/maps/map-5-interior.png" alt="Posiadłość Hrabiego — wnętrze" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+              <div class="player-map-ascii" style="display:none;">  parter: sala bankietowa
+  piętro: gabinet Hrabiego
+  piwnica: skarbiec</div>
+            </div>
+          </div>
+
+          <div class="player-map-card" style="margin:16px 0;">
+            <div class="player-map-title">6. Skarbiec</div>
+            <div class="player-map-desc">Podziemna komnata pod rezydencją. Na piedestale — Serce z Gliny. Posąg z brązu i obsydianu. Ciężki, emanuje czymś dziwnym.</div>
+            <div class="player-map-img-wrap">
+              <img class="player-map-img" src="images/maps/map-6-vault.png" alt="Skarbiec" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='block';">
+              <div class="player-map-ascii" style="display:none;">  ┌─────────────┐
+  │   SKARBIEC   │
+  │             │
+  │    [    ]   │
+  │    [ARTE-]  │
+  │    [FAKT ]  │
+  │    [    ]   │
+  │  piedestał  │
+  │             │
+  └─────────────┘
+  drzwi z zamkiem
+  (klucz u Hrabiego)</div>
+            </div>
+          </div>
         </div>
 
         <div class="gm-section" style="border-left-color:#27ae60;">
@@ -1928,21 +2055,6 @@ PIĘTRO 2 — gabinet Hrabiego
               <tr><td style="padding:4px 0;">Epilog</td><td style="text-align:right;color:#e0a040;">~15 min</td></tr>
             </table>
             <div style="color:#888;font-size:13px;margin-top:8px;">Razem: ~4.5-5.5h gry. Zostaw bufor na improwizację i RP momenty.</div>
-          </div>
-        </div>
-
-        <div class="gm-section" style="border-left-color:#8e44ad;">
-          <div class="gm-section-title" style="color:#8e44ad;">Złote zasady MG na tę sesję</div>
-          <div style="color:#ccc;font-size:14px;line-height:1.8;">
-            <ol style="margin:6px 0;padding-left:20px;">
-              <li><b>Nie blokuj kreatywności</b> — jeśli gracz wymyśli coś sprytnego, a ty nie masz na to reguły, wymyśl trudność na poczekaniu i daj szansę.</li>
-              <li><b>Każdy gracz musi mieć „moment chwały"</b> — jeśli ktoś jest cichy, daj mu sytuację, w której jego umiejętność jest kluczowa.</li>
-              <li><b>Nie pozwól, by walka zdominowała</b> — to sesja złodziejska, nie wojenna. Spryt > siła.</li>
-              <li><b>Golem MUSI się obudzić</b> — to kluczowy twist. Nie pozwól graczom go ominąć. Ale daj im kontrolę nad TYM, JAK sobie z nim radzą.</li>
-              <li><b>Humor w stylu Pratchetta</b> — świat jest absurdalny, demony w aparatach, złote szczury. Nie bój się żartów. Poważne momenty brzmią lepiej na tle absurdu.</li>
-              <li><b>Tempo</b> — jeśli gracze się grzęzną w planowaniu, niech coś się stanie (patrol, hałas, ktoś ich zauważy). Napędzaj akcję.</li>
-              <li><b>Wady postaci</b> — aktywnie wykorzystuj wady graczy (kichanie Madziok, omdlenia Marceyli, wyrzuty Kubola). To najśmieszniejsze momenty sesji.</li>
-            </ol>
           </div>
         </div>
 
@@ -2681,7 +2793,7 @@ function unlockGm() {
   }
 }
 
-const PLAYER_MAP_PASSWORDS = { 'LAS': 2, 'MIASTO': 3, 'REZYDENCJA': 4, 'SKARBIEC': 5 };
+const PLAYER_MAP_PASSWORDS = { 'LAS': 2, 'MIASTO': 3, 'REZYDENCJA': 4, 'WNĘTRZE': 5, 'SKARBIEC': 6 };
 const MAPS_STORAGE_KEY = 'misterium_maps_unlocked';
 function unlockPlayerMap() {
   const input = document.getElementById('maps-password-input').value.trim().toUpperCase();
@@ -2872,11 +2984,14 @@ function renderSkillsView(skillsStr, containerId) {
       } else {
         skillsHtml = '<span style="color:#444;font-style:italic;font-size:11px;">brak</span>';
       }
+      const levelBoxes = Array(7).fill(0).map((_, i) =>
+        '<span class="skill-level-box' + (i < level ? ' checked' : '') + '" style="display:inline-block;width:14px;height:14px;border:1px solid #555;border-radius:2px;margin:0 1px;background:' + (i < level ? '#ffd700' : 'transparent') + ';"></span>'
+      ).join('');
       html += '<div style="background:#2a2a2a;border-radius:6px;padding:8px;border:1px solid #333;min-width:0;overflow:hidden;text-align:center;">' +
         (g.icon ? '<div style="font-size:20px;line-height:1;margin-bottom:4px;">' + g.icon + '</div>' : '') +
         '<div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + g.name + '</div>' +
         '<div style="font-size:11px;color:#999;margin-bottom:4px;line-height:1.6;">' + skillsHtml + '</div>' +
-        '<div style="text-align:center;margin-top:6px;"><span style="color:' + (level > 0 ? '#ffd700' : '#555') + ';font-size:16px;font-weight:bold;">' + level + '</span></div>' +
+        '<div style="text-align:center;margin-top:6px;" title="Poziom ' + level + '">' + levelBoxes + '</div>' +
         '</div>';
     });
     html += '</div></div>';
@@ -3187,7 +3302,7 @@ function renderViewCard(data) {
 
   if (!isRPG) {
     h += '<h2 style="margin-bottom:4px;">Karta Postaci</h2>';
-    h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
+    h += '<label class="print-hide-gracz">Gracz</label><div class="view-field print-hide-gracz">' + esc(data.realname) + '</div>';
     h += '<div class="view-field" style="margin-top:16px;color:#888;">☀️ Pochilluje — brak karty RPG</div>';
     c.innerHTML = h;
     return;
@@ -3206,7 +3321,7 @@ function renderViewCard(data) {
   h += '<div class="print-col print-col-left">';
   h += '<h2 style="margin-bottom:4px;">Karta Postaci</h2>' +
     '<p style="color:#666;font-size:12px;margin-top:0;">Hasło: ' + esc(viewPassword) + '</p>';
-  h += '<label>Gracz</label><div class="view-field">' + esc(data.realname) + '</div>';
+  h += '<label class="print-hide-gracz">Gracz</label><div class="view-field print-hide-gracz">' + esc(data.realname) + '</div>';
   h += '<label>Imię postaci</label>' +
     '<textarea id="view-name" rows="1" oninput="autoGrow(this);markUnsaved()">' + esc(data.name) + '</textarea>';
   h += '<label>Pseudonim w Gildii</label>' +
@@ -3233,12 +3348,23 @@ function renderViewCard(data) {
     h += '</div></div>';
   });
   h += '</div>';
+  // Ekwipunek + Broń (wspólna tabela) — na pierwszej stronie, w dolnej połowie
+  h += '<div class="print-gear-weapons" style="flex-basis:100%;margin-top:12px;border:1px solid #333;border-radius:6px;padding:12px;background:#1a1a1a;">';
+  h += '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Ekwipunek i broń</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">';
+  h += '<div><div style="font-size:11px;color:#666;margin-bottom:4px;">Ekwipunek</div><div id="view-gear" style="margin-top:6px;"></div></div>';
+  h += '<div><div style="font-size:11px;color:#666;margin-bottom:4px;">Broń</div><div id="view-weapons" style="margin-top:6px;"></div></div>';
+  h += '</div></div>';
   h += '</div>'; // end print-col-left
 
-  // Right col: portrait + notes area (print only - visible as bordered area)
+  // Right col: portret (oddzielnie) + notatki (oddzielnie)
   h += '<div class="print-col print-col-right">';
-  h += '<div class="print-notes-area">' +
-    '<div style="font-size:16px;margin-bottom:8px;color:#aaa;">Notatki i Portret</div>' +
+  h += '<div class="print-portrait-area print-notes-area">' +
+    '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Portret</div>' +
+    '<div style="min-height:80px;border:1px dashed #444;border-radius:4px;padding:8px;color:#555;font-size:12px;">Miejsce na portret postaci</div>' +
+    '</div>';
+  h += '<div class="print-notes-area" style="margin-top:12px;">' +
+    '<div style="font-size:14px;font-weight:bold;margin-bottom:8px;color:#aaa;">Notatki</div>' +
     '<div id="view-notes" style="margin-top:6px;"></div>' +
     '</div>';
   h += '</div>'; // end print-col-right
@@ -3249,27 +3375,23 @@ function renderViewCard(data) {
   h += '<div class="print-page print-page-2">';
   h += '<div class="print-header">Misterium Skarbów i Cieni — Umiejętności</div>';
 
-  // Left col: gear, weapons, tricks
+  // Left col: tylko sztuczki
   h += '<div class="print-col print-col-left">';
-  h += '<label>Ekwipunek</label><div id="view-gear" style="margin-top:6px;"></div>';
-  h += '<hr>';
-  h += '<label>Broń</label><div id="view-weapons" style="margin-top:6px;"></div>';
-  h += '<hr>';
   h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
     '<span style="font-size:18px;">Sztuczki</span>' +
     '<a href="#tricks" target="_blank" style="font-size:13px;color:#666;text-decoration:none;">📜 pełna lista</a></div>' +
     '<div id="view-tricks" style="margin-top:6px;"></div>';
   h += '</div>'; // end print-col-left
 
-  // Right col: stats, skills, magic
+  // Right col: skills (bez duplikatu listy statów), magic
   h += '<div class="print-col print-col-right">';
-  h += '<div style="font-size:18px;line-height:1.8;">';
-  [['Ciało', data.stat_cialo], ['Zdolność', data.stat_zdolnosc], ['Psycha', data.stat_psycha], ['Rozum', data.stat_rozum], ['Zmysł', data.stat_zmysl]].forEach(([name, val]) => {
-    h += '<div class="stat-row"><span>' + name + '</span><span class="stat-val">' + esc(val) + '</span></div>';
+  h += '<span style="font-size:18px;">Umiejętności</span>';
+  h += '<div class="print-difficulty-cheat" style="display:flex;flex-wrap:wrap;gap:4px;margin:10px 0;padding:8px;background:#1a1a1a;border-radius:6px;border:1px solid #333;">';
+  [['+2','łatwy'],['0','zwykły'],['−2','problem.'],['−5','trudny'],['−8','złożony'],['−11','fartowny'],['−15','krytyczny']].forEach(([mod,label]) => {
+    h += '<div style="flex:1;min-width:50px;text-align:center;padding:4px;border:1px solid #444;border-radius:4px;font-size:11px;"><span style="font-weight:bold;color:#ffd700;">' + mod + '</span><br><span style="color:#888;font-size:10px;">' + label + '</span></div>';
   });
   h += '</div>';
-  h += '<hr>';
-  h += '<span style="font-size:18px;">Umiejętności</span><div id="view-skills-container" style="margin-top:8px;"></div>';
+  h += '<div id="view-skills-container" style="margin-top:8px;"></div>';
   h += '<hr>';
   h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
     '<span style="font-size:18px;color:#b0a0e0;">🔮 Umagicznienie</span>';
